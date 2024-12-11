@@ -37,7 +37,7 @@ const teamMembers: TeamMember[] = [
         name: "Rakesh Ray",
         role: "Python Developer",
         image: rakesh,
-        linkedin: "#",
+        linkedin: "https://www.linkedin.com/in/rakesh-ray-001364341/",
     },
 
 ];
@@ -111,7 +111,7 @@ const About: React.FC = () => {
                                 className="transition-all duration-300 hover:scale-[1.02] hover:shadow-xl group"
                             >
                                 <CardContent className="text-center p-6 space-y-4">
-                                    <div className="w-32 h-32 rounded-full bg-muted mx-auto overflow-hidden ring-2 ring-primary/20 ring-offset-2">
+                                    <div className="w-32 h-32 rounded-full bg-muted mx-auto overflow-hidden ring-2 ring-primary/20 hover:ring-blue-500 ring-offset-2 transition-all ease-linear">
                                         <img
                                             src={member.image}
                                             alt={member.name}
