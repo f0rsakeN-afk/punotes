@@ -6,6 +6,8 @@ const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/Layout"));
 const About = lazy(() => import('./pages/About'))
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const PastQuestions = lazy(() => import('./pages/PastQuestions'));
+const Assignments = lazy(() => import('./pages/Assignments'))
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/pdfs" element={<PDF />} />
+            <Route path="/pastquestions" element={<PastQuestions />} />
+            <Route path="/assignments" element={<Assignments />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
