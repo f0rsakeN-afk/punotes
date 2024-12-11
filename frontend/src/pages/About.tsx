@@ -5,6 +5,7 @@ import { Mail, Check } from "lucide-react";
 import nishant from "../assets/nishant.jpeg";
 import naresh from "../assets/naresh.jpg";
 import pushkar from "../assets/pushkar.jpeg";
+import rakesh from '../assets/rakesh.jpeg'
 
 interface TeamMember {
     name: string;
@@ -31,6 +32,12 @@ const teamMembers: TeamMember[] = [
         role: "Developer",
         image: naresh,
         linkedin: "https://www.linkedin.com/in/f0rsaken/",
+    },
+    {
+        name: "Rakesh Ray",
+        role: "Python Developer",
+        image: rakesh,
+        linkedin: "#",
     },
 
 ];
@@ -97,7 +104,7 @@ const About: React.FC = () => {
                     <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                         Meet Our Team
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         {teamMembers.map((member) => (
                             <Card
                                 key={member.name}
