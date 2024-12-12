@@ -101,7 +101,7 @@ const About: React.FC = () => {
                         Meet Our Team
                     </motion.h2>
                     <motion.div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        {teamMembers.map((member, index) => (
+                        {teamMembers.map((member) => (
                             <motion.div
                                 key={member.name}
                                 variants={fadeInUpVariants}
