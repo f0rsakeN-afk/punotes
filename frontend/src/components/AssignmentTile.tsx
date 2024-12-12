@@ -3,42 +3,91 @@ import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, FileIcon } from "lucide-react";
 import { Badge } from '@/components/ui/badge';
-import { AssignMentTypes } from '@/types';
+import { motion } from 'framer-motion';
 
+interface AssignmentTileProps {
+    data: {
+        title: string;
+        subject?: string;
+        url: string;
+    }
+}
 
-const AssignmentTile: React.FC<AssignMentTypes> = ({ assignment }) => {
+const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
     return (
-        <Card
-            key={assignment.id}
-            className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
         >
-            <CardHeader>
-                <div className="flex items-start gap-4">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                        <FileIcon className="h-8 w-8 text-primary" />
-                    </div>
-                    <div className="space-y-1">
-                        <h3 className="font-semibold line-clamp-2">{assignment.title}</h3>
-                        <div className="flex flex-wrap gap-2 items-center">
-                            <Badge variant="secondary" className="font-normal">
-                                {assignment.subject}
-                            </Badge>
+            <Card className="bg-card transition-all duration-300 dark:bg-gray-800 backdrop-blur-sm">
+                <CardHeader>
+                    <motion.div
+                        className="flex items-start gap-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.1 }}
+                    >
+                        <motion.div
+                            className="p-2 rounded-lg bg-primary/10"
+                            whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <FileIcon className="h-8 w-8 text-primary" />
+                        </motion.div>
+                        <div className="space-y-1">
+                            <h3 className="font-semibold line-clamp-2">
+                                {data.title}
+                            </h3>
+                            {data?.subject && (
+                                <motion.div
+                                    className="flex flex-wrap gap-2 items-center"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.2 }}
+                                >
+                                    <Badge
+                                        variant="secondary"
+                                        className="font-normal"
+                                    >
+                                        {data.subject}
+                                    </Badge>
+                                </motion.div>
+                            )}
                         </div>
-                    </div>
-                </div>
-            </CardHeader>
+                    </motion.div>
+                </CardHeader>
 
-
-            <CardFooter>
-                <Button className="w-full gap-2 group-hover:bg-primary/90" asChild>
-                    <a href={assignment.fileUrl} download>
-                        <Download className="h-4 w-4" />
-                        Download Assignment
-                    </a>
-                </Button>
-            </CardFooter>
-        </Card>
+                <CardFooter>
+                    <motion.div
+                        className="w-full"
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        <Button
+                            className="w-full gap-2 group"
+                            asChild
+                        >
+                            <a
+                                href={data.url}
+                                download
+                                className="flex items-center justify-center"
+                            >
+                                <motion.div
+                                    whileHover={{ rotate: 360 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <Download className="h-4 w-4" />
+                                </motion.div>
+                                Download
+                            </a>
+                        </Button>
+                    </motion.div>
+                </CardFooter>
+            </Card>
+        </motion.div>
     )
 }
 
-export default AssignmentTile
+export default AssignmentTile;
