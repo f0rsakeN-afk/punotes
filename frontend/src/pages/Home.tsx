@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion"; // Import motion
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import {
   Select,

@@ -15,9 +15,17 @@ const navLinks: NavLinksTypes[] = [
     href: "/",
   },
   {
+    label: 'Past Questions',
+    href: '/pastquestions'
+  },
+  {
+    label: 'Assignments',
+    href: '/assignments'
+  },
+  {
     label: "About",
     href: "/about",
-  }
+  },
 ];
 
 
