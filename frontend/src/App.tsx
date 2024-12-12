@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react"
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loader from "./components/Loader";
@@ -12,6 +13,7 @@ const Assignments = lazy(() => import('./pages/Assignments'))
 const App = () => {
   return (
     <Suspense fallback={<Loader />}>
+      <Analytics />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
