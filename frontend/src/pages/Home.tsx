@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion"; // Import motion
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -10,6 +11,7 @@ import {
 import Features from "@/components/Features";
 import Recent from "@/components/Recent";
 import { useNavigate } from "react-router-dom";
+import { fadeInUpVariants, staggerContainerVariants } from "@/utils/animation";
 
 const semesters = Array.from({ length: 8 }, (_, i) => `Semester ${i + 1}`);
 const branches = [
@@ -20,38 +22,66 @@ const branches = [
 ];
 
 const Home = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [selectedSemester, setSelectedSemester] = useState<string>("");
   const [selectedBranch, setSelectedBranch] = useState<string>("");
 
-
-  const handleSearch = () => { navigate(`/pdfs?semester=${selectedSemester}&branch=${selectedBranch}`); }
+  const handleSearch = () => {
+    navigate(`/pdfs?semester=${selectedSemester}&branch=${selectedBranch}`);
+  };
 
   return (
-    <div className="min-h-screen">
+    <motion.div
+      className="min-h-screen"
+      initial="hidden"
+      animate="visible"
+      variants={staggerContainerVariants}
+    >
       <section className="relative h-screen flex items-center overflow-hidden">
         {/* Simple Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-slate-800 dark:to-slate-950" />
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-slate-800 dark:to-slate-950"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        />
 
         {/* Main Content */}
         <div className="relative w-full max-w-7xl mx-auto px-4">
           {/* Hero Text */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          <motion.div
+            className="text-center mb-16"
+            variants={staggerContainerVariants}
+          >
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold text-white mb-6"
+              variants={fadeInUpVariants}
+            >
               Engineering Study Materials
               <br />
               All in One Place
-            </h1>
-            <p className="text-xl text-gray-100 mb-8 max-w-2xl mx-auto">
+            </motion.h1>
+            <motion.p
+              className="text-xl text-gray-100 mb-8 max-w-2xl mx-auto"
+              variants={fadeInUpVariants}
+            >
               Access thousands of engineering PDFs, notes, and study materials
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Search Card */}
-          <div className="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-8 border border-white/20">
+          <motion.div
+            className="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-8 border border-white/20"
+            variants={fadeInUpVariants}
+            //whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Semester Selection */}
-              <div className="space-y-2">
+              <motion.div
+                className="space-y-2"
+                variants={fadeInUpVariants}
+              >
                 <label className="text-sm font-medium text-white/90">
                   Select Semester
                 </label>
@@ -67,10 +97,13 @@ const Home = () => {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </motion.div>
 
               {/* Branch Selection */}
-              <div className="space-y-2">
+              <motion.div
+                className="space-y-2"
+                variants={fadeInUpVariants}
+              >
                 <label className="text-sm font-medium text-white/90">
                   Select Branch
                 </label>
@@ -86,27 +119,47 @@ const Home = () => {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </motion.div>
             </div>
 
-            <Button
-              className="w-full mt-6 bg-white/10 hover:bg-white/20 text-white border border-white/20
-                        backdrop-blur-sm transition-all duration-300"
-              disabled={!selectedSemester || !selectedBranch}
-              onClick={handleSearch}
+            <motion.div
+              variants={fadeInUpVariants}
+              //whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Search PDFs
-            </Button>
-          </div>
+              <Button
+                className="w-full mt-6 bg-white/10 hover:bg-white/20 text-white border border-white/20
+                          backdrop-blur-sm transition-all duration-300"
+                disabled={!selectedSemester || !selectedBranch}
+                onClick={handleSearch}
+              >
+                Search PDFs
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
+      {/* Features */}
+      <motion.div
+        variants={fadeInUpVariants}
+        viewport={{ once: true }}
+        whileInView="visible"
+        initial="hidden"
+      >
+        <Features />
+      </motion.div>
 
-      {/* features */}
-      <Features />
       {/* Recent */}
-      <Recent />
-    </div>
+      <motion.div
+        variants={fadeInUpVariants}
+        viewport={{ once: true }}
+        whileInView="visible"
+        initial="hidden"
+      >
+        <Recent />
+      </motion.div>
+    </motion.div>
   );
 };
 
