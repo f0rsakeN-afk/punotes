@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { PYQTypes } from '@/types';
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { fadeInUpVariants, searchInputVariants, tileVariants, staggerContainerVariants } from '@/utils/animation';
+import { fadeInUpVariants, tileVariants, staggerContainerVariants } from '@/utils/animation';
 
 const dummyAssignments: PYQTypes[] = [
     {
