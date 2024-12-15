@@ -32,7 +32,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b bg-white/30 backdrop-blur-lg supports-[backdrop-filter]:bg-white/20">
       <div className="container flex h-16 items-center justify-between px-4 mx-auto">
         {/* Left Section: Logo */}
         <div className="flex items-center">
