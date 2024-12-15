@@ -22,7 +22,7 @@ const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
         >
-            <Card className="bg-card transition-all duration-300 dark:bg-gray-800 backdrop-blur-sm">
+            <Card className=" transition-all duration-300  lg:backdrop-blur-md">
                 <CardHeader>
                     <motion.div
                         className="flex items-start gap-4"
@@ -38,7 +38,7 @@ const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
                             <FileIcon className="h-8 w-8 text-primary" />
                         </motion.div>
                         <div className="space-y-1">
-                            <h3 className="font-semibold line-clamp-2">
+                            <h3 className="font-medium line-clamp-2">
                                 {data.title}
                             </h3>
                             {data?.subject && (
