@@ -1,9 +1,9 @@
 import { RootState } from "../store";
 
-export const selectAllBranches = (state: RootState) => state.courses.branches;
+export const selectAllBranches = (state: RootState) => state.courses.data;
 
 export const selectBranchById = (state: RootState, branchId: string) =>
-  state.courses.branches.find((branch) => branch.id === branchId);
+  state.courses.data.find((d) => d.id === branchId);
 
 export const selectPDFsByBranchAndSemester = (
   state: RootState,
@@ -11,8 +11,8 @@ export const selectPDFsByBranchAndSemester = (
   semester: string
 ) => {
   const semesterNumber = parseInt(semester.split(" ")[1]);
-  const selectedBranch = state.courses.branches.find(
-    (b) => b.id.toLowerCase() === branch.toLowerCase()
+  const selectedBranch = state.courses.data.find(
+    (b) => b.name.toLowerCase() === branch.toLowerCase()
   );
 
   if (!selectedBranch) return [];
