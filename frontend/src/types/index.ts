@@ -10,34 +10,43 @@ export interface PYQTypes {
   id: number;
   title: string;
   url: string;
-  uploaded_at:Date;
+  uploaded_at: Date;
 }
 
 export interface TeamMember {
   name: string;
-  role: string;
+  role?: string;
   image: string;
   linkedin: string;
+}
+
+export interface noteTypes {
+  id: string;
+  title: string;
+  description: string;
+  fileUrl: string;
+  uploadDate: string;
+  fileType: string;
+  fileSize: string;
+}
+
+export interface subjectTypes {
+  id: string;
+  name: string;
+  code: string;
+  credits: number;
+  notes: noteTypes[];
+}
+
+export interface semesterTypes {
+  id: string;
+  number: number;
+  subjects: subjectTypes[];
 }
 
 export interface PDFTypes {
   id: string;
   name: string;
   shortName: string;
-  semesters: {
-    id: string;
-    name: string;
-    code: string;
-    credit: number;
-    notes: {
-      id: string;
-      title: string;
-      description: string;
-      fileUrl: string;
-      uploadDate: Date;
-      fileType: string;
-      fileSize: string;
-      downloads: number;
-    }[];
-  }[];
+  semesters: semesterTypes[];
 }
