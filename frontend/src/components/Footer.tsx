@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-auto  p-4 text-center text-muted-foreground">
+    <footer className="mt-auto  p-2 text-center text-muted-foreground ">
       <p>&copy; {new Date().getFullYear()} PUNotes. All rights reserved.</p>
       <section className="flex items-center gap-2 justify-center">
         <h4 className="text-primary hover:underline" >
