@@ -15,10 +15,10 @@ import { fadeInUpVariants, staggerContainerVariants } from "@/utils/animation";
 
 const semesters = Array.from({ length: 8 }, (_, i) => `Semester ${i + 1}`);
 const branches = [
-  "Civil",
-  "Electrical",
-  "Computer",
-  "Electronics & Communication",
+  "Civil Engineering",
+  "Electrical Engineering",
+  "Computer Engineering",
+  "Electronics & Communication Engineering",
 ];
 
 const Home = () => {
@@ -40,9 +40,9 @@ const Home = () => {
       <section className="relative h-screen flex items-center overflow-hidden">
         {/* Simple Gradient Background */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-slate-800 dark:to-slate-950"
+          className="absolute inset-0 bg-gradient-to-br from-blue-500   to-purple-600 dark:from-slate-800 dark:to-slate-950"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 1 }} 
           transition={{ duration: 1 }}
         />
 
