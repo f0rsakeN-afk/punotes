@@ -1,10 +1,9 @@
 import React from "react";
 import { motion } from 'motion/react'
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Mail, Check } from "lucide-react";
-import { springTransition, fadeInUpVariants, staggerContainerVariants } from "@/utils/animation";
 import Members from "@/components/Members";
+import Mission from "@/components/Mission";
+import Contact from "@/components/Contact";
+import AboutQuestions from "@/components/AboutQuestions";
 
 
 const About: React.FC = () => {
@@ -33,96 +32,20 @@ const About: React.FC = () => {
                 </motion.section>
 
                 {/* Mission Section */}
-                <motion.section
-                    variants={staggerContainerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="grid md:grid-cols-2 gap-8"
-                >
-                    <motion.div variants={fadeInUpVariants} className="h-full">
-                        <Card className="transition-all duration-300 hover:shadow-xl h-full flex flex-col">
-                            <CardHeader>
-                                <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                                    Our Mission
-                                </h2>
-                            </CardHeader>
-                            <CardContent className="flex-grow flex items-center">
-                                <p className="text-muted-foreground leading-relaxed">
-                                    We aim to make quality education accessible to all engineering students by providing a centralized platform for study materials, notes, and resources. Our goal is to support students in their academic journey and help them excel by offering the tools they need to understand key concepts and improve their performance.
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-
-                    <motion.div variants={fadeInUpVariants} className="h-full">
-                        <Card className="transition-all duration-300 hover:shadow-xl h-full flex flex-col">
-                            <CardHeader>
-                                <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                                    What We Offer
-                                </h2>
-                            </CardHeader>
-                            <CardContent className="flex-grow flex items-center">
-                                <ul className="space-y-3 text-muted-foreground w-full">
-                                    {[
-                                        "Comprehensive study materials for all semesters",
-                                        "Branch-specific resources and notes",
-                                        "Past examination papers",
-                                        "Regularly updated content",
-                                    ].map((item) => (
-                                        <motion.li
-                                            key={item}
-                                            variants={fadeInUpVariants}
-                                            className="flex items-center gap-2"
-                                        >
-                                            <Check className="h-5 w-5 text-primary flex-shrink-0" />
-                                            <span>{item}</span>
-                                        </motion.li>
-                                    ))}
-                                </ul>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                </motion.section>
+                <Mission />
 
 
                 {/* Team Section */}
                 <Members />
 
+
+                {/* Accordion */}
+                <AboutQuestions />
+
                 {/* Contact Section */}
-                <motion.section
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        transition={springTransition}
-                    >
-                        <Card className="transition-all duration-300 hover:shadow-xl bg-primary/5">
-                            <CardContent className="text-center p-12 space-y-6">
-                                <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                                    Get in Touch
-                                </h2>
-                                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                                    Have questions or suggestions? We'd love to hear from you! Reach
-                                    out to us anytime.
-                                </p>
-                                <motion.div
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={springTransition}
-                                    className="flex justify-center gap-4"
-                                >
-                                    <Button size="lg" className="gap-2">
-                                        <Mail className="h-5 w-5" />
-                                        <a href="mailto:contact@punotes.com">Contact Us</a>
-                                    </Button>
-                                </motion.div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                </motion.section>
+                <Contact />
+
+
             </div>
         </motion.div>
     );
