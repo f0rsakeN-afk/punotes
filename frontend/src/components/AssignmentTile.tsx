@@ -4,16 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Download, FileIcon } from "lucide-react";
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
+//import { formatDistanceToNow } from 'date-fns';
 
 interface AssignmentTileProps {
     data: {
         title: string;
         subject?: string;
         url: string;
+        uploaded_at: Date;
     }
 }
 
 const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
+    /*  const formattedDate = formatDistanceToNow(data.uploaded_at, { addSuffix: true }); */
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -38,24 +42,17 @@ const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
                             <FileIcon className="h-8 w-8 text-primary" />
                         </motion.div>
                         <div className="space-y-1">
-                            <h3 className="font-medium line-clamp-2">
+                            <h3 className="font-medium line-clamp-2 capitalize">
                                 {data.title}
                             </h3>
-                            {data?.subject && (
-                                <motion.div
-                                    className="flex flex-wrap gap-2 items-center"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.2 }}
-                                >
-                                    <Badge
-                                        variant="secondary"
-                                        className="font-normal"
-                                    >
+                            <div className="flex flex-wrap gap-2 items-center">
+                                {data?.subject && (
+                                    <Badge variant="secondary" className="font-normal">
                                         {data.subject}
                                     </Badge>
-                                </motion.div>
-                            )}
+                                )}
+                                {/*    <span className="text-sm text-muted-foreground">Uploaded {formattedDate}</span> */}
+                            </div>
                         </div>
                     </motion.div>
                 </CardHeader>
@@ -71,6 +68,7 @@ const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
                         >
                             <a
                                 href={data.url}
+                                target='_blank'
                                 download
                                 className="flex items-center justify-center"
                             >
