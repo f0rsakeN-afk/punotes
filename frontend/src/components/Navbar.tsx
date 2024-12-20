@@ -23,6 +23,10 @@ const navLinks: NavLinksTypes[] = [
     href: '/assignments'
   },
   {
+    label: 'Syllabus',
+    href: '/syllabus'
+  },
+  {
     label: "About",
     href: "/about",
   },
