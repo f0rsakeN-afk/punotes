@@ -24,22 +24,22 @@ const Assignments = () => {
     const filteredAssignments = assignmentData.filter(
         (assignment) =>
             assignment.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          assignment.subject.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+            assignment.subject.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
 
     const sortedAssignments = [...filteredAssignments].sort((a, b) => {
         switch (sortOption) {
-        default:
-            return a.title.localeCompare(b.title);
-        case "title_desc":
-            return b.title.localeCompare(a.title);
-        /* case "updated_at_asc":
-          return b.uploaded_at.getTime() - a.uploaded_at.getTime();
-        case "updated_at_desc":
-          return a.uploaded_at.getTime() - b.uploaded_at.getTime(); */
+            default:
+                return a.title.localeCompare(b.title);
+            case "title_desc":
+                return b.title.localeCompare(a.title);
+            /* case "updated_at_asc":
+              return b.uploaded_at.getTime() - a.uploaded_at.getTime();
+            case "updated_at_desc":
+              return a.uploaded_at.getTime() - b.uploaded_at.getTime(); */
 
-    }
-  });
+        }
+    });
 
 
     return (
@@ -71,69 +71,69 @@ const Assignments = () => {
                     </motion.p>
                 </motion.div>
 
-              {/* Search Bar  && Sort selector*/}
-              <motion.div
-                  className="mb-8 max-w-3xl grid grid-cols-3 items-center gap-4"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-              >
-                  <Input
-                      placeholder="Search assignments by title, subject..."
-                      value={searchQuery}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setSearchQuery(e.target.value)
-                      }
-                      className="bg-background/50 lg:backdrop-blur-sm border border-border/50
+                {/* Search Bar  && Sort selector*/}
+                <motion.div
+                    className="mb-8 max-w-3xl grid grid-cols-3 items-center gap-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                    <Input
+                        placeholder="Search assignments by title, subject..."
+                        value={searchQuery}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setSearchQuery(e.target.value)
+                        }
+                        className="bg-background/50  border border-border/50
                                  focus:ring-2 focus:ring-primary/20 transition-all duration-300 col-span-2"
-                  />
-                  <Select
-                      value={sortOption}
-                      onValueChange={(value) => setSortOption(value)}
-                  >
-                      <SelectTrigger>
-                          <SelectValue placeholder="Sort By" />
-                      </SelectTrigger>
-                      <SelectContent>
-                          {sortOptions.map((el) => (
-                              <SelectItem key={el.label} value={el.value}>
-                                  {el.label}
-                              </SelectItem>
-                          ))}
-                      </SelectContent>
-                  </Select>
-              </motion.div>
+                    />
+                    <Select
+                        value={sortOption}
+                        onValueChange={(value) => setSortOption(value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Sort By" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {sortOptions.map((el) => (
+                                <SelectItem key={el.label} value={el.value}>
+                                    {el.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </motion.div>
 
-              {/* Assignments Grid */}
-              <AnimatePresence mode="wait">
-                  {filteredAssignments.length > 0 ? (
-                      <motion.div
-                          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                          variants={containerVariants}
-                          initial="hidden"
-                          animate="visible"
-                          layout
-                      >
-                          {sortedAssignments.map((assignment: AssignMentTypes) => (
-                              <motion.div
-                                  key={assignment.id}
-                                  layout
-                                  initial={{ opacity: 0, scale: 0.9 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  exit={{ opacity: 0, scale: 0.9 }}
-                                  transition={{ duration: 0.3 }}
-                              >
-                                  <AssignmentTile data={assignment} />
-                              </motion.div>
-                          ))}
-                      </motion.div>
-                  ) : (
-                      <NotFound text={"Assignments"} />
-                  )}
-              </AnimatePresence>
-          </div>
-      </motion.div>
-  );
+                {/* Assignments Grid */}
+                <AnimatePresence mode="wait">
+                    {filteredAssignments.length > 0 ? (
+                        <motion.div
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                            layout
+                        >
+                            {sortedAssignments.map((assignment: AssignMentTypes) => (
+                                <motion.div
+                                    key={assignment.id}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <AssignmentTile data={assignment} />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    ) : (
+                        <NotFound text={"Assignments"} />
+                    )}
+                </AnimatePresence>
+            </div>
+        </motion.div>
+    );
 };
 
 export default Assignments;

@@ -27,7 +27,7 @@ export const accordionData: dataProps[] = [
     id: 4,
     title: "How can I contribute or report issues?",
     content:
-      "To share notes or other materials, please email on the mail givem below in contact section. For bug reports or to contribute code, please contact us at the same email address to request access to our GitHub repository.",
+      "To share notes or other materials, please mail us on the  gmail given below in contact section. For bug reports or to contribute code, please contact us at the same gmail address to request access to our GitHub repository.",
   },
   {
     id: 5,

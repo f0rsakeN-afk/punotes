@@ -78,7 +78,7 @@ const PastQuestions: React.FC = () => {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setSearchQuery(e.target.value)
                         }
-                        className="bg-background/50 lg:backdrop-blur-sm border border-border/50
+                        className="bg-background/50 border border-border/50
                                  focus:ring-2 focus:ring-primary/20 transition-all duration-300 col-span-2"
                     />
 

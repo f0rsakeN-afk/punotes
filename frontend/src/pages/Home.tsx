@@ -11,24 +11,10 @@ import {
 import Features from "@/components/Features";
 //import Recent from "@/components/Recent";
 import { useNavigate } from "react-router-dom";
-/* import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "@/components/ui/command"; */
 import { fadeInUpVariants, staggerContainerVariants } from "@/utils/animation";
-/* import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils"; */
 
-//import { subjectData } from "@/data/SubjectData";
+
+import { subjectData } from "@/data/SubjectData";
 
 const semesters = Array.from({ length: 8 }, (_, i) => `Semester ${i + 1}`);
 const branches = [
@@ -42,14 +28,12 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectedSemester, setSelectedSemester] = useState<string>("");
   const [selectedBranch, setSelectedBranch] = useState<string>("");
-  /*  const [selectedSubject, setSelectedSubject] = useState<string>("");
-   const [open, setOpen] = useState<boolean>(false); */
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
+
 
   const handleSearch = () => {
-    /*   const subjectValue =
-        subjectData.find((s) => s.label === selectedSubject)?.subject || ""; */
     navigate(
-      `/pdfs?semester=${selectedSemester}&branch=${selectedBranch}`,
+      `/pdfs?semester=${selectedSemester}&branch=${selectedBranch}&subject=${selectedSubject}`,
     );
   };
 
@@ -99,7 +83,7 @@ const Home = () => {
             //whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Semester Selection */}
               <motion.div className="space-y-2" variants={fadeInUpVariants}>
                 <label className="text-sm font-medium text-white/90">
@@ -145,60 +129,26 @@ const Home = () => {
               </motion.div>
 
               {/* Subject selection */}
-              {/*    <motion.div className="space-y-2" variants={fadeInUpVariants}>
+              <motion.div variants={fadeInUpVariants} className="space-y-2">
                 <label className="text-sm font-medium text-white/90">
                   Select Subject
                 </label>
-                <Popover open={open} onOpenChange={setOpen}>
-                  <PopoverTrigger
-                    asChild
-                    className="bg-white/10 border-white/20 text-white"
-                  >
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={open}
-                      className="w-[200px] justify-between"
-                    >
-                      {selectedSubject
-                        ? subjectData.find((s) => s.subject === selectedSubject)
-                            ?.label
-                        : "Select subject..."}
-                      <ChevronsUpDown className="opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search subject..." />
-                      <CommandList>
-                        <CommandEmpty>No framework found.</CommandEmpty>
-                        <CommandGroup>
-                          {subjectData.map((s) => (
-                            <CommandItem
-                              key={s.subject}
-                              value={s.label}
-                              onSelect={(currentValue) => {
-                                setSelectedSubject(currentValue);
-                                setOpen(false);
-                              }}
-                            >
-                              {s.label}
-                              <Check
-                                className={cn(
-                                  "ml-auto",
-                                  selectedSubject === s.subject
-                                    ? "opacity-100"
-                                    : "opacity-0",
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </motion.div> */}
+                <Select
+                  onValueChange={setSelectedSubject}
+                  value={selectedSubject}
+                >
+                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                    <SelectValue placeholder="Choose Subject" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subjectData.map((s) => (
+                      <SelectItem key={s.name} value={s.name}>
+                        {s.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </motion.div>
             </div>
 
             <motion.div
@@ -209,7 +159,7 @@ const Home = () => {
               <Button
                 className="w-full mt-6 bg-white/10 hover:bg-white/20 text-white border border-white/20
                            transition-all duration-300"
-                disabled={!selectedSemester || !selectedBranch}
+                disabled={!selectedSemester || !selectedBranch || !selectedSubject}
                 onClick={handleSearch}
               >
                 Search PDFs

@@ -8,27 +8,34 @@ export const selectBranchById = (state: RootState, branchId: string) =>
 export const selectPDFsByBranchAndSemester = (
   state: RootState,
   branch: string,
-  semester: string
-  /* subject?: string */
+  semester: string,
+  subject: string
 ) => {
-  const semesterNumber = parseInt(semester.split(" ")[1]);
   const selectedBranch = state.courses.data.find(
     (b) => b.name.toLowerCase() === branch.toLowerCase()
   );
-  /* const selectedSubject=selectedBranch?.semesters.find(s=>s.subjects) */
-  if (!selectedBranch) return [];
+  if (!selectedBranch) {
+    console.warn("Branch not found:", branch);
+    return [];
+  }
+  const semesterNumber = parseInt(semester.split(" ")[1]);
 
   const selectedSemester = selectedBranch.semesters.find(
     (s) => s.number === semesterNumber
   );
 
-  if (!selectedSemester) return [];
+  if (!selectedSemester) {
+    console.warn("Semester not found:", semester);
+    return [];
+  }
 
-  return selectedSemester.subjects.flatMap((subject) =>
-    subject.notes.map((note) => ({
-      ...note,
-      subject: subject.name,
-      subjectCode: subject.code,
-    }))
+  const selectedSubject = selectedSemester.subjects.find(
+    (s) => s.name.toLowerCase() === subject.toLowerCase()
   );
+
+  return selectedSubject?.notes.map((note) => ({
+    ...note,
+    subjectName: selectedSubject.name,
+    subjectCode: selectedSubject.code,
+  }));
 };

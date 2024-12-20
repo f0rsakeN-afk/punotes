@@ -45,7 +45,7 @@ export const PDFData: PDFTypes[] = [
             credits: 3,
             notes: [
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note1",
                 title: "Practice set",
                 description: "",
                 fileUrl:
@@ -55,7 +55,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note2",
                 title: "C Quiz",
                 description: "",
                 fileUrl:
@@ -65,7 +65,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note3",
                 title: "C storage classes",
                 description: "",
                 fileUrl:
@@ -75,7 +75,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note4",
                 title: "Chapter-1",
                 description: "",
                 fileUrl:
@@ -85,7 +85,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note5",
                 title: "Chapter-2",
                 description: "",
                 fileUrl:
@@ -95,7 +95,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note6",
                 title: "Chapter-3",
                 description: "",
                 fileUrl:
@@ -105,7 +105,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note7",
                 title: "Recursion",
                 description: "",
                 fileUrl:
@@ -115,7 +115,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note8",
                 title: "C video ref",
                 description: "",
                 fileUrl:
@@ -125,7 +125,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "BCE-1001",
+                id: "BCE-1001-note9",
                 title: "Array",
                 description: "",
                 fileUrl:

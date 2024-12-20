@@ -1,343 +1,54 @@
 interface subjectTypes {
-  subject: string;
-  label: string;
+  name: string;
 }
 
 export const subjectData: subjectTypes[] = [
   {
-    subject: "computer programming",
-    label: "Computer Programming",
+    name: " Engineering Physics",
   },
   {
-    subject: "mathematics-I",
-    label: "Mathematics-I",
+    name: "Mathematics I",
   },
   {
-    subject: "english",
-    label: "English",
+    name: "English",
   },
   {
-    subject: "physics",
-    label: "Physics",
+    name: "Computer Programming",
   },
   {
-    subject: "fct",
-    label: "FCT",
+    name: "FCT",
   },
   {
-    subject: "basic electrical engineering",
-    label: "Basic Electrical Engineering",
+    name: "Basic Electrical Engineering",
   },
   {
-    subject: "digital logic",
-    label: "Digital Logic",
+    name: "Digital Logic",
   },
   {
-    subject: "applied sociology",
-    label: "Applied Sociology",
+    name: "Applied Mechanics",
   },
   {
-    subject: "ooad",
-    label: "OOAD",
+    name: "Mathematics II",
   },
   {
-    subject: "dsa",
-    label: "DSA",
+    name: "Chemistry",
   },
-  /*  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
   {
-    subject: "",
-    label: "",
+    name: "OOP with C++",
   },
   {
-    subject: "",
-    label: "",
+    name: "DSA",
   },
   {
-    subject: "",
-    label: "",
+    name: "OOAD",
   },
   {
-    subject: "",
-    label: "",
+    name: "Computer Graphics",
   },
   {
-    subject: "",
-    label: "",
+    name: "Applied Sociology",
   },
   {
-    subject: "",
-    label: "",
+    name: "Mathematics III",
   },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  },
-  {
-    subject: "",
-    label: "",
-  }, */
 ];

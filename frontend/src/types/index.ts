@@ -23,11 +23,11 @@ export interface TeamMember {
 export interface noteTypes {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   fileUrl: string;
   uploadDate: string;
-  fileType: string;
-  fileSize: string;
+  fileType?: string;
+  fileSize?: string;
 }
 
 export interface subjectTypes {

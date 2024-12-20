@@ -8,7 +8,7 @@ import { tileVariants } from '@/utils/animation';
 import { noteTypes } from '@/types'
 
 interface PDFTileProps extends noteTypes {
-    subject: string;
+    subjectName: string;
     subjectCode: string
 }
 
@@ -37,7 +37,7 @@ const PDFTile: React.FC<Props> = ({ pdf }) => {
                             </h3>
                             <div className="flex items-center gap-2">
                                 <Badge variant="secondary" className="font-normal">
-                                    {pdf.subject}
+                                    {pdf.subjectName}
                                 </Badge>
                                 <span className="text-xs text-muted-foreground">
                                     {pdf.subjectCode}
