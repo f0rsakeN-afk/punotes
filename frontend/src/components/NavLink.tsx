@@ -15,7 +15,7 @@ const NavLink = ({ children, className, to, ...props }: NavLinkProps) => {
                 cn(
                     "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:text-primary",
                     "relative group px-3 py-2",
-                    isActive ? "text-primary" : "text-muted-foreground",
+                    isActive ? "text-primary" : "text-gray-600 dark:text-gray-300",
                     className
                 )
             }
