@@ -12,12 +12,12 @@ export const sortOptions: sortOptionInterface[] = [
     value: "title_desc",
     label: "Title (Z-A)",
   },
-  {
+  /* {
     value: "uploaded_at_asc",
     label: "Uploaded At (Newest)",
   },
   {
     value: "uploaded_at_desc",
-    label: "Uploaded At (Oldest)",
-  },
+    label: "Uploaded At (Oldest)", 
+  },*/
 ];

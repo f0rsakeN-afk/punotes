@@ -50,3 +50,10 @@ export interface PDFTypes {
   shortName: string;
   semesters: semesterTypes[];
 }
+
+export interface SyllabusTypes {
+  id: number;
+  name: string;
+  branch: string;
+  url: string;
+}

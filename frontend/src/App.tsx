@@ -8,7 +8,8 @@ const Layout = lazy(() => import("./components/Layout"));
 const About = lazy(() => import('./pages/About'))
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const PastQuestions = lazy(() => import('./pages/PastQuestions'));
-const Assignments = lazy(() => import('./pages/Assignments'))
+const Assignments = lazy(() => import('./pages/Assignments'));
+const Syllabus = lazy(() => import('./pages/Syllabus'));
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/pdfs" element={<PDF />} />
             <Route path="/pastquestions" element={<PastQuestions />} />
             <Route path="/assignments" element={<Assignments />} />
+            <Route path="/syllabus" element={<Syllabus />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

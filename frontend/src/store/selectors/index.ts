@@ -9,12 +9,13 @@ export const selectPDFsByBranchAndSemester = (
   state: RootState,
   branch: string,
   semester: string
+  /* subject?: string */
 ) => {
   const semesterNumber = parseInt(semester.split(" ")[1]);
   const selectedBranch = state.courses.data.find(
     (b) => b.name.toLowerCase() === branch.toLowerCase()
   );
-
+  /* const selectedSubject=selectedBranch?.semesters.find(s=>s.subjects) */
   if (!selectedBranch) return [];
 
   const selectedSemester = selectedBranch.semesters.find(

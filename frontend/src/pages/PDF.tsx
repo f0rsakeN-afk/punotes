@@ -20,6 +20,7 @@ const PDF: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const semester = searchParams.get("semester") ?? '';
     const branch = searchParams.get("branch") ?? '';
+    //const subject = searchParams.get('subject') ?? "";
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     // Get PDFs and branch name from Redux store
@@ -97,7 +98,7 @@ const PDF: React.FC = () => {
                         {isLoading
                             ? Array(6).fill(null).map((_, index) => <PDFCardSkeleton key={index} />)
                             : filteredPDFs.map((pdf) => (
-                                <motion.div key={pdf.id} variants={fadeInUpVariants}>
+                                <motion.div key={pdf.title} variants={fadeInUpVariants}>
                                     <PDFTile pdf={pdf} />
                                 </motion.div>
                             ))

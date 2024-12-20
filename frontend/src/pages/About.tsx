@@ -4,6 +4,7 @@ import Members from "@/components/Members";
 import Mission from "@/components/Mission";
 import Contact from "@/components/Contact";
 import AboutQuestions from "@/components/AboutQuestions";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 
 const About: React.FC = () => {
@@ -20,8 +21,18 @@ const About: React.FC = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="text-center space-y-6"
+                    className="text-center space-y-6 relative"
                 >
+
+                    <SparklesCore
+                        background="transparent"
+                        minSize={0.5}
+                        maxSize={1.2}
+                        particleDensity={300}
+                        className=" absolute w-full h-full inset-0"
+                        particleColor="#FFFFFF"
+                    />
+                    <div className="absolute inset-0 w-full h-full bg-background [mask-image:radial-gradient(500px_250px_at_top,transparent_80%,white)]"></div>
                     <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                         About PU Notes
                     </h1>

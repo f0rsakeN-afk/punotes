@@ -1,8 +1,8 @@
 import AssignmentTile from "@/components/AssignmentTile";
 import { Input } from "@/components/ui/input";
-import { PYQTypes } from "@/types";
+//import { PYQTypes } from "@/types";
 import React, { useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
     fadeInUpVariants,
     tileVariants,
@@ -10,61 +10,32 @@ import {
 } from "@/utils/animation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sortOptions } from "@/utils/sortOptions";
+import NotFound from "@/components/NotFound";
 
-const dummyAssignments: PYQTypes[] = [
-    {
-        id: 1,
-        title: "2024 3rd 4th",
-        url: "",
-        uploaded_at: new Date('August 19, 1975 23:15:30')
-    },
-    {
-        id: 2,
-        title: "2081 2nd 5th",
-        url: "",
-        uploaded_at: new Date('August 20, 1975 23:15:30')
-    },
-    {
-        id: 3,
-        title: "Digital Logic Design Lab",
-        url: "",
-        uploaded_at: new Date('August 21, 1975 23:15:30')
-    },
-    {
-        id: 4,
-        title: "Database Management System Project",
-        url: "",
-        uploaded_at: new Date('August 22, 1975 23:15:30')
-    },
-    {
-        id: 5,
-        title: "Computer Networks Lab Exercise",
-        url: "https://drive.google.com/uc?export=download&id=1bf0e1OBkTiUXifYrcOe9lu70JzKaadmV",
-        uploaded_at: new Date('July 23, 1985 10:15:20')
-    },
-];
+//import PYQ data
+import { PYQData } from "@/data/PYQData";
 
 const PastQuestions: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
-    const [sortOption, setSortOption] = useState<string>('uploaded_at_desc')
+    const [sortOption, setSortOption] = useState<string>('title_asc')
 
-    const filteredQuestions = dummyAssignments.filter((qsn) =>
+    const filteredQuestions = PYQData.filter((qsn) =>
         qsn.title.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
 
     const sortedQuestions = [...filteredQuestions].sort((a, b) => {
         switch (sortOption) {
-            case "title_asc":
+            default:
                 return a.title.localeCompare(b.title);
             case "title_desc":
                 return b.title.localeCompare(a.title);
-            case "updated_at_asc":
+            /* case "updated_at_asc":
                 return (
                     new Date(a.uploaded_at).getTime() - new Date(b.uploaded_at).getTime()
                 );
             default:
-                return new Date(b.uploaded_at).getTime() - new Date(a.uploaded_at).getTime()
+                return new Date(b.uploaded_at).getTime() - new Date(a.uploaded_at).getTime() */
         }
     });
 
@@ -125,26 +96,26 @@ const PastQuestions: React.FC = () => {
                 </motion.div>
 
                 {/* Grid */}
-                <motion.div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                    variants={staggerContainerVariants}
-                >
-                    {sortedQuestions.map((qsn) => (
-                        <motion.div
-                            key={qsn.id}
-                            variants={tileVariants}
-                            whileHover="hover"
-                            layout
-                            className="rounded-xl bg-[#e0e5ec] dark:bg-[#202327]
-                                     shadow-[9px_9px_16px_rgba(163,177,198,0.6),-9px_-9px_16px_rgba(255,255,255,0.5)]
-                                     dark:shadow-[9px_9px_16px_rgba(0,0,0,0.6),-9px_-9px_16px_rgba(45,48,53,0.5)]
-                                     hover:shadow-[12px_12px_20px_rgba(163,177,198,0.7),-12px_-12px_20px_rgba(255,255,255,0.6)]
-                                     dark:hover:shadow-[12px_12px_20px_rgba(0,0,0,0.7),-12px_-12px_20px_rgba(45,48,53,0.6)]"
-                        >
-                            <AssignmentTile data={qsn} />
-                        </motion.div>
-                    ))}
-                </motion.div>
+                <AnimatePresence mode="wait">
+                    {filteredQuestions.length > 0 ? (<motion.div
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                        variants={staggerContainerVariants}
+                    >
+                        {sortedQuestions.map((qsn) => (
+                            <motion.div
+                                key={qsn.id}
+                                variants={tileVariants}
+                                whileHover="hover"
+                                layout
+                                className="rounded-xl bg-[#e0e5ec] dark:bg-[#202327]"
+                            >
+                                <AssignmentTile data={qsn} />
+                            </motion.div>
+                        ))}
+                    </motion.div>) : (
+                        <NotFound text="PYQs" />
+                    )}
+                </AnimatePresence>
             </div>
         </motion.div>
     );
