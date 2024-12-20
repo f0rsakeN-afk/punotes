@@ -32,7 +32,7 @@ const PDFTile: React.FC<Props> = ({ pdf }) => {
                             <FileIcon className="h-8 w-8 text-primary" />
                         </div>
                         <div className="space-y-1">
-                            <h3 className="font-semibold line-clamp-2">
+                            <h3 className="font-semibold line-clamp-2 capitalize">
                                 {pdf.title}
                             </h3>
                             <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ const PDFTile: React.FC<Props> = ({ pdf }) => {
                         className="w-full gap-2 group-hover:bg-primary/90 transition-colors"
                         asChild
                     >
-                        <a href={pdf.fileUrl} download>
+                        <a href={pdf.fileUrl} download target='_blank'>
                             <Download className="h-4 w-4" />
                             Download PDF
                         </a>
