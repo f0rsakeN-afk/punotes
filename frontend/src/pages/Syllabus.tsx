@@ -7,6 +7,7 @@ import { SyllabusData } from '@/data/SyllabusData'
 import SyllabusTile from '@/components/SyllabusTile'
 
 const Syllabus = () => {
+    /* Query state */
     const [searchQuery, setSearchQuery] = useState<string>('')
 
     //filter logic
@@ -38,7 +39,7 @@ const Syllabus = () => {
                     </motion.p>
                 </motion.div>
 
-
+                {/* Search box */}
                 <motion.div className="mb-8 max-w-2xl"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -54,6 +55,7 @@ const Syllabus = () => {
                     />
                 </motion.div>
 
+                {/* mapping and displaying data */}
                 <AnimatePresence mode="wait">
                     {filteredSyllabus.length > 0 ? (
                         <motion.div

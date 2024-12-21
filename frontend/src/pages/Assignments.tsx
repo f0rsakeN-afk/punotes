@@ -18,15 +18,21 @@ import NotFound from "@/components/NotFound";
 import { assignmentData } from "@/data/AssignmentData";
 
 const Assignments = () => {
+    /* Query state */
     const [searchQuery, setSearchQuery] = useState<string>("");
+    /* Sort state */
     const [sortOption, setSortOption] = useState<string>("title_asc");
 
+
+    /* Assignment filter logic */
     const filteredAssignments = assignmentData.filter(
         (assignment) =>
             assignment.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             assignment.subject.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
+
+    /*  sort the assignments in particular order */
     const sortedAssignments = [...filteredAssignments].sort((a, b) => {
         switch (sortOption) {
             default:
@@ -78,6 +84,7 @@ const Assignments = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3, duration: 0.5 }}
                 >
+                    {/* input section */}
                     <Input
                         placeholder="Search assignments by title, subject..."
                         value={searchQuery}
@@ -87,6 +94,7 @@ const Assignments = () => {
                         className="bg-background/50  border border-border/50
                                  focus:ring-2 focus:ring-primary/20 transition-all duration-300 col-span-2"
                     />
+                    {/* sort selector */}
                     <Select
                         value={sortOption}
                         onValueChange={(value) => setSortOption(value)}

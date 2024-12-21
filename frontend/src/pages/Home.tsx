@@ -13,7 +13,7 @@ import Features from "@/components/Features";
 import { useNavigate } from "react-router-dom";
 import { fadeInUpVariants, staggerContainerVariants } from "@/utils/animation";
 
-
+//get subject type and data
 import { Subject, subjectData } from "@/data/SubjectData";
 
 const semesters = Array.from({ length: 8 }, (_, i) => `Semester ${i + 1}`);
@@ -34,6 +34,8 @@ const Home = () => {
   //state for getting subjects based on semesters and branch
   const [subject, setSubject] = useState<Subject[]>([])
 
+
+  /* Search handler */
   const handleSearch = () => {
     navigate(
       `/pdfs?semester=${selectedSemester}&branch=${selectedBranch}&subject=${selectedSubject}`,
@@ -43,10 +45,13 @@ const Home = () => {
 
   useEffect(() => {
     if (selectedBranch || selectedSemester) {
+      /* Find the selected branch in data */
       const b = subjectData.find(el => el.branch.toLowerCase() === selectedBranch.toLowerCase());
+      /* find the semester in that branch */
       const semNum = parseInt(selectedSemester.split(' ')[1]);
+      /* find the subjects array in that semester */
       const s = b?.semesters.find((n) => n.number === semNum)
-      console.log(s?.subjects)
+      //console.log(s?.subjects)
       setSubject(s?.subjects || [])
     }
   }, [selectedBranch, selectedSemester])
