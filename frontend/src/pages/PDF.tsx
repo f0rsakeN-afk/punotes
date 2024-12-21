@@ -95,7 +95,7 @@ const PDF: React.FC = () => {
         <AnimatePresence initial={false}>
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array(6) // Adjust number of skeletons as needed
+              {Array(6) 
                 .fill(null)
                 .map((_, index) => (
                   <PDFCardSkeleton key={index} />

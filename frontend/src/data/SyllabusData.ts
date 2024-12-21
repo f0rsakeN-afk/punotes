@@ -23,7 +23,7 @@ export const SyllabusData: SyllabusTypes[] = [
     id: 4,
     name: "Third Semester",
     branch: "Civil",
-    url: "https://drive.google.com/file/d/1hi37fe3Np7RALOGR1D8_6sYFzOkDek8Z/view?usp=drive_link",
+    url: "https://drive.google.com/file/d/1yAf27_X-6SFOwUxkbNVochmyR_HVNtAG/view?usp=drive_link",
   },
   {
     id: 5,

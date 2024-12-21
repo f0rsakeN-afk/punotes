@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { fadeInUpVariants, staggerContainerVariants } from "@/utils/animation";
 
 
-import { subjectData } from "@/data/SubjectData";
+import { Subject, subjectData } from "@/data/SubjectData";
 
 const semesters = Array.from({ length: 8 }, (_, i) => `Semester ${i + 1}`);
 const branches = [
@@ -28,14 +28,28 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectedSemester, setSelectedSemester] = useState<string>("");
   const [selectedBranch, setSelectedBranch] = useState<string>("");
-  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  const [selectedSubject, setSelectedSubject] = useState<string>();
 
+
+  //state for getting subjects based on semesters and branch
+  const [subject, setSubject] = useState<Subject[]>([])
 
   const handleSearch = () => {
     navigate(
       `/pdfs?semester=${selectedSemester}&branch=${selectedBranch}&subject=${selectedSubject}`,
     );
   };
+
+
+  useEffect(() => {
+    if (selectedBranch || selectedSemester) {
+      const b = subjectData.find(el => el.branch.toLowerCase() === selectedBranch.toLowerCase());
+      const semNum = parseInt(selectedSemester.split(' ')[1]);
+      const s = b?.semesters.find((n) => n.number === semNum)
+      console.log(s?.subjects)
+      setSubject(s?.subjects || [])
+    }
+  }, [selectedBranch, selectedSemester])
 
   return (
     <motion.div
@@ -141,7 +155,7 @@ const Home = () => {
                     <SelectValue placeholder="Choose Subject" />
                   </SelectTrigger>
                   <SelectContent>
-                    {subjectData.map((s) => (
+                    {subject && subject?.map((s) => (
                       <SelectItem key={s.name} value={s.name}>
                         {s.name}
                       </SelectItem>
