@@ -59,10 +59,10 @@ const PDFTile: React.FC<Props> = ({ pdf }) => {
                                 {new Date(pdf.uploadDate).toLocaleDateString()}
                             </span>
                         </div>
-                        <div className="flex items-center gap-2">
+                        {pdf.fileSize && <div className="flex items-center gap-2">
                             <File className="h-4 w-4" />
                             <span>{pdf.fileSize}</span>
-                        </div>
+                        </div>}
                         {/*  <div className="flex items-center gap-2">
                             <BookOpen className="h-4 w-4" />
                             <span>{pdf.downloads} downloads</span>
