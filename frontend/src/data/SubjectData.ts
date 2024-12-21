@@ -26,6 +26,8 @@ export const subjectData: SubjectTypes[] = [
           { name: "Mathematics I" },
           { name: "English" },
           { name: "FCT" },
+          { name: "Engineering Drawing" },
+          { name: "Workshop Practice" },
         ],
       },
       {
@@ -50,6 +52,23 @@ export const subjectData: SubjectTypes[] = [
           {
             name: "Applied Sociology",
           },
+        ],
+      },
+      {
+        number: 4,
+        subjects: [
+          {
+            name: "Microprocessor",
+          },
+          {
+            name: "Discrete Structure",
+          },
+          {
+            name: "DBMS",
+          },
+          { name: "Python Programming" },
+          { name: "Probability and Statistics" },
+          { name: "Communication System" },
         ],
       },
     ],

@@ -437,7 +437,7 @@ export const PDFData: PDFTypes[] = [
           },
           {
             id: "mth301",
-            name: "Electronic Devices and Circuits",
+            name: "EDC",
             code: "MTH 301",
             credits: 3,
             notes: [],
