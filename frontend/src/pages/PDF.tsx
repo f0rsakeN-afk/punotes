@@ -68,8 +68,8 @@ const PDF: React.FC = () => {
           Back to Home
         </Link>
 
-        <div className="space-y-2 grid md:grid-cols-2">
-          <div className="space-y-2">
+        <div className="space-y-2 grid md:grid-cols-3 gap-4">
+          <div className="space-y-2 md:col-span-2">
             <h1 className="text-3xl font-bold tracking-tight">
               {branch} - {semester} - {subject}
             </h1>
