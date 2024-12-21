@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
                         >
                             <Button size="lg" className="gap-2">
                                 <Mail className="h-5 w-5" />
-                                <a href="mailto:contact@punotes.com">Contact Us</a>
+                                <a href="mailto:punotes582@gmail.com">Contact Us</a>
                             </Button>
                         </motion.div>
                     </CardContent>
