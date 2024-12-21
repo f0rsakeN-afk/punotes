@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Features from "@/components/Features";
-//import Recent from "@/components/Recent";
+import Recent from "@/components/Recent";
 import { useNavigate } from "react-router-dom";
 import { fadeInUpVariants, staggerContainerVariants } from "@/utils/animation";
 
@@ -198,15 +198,15 @@ const Home = () => {
         <Features />
       </motion.div>
 
-      {/* Recent */}
-      {/* <motion.div
+      {/* recent */}
+      <motion.div
         variants={fadeInUpVariants}
         viewport={{ once: true }}
         whileInView="visible"
         initial="hidden"
       >
         <Recent />
-      </motion.div> */}
+      </motion.div>
     </motion.div>
   );
 };
