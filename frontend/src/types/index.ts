@@ -20,13 +20,20 @@ export interface TeamMember {
   linkedin: string;
 }
 
+export enum FileType {
+  Image = "image",
+  PDF = "pdf",
+  PPTX = "pptx",
+  DOCX = "docx",
+}
+
 export interface noteTypes {
   id: string;
   title: string;
   description?: string;
   fileUrl: string;
   uploadDate: string;
-  fileType?: string;
+  fileType?: FileType;
   fileSize?: string;
 }
 
