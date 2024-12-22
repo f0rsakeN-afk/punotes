@@ -556,9 +556,9 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "HA 15-19",
-                title:
+                title: "HA 15",
+                fileUrl:
                   "https://drive.google.com/file/d/1Nvr30DubmkLhEgwmWyeCp7uK91vLE2cu/view?usp=drive_link",
-                fileUrl: "",
                 uploadDate: "2024-12-22",
               },
               {
