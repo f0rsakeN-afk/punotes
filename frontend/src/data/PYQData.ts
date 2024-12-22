@@ -37,4 +37,10 @@ export const PYQData: PYQTypes[] = [
     url: "https://drive.google.com/file/d/1Dq8YyBZ93bmLcuyQBFBvz7KqNZG1Pz8j/view?usp=drive_link",
     uploaded_at: new Date("2024-12-20"),
   },
+  {
+    id: 7,
+    title: "DSA past questions",
+    url: "https://drive.google.com/file/d/1WVCI3AiMeI2PufCFOE8q4kw1LDE7Sjib/view?usp=drive_link",
+    uploaded_at: new Date("2024-12-22"),
+  },
 ];
