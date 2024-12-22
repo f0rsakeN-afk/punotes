@@ -15,14 +15,56 @@ export const PDFData: PDFTypes[] = [
             name: "Mathematics I",
             code: "BSH 1001",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "BSH-note-1",
+                title: "math 1st year",
+                fileUrl:
+                  "https://drive.google.com/file/d/1QLdgZHdzntN4NR2vK3Ewq3U0oMWZR0XU/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "BSH-note-2",
+                title: "Vector",
+                fileUrl:
+                  "https://drive.google.com/file/d/19SIZKP7Kx8W3GgGik-v2qYubJA4WLLmw/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+            ],
           },
           {
             id: "BSH 1004",
             name: "Engineering Physics",
             code: "BSH 1004",
             credits: 4,
-            notes: [],
+            notes: [
+              {
+                id: "BSH-note-1",
+                title: "Insights on Physics",
+                fileUrl:
+                  "https://drive.google.com/file/d/1wzfY-qknXKNY30fgNiJQpWJslUeFsPC8/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "BSH-note-2",
+                title: "Physics complete notes",
+                fileUrl:
+                  "https://drive.google.com/file/d/1HUCdR9tYEmhvq6Yiju5ewsiY3suZFoU6/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "BSH-note-3",
+                title: "Physics Numerical",
+                fileUrl:
+                  "https://drive.google.com/file/d/14TF8jDaa_-sXyybn0xGz1tBLzx08BIb9/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+            ],
           },
           {
             id: "BSH 1002",
@@ -134,6 +176,16 @@ export const PDFData: PDFTypes[] = [
                 fileSize: "73.3KB",
                 uploadDate: "2024-12-20",
               },
+              {
+                id: "BCE-1001-note10",
+                title: "C programming",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1J5YOpeSIZA7F4ItOXdpVb3zm3d8Yhkcl/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "61MB",
+                uploadDate: "2024-12-22",
+              },
             ],
           },
           {
@@ -162,14 +214,122 @@ export const PDFData: PDFTypes[] = [
             name: "Mathematics II",
             code: "MTH 201",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "BSH-note-1",
+                title: "math 1st year",
+                fileUrl:
+                  "https://drive.google.com/file/d/1QLdgZHdzntN4NR2vK3Ewq3U0oMWZR0XU/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "math2-note-3",
+                title: "note 3",
+                fileUrl:
+                  "https://drive.google.com/file/d/1HVL4yUcCk4F-mEEsr7gtczEse6X0WQzM/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "math2-note-4",
+                title: "note 4",
+                fileUrl:
+                  "https://drive.google.com/file/d/1kZccc4AX8ga2JbZ8chmMU_EILOYmOQzO/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "math2-note-5",
+                title: "note 5",
+                fileUrl:
+                  "https://drive.google.com/file/d/1P04vBwmBqFkCnGxjqiFqx3FGcOK97R3k/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "math2-note-6",
+                title: "note 6",
+                fileUrl:
+                  "https://drive.google.com/file/d/13EEQFrHCZO4qgu3rcm8ySDk-VrqV5Hkx/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "math2-note7",
+                title: "Diff eqn manual",
+                fileUrl:
+                  "https://drive.google.com/file/d/1iDjBt--uTZwF_RjWR8zUrkcCx3-omFR8/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+            ],
           },
           {
             id: "cse202",
             name: "Digital Logic",
             code: "CSE 202",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "",
+                title: "Insights on digital logic",
+                fileUrl:
+                  "https://drive.google.com/file/d/13ejEZchw6rFGQ52iF4r4chCiAw1fPvOQ/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "digital",
+                fileUrl:
+                  "https://drive.google.com/file/d/1Ay3tryq7YX9Tc44hQFyIMg1yJBg4pX0b/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "DL note-1",
+                fileUrl:
+                  "https://drive.google.com/file/d/1a5uR7hhIEeZioI7uezufewThRswxGK63/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "DL manual",
+                fileUrl:
+                  "https://drive.google.com/file/d/13WXTzztCJ3sYRCVgU7Aqykq56pQ-S2FB/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "DL note-2",
+                fileUrl:
+                  "https://drive.google.com/file/d/1ODwFvQdDW7kWXHZN1FSEfUi0gxrigGbz/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Reference guide to DL",
+                fileUrl:
+                  "https://drive.google.com/file/d/1PKj7QtafIlp2e1WGSmadZ1iEEG3sUqFN/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Combinational logic",
+                fileUrl:
+                  "https://drive.google.com/file/d/1RqHAFwNDB-EBYzsZym9tWmxiPAxwfijS/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Digital logic 1",
+                fileUrl:
+                  "https://drive.google.com/file/d/1GOoJIixKglQ0Zi6MUkC70ql_3gKoK7Tg/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Digital logic 2",
+                fileUrl:
+                  "https://drive.google.com/file/d/1a0w-xBvzNuDwLQ2Y7Vsa5m9GLkCOLY2B/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+            ],
           },
           {
             id: "cse203",
@@ -205,11 +365,25 @@ export const PDFData: PDFTypes[] = [
                   "https://drive.google.com/file/d/19GJRBeDWBK14ashxwgA-EtCb7pba3mI2/view?usp=drive_link",
                 uploadDate: "2024-12-21",
               },
+              {
+                id: "",
+                title: "Textbook of engineering chemistry",
+                fileUrl:
+                  "https://drive.google.com/file/d/1HnDy1W5f_soUN4PkrtaJ-_urcfckaqum/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Chemistry",
+                fileUrl:
+                  "https://drive.google.com/file/d/1BwDY4UonvyOEWHVOdhwMftowoPZmjNml/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
             ],
           },
           {
             id: "cse204",
-            name: "OOP with C++",
+            name: "OOP with CPP",
             code: "CSE 204",
             credits: 3,
             notes: [
@@ -293,6 +467,26 @@ export const PDFData: PDFTypes[] = [
                 fileType: FileType.PPTX,
                 uploadDate: "2024-12-21",
               },
+              {
+                id: "https://drive.google.com/file/d/1wVRsAB8jqAP0vjYZvu-zTQlg_qENxyXV/view?usp=drive_link",
+                title: "Slides on OOP",
+                fileUrl: "",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Insights on OOP",
+                fileUrl:
+                  "https://drive.google.com/file/d/1pLMzREaSdQPZRO8ebvtVdK9qLJirMLBx/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "C manual and solutions",
+                fileUrl:
+                  "https://drive.google.com/file/d/1ram9N2Q3QN__bcQH4oxd9I52sTSPKmxA/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
             ],
           },
           {
@@ -300,14 +494,159 @@ export const PDFData: PDFTypes[] = [
             name: "Basic Electrical Engineering",
             code: "CSE 205",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "BEE-1",
+                title: "DC circuit",
+                fileUrl:
+                  "https://drive.google.com/file/d/13uN6Mn57Ygy9ACGKg_g-5-M7ZVOWPsnF/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "BEE-1",
+                title: "AC part-1",
+                fileUrl:
+                  "https://drive.google.com/file/d/1H_AgTmBmnaQvoBzPL0-5lffMInpnAWtA/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "BEE-1",
+                title: "AC part-2",
+                fileUrl:
+                  "https://drive.google.com/file/d/1AZ_twGhxkAvy9JnLXCR7DX3kiPU9mwOn/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "BEE Syllabus & model",
+                fileUrl:
+                  "https://drive.google.com/file/d/1whOIEAl4OPwmam7U_bqU6o9FC-174RkV/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "BE electrical HA Nikesh",
+                fileUrl:
+                  "https://drive.google.com/file/d/19rCEPc1EZJPFlSfSdVnggYlnM9TkPHbx/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "BE electrical HA 123456",
+                fileUrl:
+                  "https://drive.google.com/file/d/1oBb-u_AO-gp8X7xniO1PJ77D_TOyxM2Q/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "HA 12-14",
+                fileUrl:
+                  "https://drive.google.com/file/d/1GyLticRjQFAaNM62uyAQSccX-WKbJ9eq/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "HA 7-11",
+                fileUrl:
+                  "https://drive.google.com/file/d/17onzJVdPaD_OtFbRc7QmM4RHUhmM4Bf-/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "HA 15-19",
+                title:
+                  "https://drive.google.com/file/d/1Nvr30DubmkLhEgwmWyeCp7uK91vLE2cu/view?usp=drive_link",
+                fileUrl: "",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "BEE 2",
+                fileUrl:
+                  "https://drive.google.com/file/d/1s-eiJA8c1w5UhnbPhonAHaZQb8SWJmqz/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "BEE 1",
+                fileUrl:
+                  "https://drive.google.com/file/d/1cVYvmN6Q480sNjM8QDrRjxyUTfICy7az/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Electrical Engineering",
+                fileUrl:
+                  "https://drive.google.com/file/d/1N6TjuCNQ7OiRbUIX5ur5s81sw8MfqpFq/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "3rd edition manual",
+                fileUrl:
+                  "https://drive.google.com/file/d/1v6TT_vQMw0QnepxbAnMid53wGd0MZRHQ/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "BEE by manish and manisha",
+                fileUrl:
+                  "https://drive.google.com/file/d/1SVQyZanNr_PerEwyQgqyH4afEyjzNCa_/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+            ],
           },
           {
             id: "cse206",
             name: "Applied Mechanics",
             code: "CSE 206",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "",
+                title: "Applied Mechanics Solution",
+                fileUrl:
+                  "https://drive.google.com/file/d/1JAx2SQD2bVWOtHOWn8SJUY4pWMLaOznX/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Applied Mechanics for Engineers",
+                fileUrl:
+                  "https://drive.google.com/file/d/1cQUcDaiHyBkTb2Fnj0dUqeHDcxEP4NQ2/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Applied dynamic",
+                fileUrl:
+                  "https://drive.google.com/file/d/1Yvk0fNLz7vOZyqCMleY_qk32xphqQQaO/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Note 1",
+                fileUrl:
+                  "https://drive.google.com/file/d/1JUSqmQMIPtQEefp2BfsasTzkx-4X4guw/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "Note 2",
+                fileUrl:
+                  "https://drive.google.com/file/d/1eHQvcStC0i5zDiV-FKzX9isLeNrgEI7K/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "",
+                title: "statics",
+                fileUrl:
+                  "https://drive.google.com/file/d/1bojYsQw1sjQHrXJrdY5ulruYYwkpyAM7/view?usp=drive_link",
+                uploadDate: "2024-12-22",
+              },
+            ],
           },
         ],
       },
@@ -321,7 +660,15 @@ export const PDFData: PDFTypes[] = [
             name: "Mathematics III",
             code: "MTH 301",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "math3-note1",
+                title: "Solution",
+                uploadDate: "2024-12-22",
+                fileUrl:
+                  "https://drive.google.com/file/d/162TRnrG2mO7lM8V2ZD1eOToh0lN084vk/view?usp=drive_link",
+              },
+            ],
           },
           {
             id: "mth301",
@@ -440,30 +787,55 @@ export const PDFData: PDFTypes[] = [
             name: "EDC",
             code: "MTH 301",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "EDC-1",
+                title: "EDC 1 & 2",
+                fileUrl:
+                  "https://drive.google.com/file/d/1rBkpifOe4TE_9oKxPWeP_mKzA1rewWou/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "EDC-2",
+                title: "EDC",
+                fileUrl:
+                  "https://drive.google.com/file/d/1dz_8r0o-BFEPg6Bmn6x4iHVvpbxo0EWK/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "EDC-3",
+                title: "FET",
+                fileUrl:
+                  "https://drive.google.com/file/d/1R0rXXvZUFGqXajzk7yh2KluJHdod2RG-/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+            ],
           },
           {
-            id: "mth301",
+            id: "BCE 3006",
             name: "DSA",
-            code: "MTH 301",
+            code: "BCE 3006",
             credits: 3,
             notes: [
               {
-                id: "",
+                id: "30061",
                 title: "Introduction to DSA",
                 fileUrl:
                   "https://docs.google.com/presentation/d/1Gh7EdSuoPRl9CdoF4W1jE1ipWg_hAh7O/edit?usp=drive_link&ouid=107131341529669410236&rtpof=true&sd=true",
                 uploadDate: "2024-12-21",
               },
               {
-                id: "",
+                id: "30062",
                 title: "Recursion",
                 fileUrl:
                   "https://docs.google.com/presentation/d/1-tgvNaf0GFib7zYu3L-qtBhtnfeMe9Sy/edit?usp=drive_link&ouid=107131341529669410236&rtpof=true&sd=true",
                 uploadDate: "2024-12-21",
               },
               {
-                id: "1",
+                id: "30063",
                 title: "Unit-2 Stack",
                 description: "Stack Inplementation",
                 fileUrl:
@@ -473,7 +845,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "1",
+                id: "30064",
                 title: "Unit-3 Queue",
                 description: "queue implementation",
                 fileUrl:
@@ -483,7 +855,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "1",
+                id: "30065",
                 title: "Unit-5 Linked List",
                 description: "Linked list implementation",
                 fileUrl:
@@ -493,7 +865,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "1",
+                id: "30066",
                 title: "Unit-6 Trees-I",
                 description: "",
                 fileUrl:
@@ -503,7 +875,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "1",
+                id: "30067",
                 title: "Unit-6 Graph-II",
                 description: "",
                 fileUrl:
@@ -513,7 +885,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-20",
               },
               {
-                id: "1",
+                id: "30068",
                 title: "Unit-7 Sorting Algorithm",
                 description: "",
                 fileUrl:
@@ -524,7 +896,7 @@ export const PDFData: PDFTypes[] = [
               },
 
               {
-                id: "1",
+                id: "30069",
                 title: "Unit-8 Searching Algorithm",
                 description: "",
                 fileUrl:
@@ -696,7 +1068,7 @@ export const PDFData: PDFTypes[] = [
             credits: 3,
             notes: [
               {
-                id: "note-1",
+                id: "mc-note-1",
                 title: "8085 block diagram",
                 description: "",
                 fileUrl:
@@ -706,7 +1078,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-21",
               },
               {
-                id: "note-1",
+                id: "mc-note-2",
                 title: "8085 instruction set",
                 description: "",
                 fileUrl:
@@ -716,7 +1088,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-21",
               },
               {
-                id: "note-1",
+                id: "mc-note-3",
                 title: "assembler, directives, macro",
                 description: "",
                 fileUrl:
@@ -726,7 +1098,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-21",
               },
               {
-                id: "note-1",
+                id: "mc-note-4",
                 title: "8085 pin diagram",
                 description: "",
                 fileUrl:
@@ -736,7 +1108,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-21",
               },
               {
-                id: "note-1",
+                id: "mc-note-5",
                 title: "Timing diagram",
                 description: "",
                 fileUrl:
@@ -746,7 +1118,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-21",
               },
               {
-                id: "note-1",
+                id: "mc-note-6",
                 title: "Chapter 1",
                 description: "",
                 fileUrl:
@@ -756,7 +1128,7 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-21",
               },
               {
-                id: "note-1",
+                id: "mc-note-7",
                 title: "Stack and subroutine",
                 description: "",
                 fileUrl:
@@ -1053,6 +1425,13 @@ export const PDFData: PDFTypes[] = [
               },
             ],
           },
+          {
+            id: "",
+            name: "Probability & Statistics",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
         ],
       },
     ],
@@ -1061,18 +1440,305 @@ export const PDFData: PDFTypes[] = [
     id: "civil",
     name: "Civil Engineering",
     shortName: "CE",
-    semesters: [],
+    semesters: [
+      {
+        id: "CE-sem1",
+        number: 1,
+        subjects: [
+          {
+            id: "",
+            name: "",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+        ],
+      },
+      {
+        id: "CE-sem2",
+        number: 2,
+        subjects: [
+          {
+            id: "",
+            name: "Mathematics II",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Engineering Physics",
+            code: "",
+            credits: 3,
+            notes: [
+              {
+                id: "BSH-note-1",
+                title: "Insights on Physics",
+                fileUrl:
+                  "https://drive.google.com/file/d/1wzfY-qknXKNY30fgNiJQpWJslUeFsPC8/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "BSH-note-2",
+                title: "Physics complete notes",
+                fileUrl:
+                  "https://drive.google.com/file/d/1HUCdR9tYEmhvq6Yiju5ewsiY3suZFoU6/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+              {
+                id: "BSH-note-3",
+                title: "Physics Numerical",
+                fileUrl:
+                  "https://drive.google.com/file/d/14TF8jDaa_-sXyybn0xGz1tBLzx08BIb9/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2024-12-22",
+              },
+            ],
+          },
+          {
+            id: "",
+            name: "Applied Mechanics II",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Building Technology",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Thermodynamics",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+        ],
+      },
+      {
+        id: "CE-sem3",
+        number: 3,
+        subjects: [
+          { id: "", name: "Mathematics III", code: "", credits: 3, notes: [] },
+          {
+            id: "",
+            name: "Strength of Materials",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          { id: "", name: "Fluid Mechanics", code: "", credits: 3, notes: [] },
+          { id: "", name: "Survey I", code: "", credits: 3, notes: [] },
+          {
+            id: "",
+            name: "Engineering Geology",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Basic Electronics Engineering",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Computer Programming",
+            code: "",
+            credits: 3,
+            notes: [
+              {
+                id: "BCE-1001-note1",
+                title: "Practice set",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1JFjgO3wNTdAA0VkaoA27vJB15jUVUNqr/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "73.3KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note2",
+                title: "C Quiz",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1kpFiWM7UKnnLa3tCzazDCsb7aiNqhxcW/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "101.3KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note3",
+                title: "C storage classes",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1v6Ale7P8TKw2EndXFVC94DmEyi41Ssgz/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "49.9KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note4",
+                title: "Chapter-1",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1LwHQgWEa4k2iWAvahkY3X_64jUQlE_m1/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "160.7KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note5",
+                title: "Chapter-2",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1czfXmxlTqZGjXroU1jfGdtDw15AMPGo8/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "208.2KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note6",
+                title: "Chapter-3",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1i-k75LtNB-eDQSHz_iW1JFwFro7UU6QD/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "1MB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note7",
+                title: "Recursion",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1Kai2SnqCwEV_cRfhPp-l45SyN4aIg8VZ/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "30.9KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note8",
+                title: "C video ref",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1VXFrZYCQLNhpWr4lqD-2N56GWwJA0WSD/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "286.6KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note9",
+                title: "Array",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1C5f7L-yAYBusi0YTgfx486sfuuOAoGiY/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "73.3KB",
+                uploadDate: "2024-12-20",
+              },
+              {
+                id: "BCE-1001-note10",
+                title: "C programming",
+                description: "",
+                fileUrl:
+                  "https://drive.google.com/file/d/1J5YOpeSIZA7F4ItOXdpVb3zm3d8Yhkcl/view?usp=drive_link",
+                fileType: FileType.PDF,
+                fileSize: "61MB",
+                uploadDate: "2024-12-22",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "CE-sem4",
+        number: 4,
+        subjects: [
+          {
+            id: "",
+            name: "Probability & Statistics",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          { id: "", name: "Survey II", code: "", credits: 3, notes: [] },
+          { id: "", name: "Hydraulics", code: "", credits: 3, notes: [] },
+          {
+            id: "",
+            name: "Theory of Structure I",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Concrete Technology",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          { id: "", name: "Drawing", code: "", credits: 3, notes: [] },
+          { id: "", name: "English", code: "", credits: 3, notes: [] },
+        ],
+      },
+      {
+        id: "CE-sem5",
+        number: 5,
+        subjects: [],
+      },
+      {
+        id: "CE-sem6",
+        number: 6,
+        subjects: [],
+      },
+      {
+        id: "CE-sem7",
+        number: 7,
+        subjects: [],
+      },
+      {
+        id: "CE-sem8",
+        number: 8,
+        subjects: [],
+      },
+    ],
   },
   {
     id: "electrical",
     name: "Electrical Engineering",
     shortName: "EE",
-    semesters: [],
+    semesters: [
+      { id: "EE-sem1", number: 1, subjects: [] },
+      { id: "EE-sem2", number: 2, subjects: [] },
+      { id: "EE-sem3", number: 3, subjects: [] },
+      { id: "EE-sem4", number: 4, subjects: [] },
+      { id: "EE-sem5", number: 5, subjects: [] },
+      { id: "EE-sem6", number: 6, subjects: [] },
+      { id: "EE-sem7", number: 7, subjects: [] },
+      { id: "EE-sem8", number: 8, subjects: [] },
+    ],
   },
   {
     id: "communication",
     name: "Electnics and Communication Engineering",
     shortName: "ECE",
-    semesters: [],
+    semesters: [
+      { id: "ECE-sem1", number: 1, subjects: [] },
+      { id: "ECE-sem2", number: 2, subjects: [] },
+      { id: "ECE-sem3", number: 3, subjects: [] },
+      { id: "ECE-sem4", number: 4, subjects: [] },
+      { id: "ECE-sem5", number: 5, subjects: [] },
+      { id: "ECE-sem6", number: 6, subjects: [] },
+      { id: "ECE-sem7", number: 7, subjects: [] },
+      { id: "ECE-sem8", number: 8, subjects: [] },
+    ],
   },
 ];
