@@ -15,4 +15,9 @@ export const recentPdfs: typesInfo[] = [
     title: "Added notes for third sem comp",
     description: "Notes for sociology, DSA, OOAD added",
   },
+  {
+    date: new Date("2024-12-22"),
+    title: "Added notes for first,second,third comp",
+    description: "Notes for Physics, DSA,Applied added",
+  },
 ];
