@@ -30,10 +30,11 @@ const Home = () => {
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedSubject, setSelectedSubject] = useState<string>();
 
-
   //state for getting subjects based on semesters and branch
-  const [subject, setSubject] = useState<Subject[]>([])
+  const [subject, setSubject] = useState<Subject[]>([]);
 
+  const [greeting, setGreeting] = useState<string>("");
+  const [dayMessage, setDayMessage] = useState<string>("");
 
   /* Search handler */
   const handleSearch = () => {
@@ -42,19 +43,42 @@ const Home = () => {
     );
   };
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour < 5) {
+      setGreeting("Good night! 🌙");
+      setDayMessage("Sleep tight! 😴");
+    } else if (currentHour < 12) {
+      setGreeting("Good morning! 🌞");
+      setDayMessage("Have a great day! ☀️");
+    } else if (currentHour < 17) {
+      setGreeting("Good afternoon! 🌻");
+      setDayMessage("Enjoy your afternoon! 🍂");
+    } else if (currentHour < 21) {
+      setGreeting("Good evening! 🌇");
+      setDayMessage("Have a lovely evening! 🌙");
+    } else {
+      setGreeting("Good night! 🌙");
+      setDayMessage("Sweet dreams! 🌙💤");
+    }
+
+  }, []);
 
   useEffect(() => {
     if (selectedBranch || selectedSemester) {
       /* Find the selected branch in data */
-      const b = subjectData.find(el => el.branch.toLowerCase() === selectedBranch.toLowerCase());
+      const b = subjectData.find(
+        (el) => el.branch.toLowerCase() === selectedBranch.toLowerCase(),
+      );
       /* find the semester in that branch */
-      const semNum = parseInt(selectedSemester.split(' ')[1]);
+      const semNum = parseInt(selectedSemester.split(" ")[1]);
       /* find the subjects array in that semester */
-      const s = b?.semesters.find((n) => n.number === semNum)
+      const s = b?.semesters.find((n) => n.number === semNum);
       //console.log(s?.subjects)
-      setSubject(s?.subjects || [])
+      setSubject(s?.subjects || []);
     }
-  }, [selectedBranch, selectedSemester])
+  }, [selectedBranch, selectedSemester]);
 
   return (
     <motion.div
@@ -83,6 +107,12 @@ const Home = () => {
               className="text-4xl md:text-6xl font-bold text-white mb-6"
               variants={fadeInUpVariants}
             >
+              <section>
+                <h2 className="pb-4 text-3xl ">
+                  {greeting} {dayMessage}
+                </h2>
+              </section>
+
               Engineering Study Materials
               <br />
               All in One Place
@@ -160,11 +190,12 @@ const Home = () => {
                     <SelectValue placeholder="Choose Subject" />
                   </SelectTrigger>
                   <SelectContent>
-                    {subject && subject?.map((s) => (
-                      <SelectItem key={s.name} value={s.name}>
-                        {s.name}
-                      </SelectItem>
-                    ))}
+                    {subject &&
+                      subject?.map((s) => (
+                        <SelectItem key={s.name} value={s.name}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </motion.div>
@@ -178,7 +209,9 @@ const Home = () => {
               <Button
                 className="w-full mt-6 bg-white/10 hover:bg-white/20 text-white border border-white/20
                            transition-all duration-300"
-                disabled={!selectedSemester || !selectedBranch || !selectedSubject}
+                disabled={
+                  !selectedSemester || !selectedBranch || !selectedSubject
+                }
                 onClick={handleSearch}
               >
                 Search PDFs
