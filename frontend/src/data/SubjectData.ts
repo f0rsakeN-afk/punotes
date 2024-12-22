@@ -37,7 +37,7 @@ export const subjectData: SubjectTypes[] = [
           { name: "Digital Logic" },
           { name: "Mathematics II" },
           { name: "Applied Mechanics" },
-          { name: "OOP with C++" },
+          { name: "OOP with CPP" },
           { name: "Chemistry" },
         ],
       },
@@ -81,7 +81,7 @@ export const subjectData: SubjectTypes[] = [
         number: 2,
         subjects: [
           { name: "Mathematics II" },
-          { name: "Physics" },
+          { name: "Engineering Physics" },
           { name: "Applied Mechanics II" },
           { name: "Building Technology" },
           { name: "Thermodynamics" },
