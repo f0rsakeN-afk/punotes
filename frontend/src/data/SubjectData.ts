@@ -111,6 +111,18 @@ export const subjectData: SubjectTypes[] = [
           { name: "English" },
         ],
       },
+      {
+        number: 5,
+        subjects: [
+          { name: "Soil Mechanics" },
+          { name: "Survey Camp" },
+          { name: "Theory of Structure II" },
+          { name: "Water Supply Engineering" },
+          { name: "Transportation Engineering I" },
+          { name: "Engineering Hydrology" },
+          { name: "Design of Steel and Timber Structure" },
+        ],
+      },
     ],
   },
 ];

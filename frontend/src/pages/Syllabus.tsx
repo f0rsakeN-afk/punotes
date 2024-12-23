@@ -67,7 +67,7 @@ const Syllabus = () => {
                         >
                             {filteredSyllabus.map((s) => (
                                 <motion.div
-                                    key={s.id}
+                                    key={s.name}
                                     layout
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -79,7 +79,7 @@ const Syllabus = () => {
                             ))}
                         </motion.div>
                     ) : (
-                        <NotFound text={"Assignments"} />
+                            <NotFound text={"Syllabus"} />
                     )}
                 </AnimatePresence>
             </div>

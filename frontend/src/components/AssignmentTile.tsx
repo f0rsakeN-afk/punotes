@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Download, FileIcon } from "lucide-react";
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
-//import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 
 interface AssignmentTileProps {
     data: {
@@ -16,7 +16,7 @@ interface AssignmentTileProps {
 }
 
 const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
-    /*  const formattedDate = formatDistanceToNow(data.uploaded_at, { addSuffix: true }); */
+    const formattedDate = formatDistanceToNow(data?.uploaded_at, { addSuffix: true }); 
 
     return (
         <motion.div
@@ -51,7 +51,7 @@ const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
                                         {data.subject}
                                     </Badge>
                                 )}
-                                {/*    <span className="text-sm text-muted-foreground">Uploaded {formattedDate}</span> */}
+                                <span className="text-sm text-muted-foreground">Uploaded {formattedDate}</span> 
                             </div>
                         </div>
                     </motion.div>

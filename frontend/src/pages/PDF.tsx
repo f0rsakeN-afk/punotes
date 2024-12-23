@@ -17,7 +17,7 @@ import NotFound from "@/components/NotFound";
 
 const PDF: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const semester = searchParams.get("semester") ?? "";
   const branch = searchParams.get("branch") ?? "";
   const subject = searchParams.get("subject") ?? "";
@@ -110,7 +110,7 @@ const PDF: React.FC = () => {
           >
 
             {filteredPDFs.map((pdf) => (
-              <motion.div key={pdf.id} variants={fadeInUpVariants}>
+              <motion.div key={pdf.fileUrl} variants={fadeInUpVariants}>
                 <PDFTile pdf={pdf} />
               </motion.div>
             ))}

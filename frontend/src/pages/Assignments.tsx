@@ -114,7 +114,7 @@ const Assignments = () => {
 
                 {/* Assignments Grid */}
                 <AnimatePresence mode="wait">
-                    {filteredAssignments.length > 0 ? (
+                    {sortedAssignments.length > 0 ? (
                         <motion.div
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                             variants={containerVariants}
@@ -124,7 +124,7 @@ const Assignments = () => {
                         >
                             {sortedAssignments.map((assignment: AssignMentTypes) => (
                                 <motion.div
-                                    key={assignment.id}
+                                    key={assignment.title}
                                     layout
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}

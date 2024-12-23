@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { teamMembers } from '@/data/TeamData'
 import { fadeInUpVariants, springTransition, staggerContainerVariants } from '@/utils/animation'
 import { Button } from './ui/button'
-import { Card,CardContent } from './ui/card'
+import { Card, CardContent } from './ui/card'
 
 const Members: React.FC = () => {
     return (
@@ -43,9 +43,9 @@ const Members: React.FC = () => {
                                 </motion.div>
                                 <div>
                                     <h3 className="font-semibold text-lg">{member.name}</h3>
-                                    {/* <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm text-muted-foreground">
                                         {member.role}
-                                    </p> */}
+                                    </p>
                                 </div>
                                 {member.linkedin && (
                                     <Button variant="outline" size="sm" asChild>

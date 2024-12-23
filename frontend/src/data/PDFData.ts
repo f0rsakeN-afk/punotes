@@ -1058,8 +1058,8 @@ export const PDFData: PDFTypes[] = [
         ],
       },
       {
-        id: "cse-sem3",
-        number: 3,
+        id: "cse-sem4",
+        number: 4,
         subjects: [
           {
             id: "note-1",
@@ -1167,7 +1167,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "note-1",
-                title: "permutation & combination",
+                title: "permutation and combination",
                 description: "",
                 fileUrl:
                   "https://drive.google.com/file/d/16dc1kWLjLtA64e8yVgbmk2nlEfdbUfvZ/view?usp=drive_link",
@@ -1417,7 +1417,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "",
-                title: "Chapter 7 & 8",
+                title: "Chapter 7 and 8",
                 fileUrl:
                   "https://drive.google.com/file/d/1vvOWUEXnZTix9vJ1FLhUnk_xzF-cwPW3/view?usp=drive_link",
                 fileType: FileType.PDF,
@@ -1427,7 +1427,7 @@ export const PDFData: PDFTypes[] = [
           },
           {
             id: "",
-            name: "Probability & Statistics",
+            name: "Probability and Statistics",
             code: "",
             credits: 3,
             notes: [],
@@ -1664,7 +1664,7 @@ export const PDFData: PDFTypes[] = [
         subjects: [
           {
             id: "",
-            name: "Probability & Statistics",
+            name: "Probability and Statistics",
             code: "",
             credits: 3,
             notes: [],
@@ -1692,7 +1692,45 @@ export const PDFData: PDFTypes[] = [
       {
         id: "CE-sem5",
         number: 5,
-        subjects: [],
+        subjects: [
+          { id: "", name: "Soil Mechanics", code: "", credits: 3, notes: [] },
+          { id: "", name: "Survey Camp", code: "", credits: 2, notes: [] },
+          {
+            id: "",
+            name: "Theory of Structure II",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Water Supply Engineering",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Transportation Engineering I",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Engineering Hydrology",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+          {
+            id: "",
+            name: "Design of Steel and Timber Structure",
+            code: "",
+            credits: 3,
+            notes: [],
+          },
+        ],
       },
       {
         id: "CE-sem6",

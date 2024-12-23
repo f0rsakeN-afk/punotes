@@ -18,6 +18,7 @@ export interface TeamMember {
   role?: string;
   image: string;
   linkedin: string;
+  github?: string;
 }
 
 export enum FileType {

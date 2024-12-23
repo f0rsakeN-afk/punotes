@@ -22,6 +22,7 @@ export const teamMembers: TeamMember[] = [
     role: " MERN Developer",
     image: naresh,
     linkedin: "https://www.linkedin.com/in/f0rsaken/",
+    github: "https://github.com/f0rsakeN-afk",
   },
   {
     name: "Rakesh Ray",

@@ -13,7 +13,7 @@ interface MobileNavProps {
 }
 
 const MobileNav = ({ items, className }: MobileNavProps) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -52,7 +52,7 @@ const MobileNav = ({ items, className }: MobileNavProps) => {
                     ))}
                 </nav>
                 <div className="absolute bottom-4 left-4">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm  text-muted-foreground">
                         © {new Date().getFullYear()} PUNotes
                     </p>
                 </div>

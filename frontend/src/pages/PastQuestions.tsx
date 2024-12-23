@@ -97,13 +97,13 @@ const PastQuestions: React.FC = () => {
 
                 {/* Grid */}
                 <AnimatePresence mode="wait">
-                    {filteredQuestions.length > 0 ? (<motion.div
+                    {sortedQuestions.length > 0 ? (<motion.div
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                         variants={staggerContainerVariants}
                     >
                         {sortedQuestions.map((qsn) => (
                             <motion.div
-                                key={qsn.id}
+                                key={qsn.url}
                                 variants={tileVariants}
                                 whileHover="hover"
                                 layout
