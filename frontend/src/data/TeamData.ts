@@ -1,5 +1,5 @@
 import nishant from "../assets/nishant.jpeg";
-import naresh from "../assets/naresh.jpg";
+import naresh from "../assets/naresh.png";
 import pushkar from "../assets/pushkar.jpeg";
 import rakesh from "../assets/rakesh.jpeg";
 import { TeamMember } from "@/types";
