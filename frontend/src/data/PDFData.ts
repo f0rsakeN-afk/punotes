@@ -71,7 +71,14 @@ export const PDFData: PDFTypes[] = [
             name: "English",
             code: "BSH 1002",
             credits: 4,
-            notes: [],
+            notes: [
+              {
+                id: "dhcds",
+                title: '',
+                fileUrl: "",
+                uploadDate: '2025-01-1'
+              }
+            ],
           },
           {
             id: "BCE 1002",
