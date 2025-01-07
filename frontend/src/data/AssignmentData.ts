@@ -127,21 +127,21 @@ export const assignmentData: AssignMentTypes[] = [
     url: "https://drive.google.com/file/d/1Qo6BBROSjuFuH6IPn6kkA5cDnEq4pBkC/view?usp=drive_link",
     uploaded_at: new Date("2024-12-23"),
   },
-  /*  {
+    {
     id: 18,
-    title: "",
-    subject: "",
-    url: "",
-    uploaded_at: new Date(""),
+    title: "PN junction diode",
+    subject: "Basic Electronics Engineering",
+    url: "https://drive.google.com/file/d/1SJUynD-Iyxz474ZWQmAfzVMBTid0J-yu/view?usp=drive_link",
+    uploaded_at: new Date("2025-01-07"),
   },
   {
     id: 19,
-    title: "",
-    subject: "",
-    url: "",
-    uploaded_at: new Date(""),
+    title: "BEE practical 2",
+    subject: "Basic Electronics Engineering",
+    url: "https://drive.google.com/file/d/1q0tb-niX77AzRqL176NWmY9s65uGpUei/view?usp=drive_link",
+    uploaded_at: new Date("2025-01-07"),
   },
-  {
+  /*{
     id: 20,
     title: "",
     subject: "",

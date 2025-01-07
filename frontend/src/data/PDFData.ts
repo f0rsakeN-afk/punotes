@@ -1553,7 +1553,16 @@ export const PDFData: PDFTypes[] = [
             name: "Basic Electronics Engineering",
             code: "",
             credits: 3,
-            notes: [],
+            notes: [
+              {
+                id: "1",
+                title: "Basic Electronics Engineering",
+                fileUrl:
+                  "https://drive.google.com/file/d/1Yx9bnohnXwDCvIsD08NkhyoJpOqU-23p/view?usp=drive_link",
+                fileType: FileType.PDF,
+                uploadDate: "2025-01-07",
+              },
+            ],
           },
           {
             id: "",
