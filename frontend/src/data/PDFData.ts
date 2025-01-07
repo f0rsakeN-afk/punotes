@@ -74,10 +74,10 @@ export const PDFData: PDFTypes[] = [
             notes: [
               {
                 id: "dhcds",
-                title: '',
+                title: "",
                 fileUrl: "",
-                uploadDate: '2025-01-1'
-              }
+                uploadDate: "2025-01-1",
+              },
             ],
           },
           {
@@ -1677,13 +1677,28 @@ export const PDFData: PDFTypes[] = [
             notes: [],
           },
           { id: "", name: "Survey II", code: "", credits: 3, notes: [] },
-          { id: "", name: "Hydraulics", code: "", credits: 3, notes: [
-            {
-              id:"hydraulics-1",
-              title:'Hydraulics',
-              fileUrl:'https://drive.google.com/file/d/13OUzG9VO_Dr7PmgA5vD2e7352SlKdp1c/view?usp=drive_link',uploadDate:'2025-1-6'
-            }
-          ] },
+          {
+            id: "",
+            name: "Hydraulics",
+            code: "",
+            credits: 3,
+            notes: [
+              {
+                id: "hydraulics-1",
+                title: "Hydraulics-ch:5-10",
+                fileUrl:
+                  "https://drive.google.com/file/d/13OUzG9VO_Dr7PmgA5vD2e7352SlKdp1c/view?usp=drive_link",
+                uploadDate: "2025-1-6",
+              },
+              {
+                id: "hydraulics-2",
+                title: "hydraulics-ch:1-4",
+                fileUrl:
+                  "https://drive.google.com/file/d/10xxgLA9SzfUGzVBuBZ3lXfg8g4tt7tqM/view?usp=drive_link",
+                  uploadDate: "2025-1-7"
+              },
+            ],
+          },
           {
             id: "",
             name: "Theory of Structure I",
