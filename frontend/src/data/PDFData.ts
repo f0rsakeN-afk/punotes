@@ -1350,6 +1350,25 @@ export const PDFData: PDFTypes[] = [
                 uploadDate: "2024-12-21",
                 fileType: FileType.Image,
               },
+              {
+                id: "",
+                title: "Advanced Database Model",
+                description: "",
+                fileUrl: "https://docs.google.com/document/d/1iQn2mdbGBIQwecGPzkXsetEnboeytP9A/edit?usp=drive_link&ouid=107131341529669410236&rtpof=true&sd=true",
+                uploadDate: "2025-01-07"
+              },
+              {
+                id: "",
+                title: "Query Processing",
+                fileUrl: "https://docs.google.com/document/d/1kANc8EY7KcSlXnXFqbKYeounCLj4CJ6S/edit?usp=drive_link&ouid=107131341529669410236&rtpof=true&sd=true",
+                uploadDate: "2025-01-07"
+              },
+              {
+                id: "",
+                title: "Database Security",
+                fileUrl: "https://docs.google.com/document/d/1h97LrShgmsdfmDqlasKnUHyr2IG5lWqB/edit?usp=drive_link&ouid=107131341529669410236&rtpof=true&sd=true",
+                uploadDate: "2025-01-07"
+              }
             ],
           },
           {
