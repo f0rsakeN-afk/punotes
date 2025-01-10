@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loader from "./components/Loader";
 import PDF from "./pages/PDF";
+import ScrollToTop from "./components/ScrollToTop";
 const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/Layout"));
 const About = lazy(() => import('./pages/About'))
@@ -16,6 +17,7 @@ const App = () => {
     <Suspense fallback={<Loader />}>
       <Analytics />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
