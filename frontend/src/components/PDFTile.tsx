@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardHeader, CardContent, CardFooter } from './ui/card'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
-import { FileIcon, Calendar, File, Download } from 'lucide-react'
+import { FileIcon, Calendar, File, View } from 'lucide-react'
 import { motion } from 'framer-motion';
 import { tileVariants } from '@/utils/animation';
 import { noteTypes } from '@/types'
@@ -82,7 +82,7 @@ const PDFTile: React.FC<Props> = ({ pdf }) => {
                         asChild
                     >
                         <a href={pdf.fileUrl} download target='_blank'>
-                            <Download className="h-4 w-4" />
+                            <View className="h-4 w-4" />
                             View PDF
                         </a>
                     </Button>

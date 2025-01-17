@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, FileIcon } from "lucide-react";
+import { View, FileIcon } from "lucide-react";
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
@@ -76,7 +76,7 @@ const AssignmentTile: React.FC<AssignmentTileProps> = ({ data }) => {
                                     whileHover={{ rotate: 360 }}
                                     transition={{ duration: 0.3 }}
                                 >
-                                    <Download className="h-4 w-4" />
+                                    <View className="h-4 w-4" />
                                 </motion.div>
                                 View
                             </a>
