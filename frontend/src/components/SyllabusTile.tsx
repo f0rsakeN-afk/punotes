@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'motion/react'
 import { SyllabusTypes } from '@/types'
 import { Card, CardHeader, CardFooter } from './ui/card'
-import { Download, FileIcon } from 'lucide-react'
+import { View, FileIcon } from 'lucide-react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 
@@ -60,7 +60,7 @@ const SyllabusTile: React.FC<Props> = ({ s }) => {
                                     whileHover={{ rotate: 360 }}
                                     transition={{ duration: 0.3 }}
                                 >
-                                    <Download className="h-4 w-4" />
+                                    <View  className="h-4 w-4" />
                                 </motion.div>
                                 View
                             </a>
