@@ -62,7 +62,7 @@ const SyllabusTile: React.FC<Props> = ({ s }) => {
                                 >
                                     <Download className="h-4 w-4" />
                                 </motion.div>
-                                Download
+                                View
                             </a>
                         </Button>
                     </motion.div>
