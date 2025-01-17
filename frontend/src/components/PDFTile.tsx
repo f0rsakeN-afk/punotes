@@ -83,7 +83,7 @@ const PDFTile: React.FC<Props> = ({ pdf }) => {
                     >
                         <a href={pdf.fileUrl} download target='_blank'>
                             <Download className="h-4 w-4" />
-                            Download PDF
+                            View PDF
                         </a>
                     </Button>
                 </CardFooter>
