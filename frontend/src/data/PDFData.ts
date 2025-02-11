@@ -1382,7 +1382,7 @@ export const PDFData: PDFTypes[] = [
             notes: [
               {
                 id: "",
-                title: "Chapter 1",
+                title: "Chapter 1,2",
                 fileUrl:
                   "https://drive.google.com/file/d/1u9CpcdTUbDR9yBDHN2a3edH6uUrJqPPz/view?usp=drive_link",
                 fileType: FileType.PDF,
@@ -1398,7 +1398,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "",
-                title: "Chapter 2",
+                title: "Chapter 4",
                 fileUrl:
                   "https://drive.google.com/file/d/1LXMuMgCpKR33Q8-kRZVPunXCiDCsvYUU/view?usp=drive_link",
                 fileType: FileType.PDF,
@@ -1406,7 +1406,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "",
-                title: "Chapter 3",
+                title: "Chapter 5",
                 fileUrl:
                   "https://drive.google.com/file/d/12O1Upm6oydJlS-USay_cWUjqc6Vya3fz/view?usp=drive_link",
                 fileType: FileType.PDF,
@@ -1414,7 +1414,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "",
-                title: "Chapter 4",
+                title: "Chapter 6",
                 fileUrl:
                   "https://drive.google.com/file/d/13atwyRQNFOI_KsfylsliBuX6CEcGgvbV/view?usp=drive_link",
                 fileType: FileType.PDF,
@@ -1422,7 +1422,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "",
-                title: "Chapter 5",
+                title: "Chapter 7",
                 fileUrl:
                   "https://drive.google.com/file/d/1QanCScRb9ap3op7xlDRroW0RguCS6A3V/view?usp=drive_link",
                 fileType: FileType.PDF,
@@ -1438,7 +1438,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "",
-                title: "Chapter 6",
+                title: "Chapter 8",
                 fileUrl:
                   "https://drive.google.com/file/d/1MM8DB3g4kSs9WrOvcs4a8QvAEUlvETMs/view?usp=drive_link",
                 fileType: FileType.PDF,
@@ -1446,7 +1446,7 @@ export const PDFData: PDFTypes[] = [
               },
               {
                 id: "",
-                title: "Chapter 7 and 8",
+                title: "Chapter 9 and 10",
                 fileUrl:
                   "https://drive.google.com/file/d/1vvOWUEXnZTix9vJ1FLhUnk_xzF-cwPW3/view?usp=drive_link",
                 fileType: FileType.PDF,
