@@ -43,9 +43,9 @@ const Members: React.FC = () => {
                                 </motion.div>
                                 <div>
                                     <h3 className="font-semibold text-lg">{member.name}</h3>
-                                   {/*} <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm text-muted-foreground">
                                         {member.role}
-                                    </p>*/}
+                                    </p>
                                 </div>
                                 {member.linkedin && (
                                     <Button variant="outline" size="sm" asChild>
