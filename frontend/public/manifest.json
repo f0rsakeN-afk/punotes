@@ -1,0 +1,41 @@
+{
+  "name": "PU Notes",
+  "short_name": "PU Notes",
+  "description": "Access engineering PDFs, notes, and study materials for Purbanchal University students",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "../frontend/src/assets/logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "../frontend/src/assets/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Past Questions",
+      "url": "/pastquestions",
+      "description": "View past questions"
+    },
+    {
+      "name": "Assignments",
+      "url": "/assignments",
+      "description": "View assignments"
+    }
+  ],
+  "categories": [
+    "education",
+    "books",
+    "utilities"
+  ]
+}
