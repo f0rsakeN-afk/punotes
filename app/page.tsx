@@ -29,11 +29,11 @@ export default function Home() {
             </span>
           </Badge>
 
-          <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl md:leading-[1.2] font-semibold tracking-tighter">
+          <h1 className="mt-6 text-5xl md:text-6xl lg:text-7xl md:leading-[1.2] font-semibold tracking-tighter">
             Purbanchal University Notes, Syllabus & Past Question Papers
           </h1>
 
-          <p className="mt-6 md:text-lg">
+          <p className="mt-6 md:text-lg text-justify sm:text-center">
             Get all PU notes, syllabus files, old question papers, assignments,
             project reports and lab reports organized and maintained by the
             admin for fast and easy access.
