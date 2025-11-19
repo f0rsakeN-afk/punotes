@@ -14,6 +14,7 @@ import {
 import {
   BadgeInfo,
   BookText,
+  FileQuestionMark,
   FileText,
   House,
   MessageSquare,
@@ -22,6 +23,7 @@ import Link from "next/link";
 import ThemeToggle from "./ThemeToggler";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { usePathname } from "next/navigation";
 
 const sidebarData = [
   { name: "Home", route: "/", icon: <House size={6} /> },
@@ -36,18 +38,25 @@ const sidebarData = [
     icon: <BookText size={6} />,
   },
   {
-    name: "About",
-    route: "/about",
-    icon: <BadgeInfo size={6} />,
+    name: "Past Questions",
+    route: "/pyqs",
+    icon: <FileQuestionMark size={6} />,
   },
   {
     name: "Feedback",
     route: "/feedback",
     icon: <MessageSquare size={6} />,
   },
+  {
+    name: "About",
+    route: "/about",
+    icon: <BadgeInfo size={6} />,
+  },
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex items-center flex-row gap-3">
@@ -66,10 +75,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           {sidebarData.map((item) => (
             <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton asChild /*  isActive={item.isActive} */>
+              <SidebarMenuButton
+                asChild
+                isActive={item.route === pathname}
+                className="h-[35px]"
+              >
                 <Link
                   href={item.route}
-                  className="flex items-center gap-2 tracking-wider"
+                  className="flex items-center gap-2 tracking-widest text-base font-semibold"
                 >
                   {item.icon}
                   {item.name}

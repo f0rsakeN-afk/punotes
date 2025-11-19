@@ -1,6 +1,19 @@
-export default function Loading() {
+import "./loader.css";
 
-  // Stack uses React Suspense, which will render this page while user data is being fetched.
-  // See: https://nextjs.org/docs/app/api-reference/file-conventions/loading
-  return <></>;
+export default function Loading() {
+  const dots = Array.from({ length: 15 });
+
+  return (
+    <div role="status" aria-label="Loading" className="h-dvh flex items-center justify-center">
+      <aside className="container-loader">
+        {dots.map((_, index) => (
+          <div
+            key={index}
+            className="aro"
+            style={{ "--s": index } as React.CSSProperties}
+          ></div>
+        ))}
+      </aside>
+    </div>
+  );
 }
