@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { LinkedinIcon } from "lucide-react";
 import Image from "next/image";
+import { Highlighter } from "../ui/highlighter";
 
 const teamMembers = [
   {
@@ -37,9 +38,11 @@ const TeamPage = () => {
   return (
     <div className="flex flex-col justify-center py-8 sm:py-4 px-2 lg:px-8 max-w-(--breakpoint-xl) mx-auto gap-16">
       <div className="text-center max-w-5xl mx-auto">
-        <h2 className="mt-3 text-4xl sm:text-5xl font-semibold tracking-tighter">
-          Meet Our Team
-        </h2>
+        <Highlighter action="underline" color="#E7405C" multiline={true}>
+          <h2 className="mt-3 text-4xl sm:text-5xl font-semibold tracking-tighter">
+            Meet Our Team
+          </h2>
+        </Highlighter>
         <p className="mt-6 text-base sm:text-lg text-muted-foreground ">
           We aim to make quality education accessible to all engineering
           students by providing a centralized platform for study materials,
@@ -59,6 +62,7 @@ const TeamPage = () => {
               width={600}
               height={600}
             />
+
             <h3 className="mt-4 text-lg font-semibold">{member.name}</h3>
             <p className="text-muted-foreground text-sm">{member.title}</p>
             <p className="mt-3">{member.bio}</p>

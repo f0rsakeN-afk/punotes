@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Mail, User, MessageCircle, CheckCircle2 } from "lucide-react";
+import { Highlighter } from "@/components/ui/highlighter";
 
 export default function Feedback() {
   const form = useForm({ resolver: zodResolver(feedbackSchema) });
@@ -26,10 +27,12 @@ export default function Feedback() {
     <div className="max-w-5xl w-full xl:w-3xl mx-auto py-8 px-4">
       {/* Page Heading */}
       <div className="text-center mb-12 space-y-3">
-        <h1 className="text-3xl sm:text-4xl font-bold flex items-center justify-center gap-2">
-          <MessageCircle className="w-8 h-8 text-primary" />
-          Share Your Feedback
-        </h1>
+        <Highlighter action="underline" color="#E7405C">
+          <h1 className="text-3xl sm:text-4xl font-bold flex items-center justify-center gap-2">
+            <MessageCircle className="w-8 h-8 text-primary" />
+            Share Your Feedback
+          </h1>
+        </Highlighter>
         <p className="text-muted-foreground max-w-xl mx-auto text-lg">
           We love hearing from you! Whether it's a suggestion, a feature
           request, or just some thoughts about your experience, your input helps

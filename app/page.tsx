@@ -2,6 +2,7 @@ import Features from "@/components/home/Features";
 import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Highlighter } from "@/components/ui/highlighter";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, CirclePlay } from "lucide-react";
 
@@ -33,11 +34,14 @@ export default function Home() {
             Purbanchal University Notes, Syllabus & Past Question Papers
           </h1>
 
+          <Highlighter action="box" color="#E7405C">
+
           <p className="mt-6 md:text-lg text-justify sm:text-center">
             Get all PU notes, syllabus files, old question papers, assignments,
             project reports and lab reports organized and maintained by the
             admin for fast and easy access.
           </p>
+          </Highlighter>
 
           <div className="mt-12 flex items-center justify-center gap-4">
             <Button size="lg" className="rounded-full text-base">
