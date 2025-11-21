@@ -14,6 +14,7 @@ import {
 import {
   BadgeInfo,
   BookText,
+  CloudUpload,
   FileQuestionMark,
   FileText,
   House,
@@ -41,6 +42,11 @@ const sidebarData = [
     name: "Past Questions",
     route: "/pyqs",
     icon: <FileQuestionMark size={6} />,
+  },
+  {
+    name: "Upload",
+    route: "/upload",
+    icon: <CloudUpload size={6} />,
   },
   {
     name: "Feedback",

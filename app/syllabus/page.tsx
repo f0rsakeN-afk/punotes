@@ -98,7 +98,7 @@ export default function Syllabus() {
       )}*/}
 
       {/*{!loading && !error && filtered.length > 0 && (*/}
-      { filtered.length > 0 && (
+      {filtered.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 xl:gap-6">
           {filtered.map((el) => (
             <Card
