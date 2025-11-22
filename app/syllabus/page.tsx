@@ -62,7 +62,7 @@ export default function Syllabus() {
   return (
     <div className="w-full max-w-(--breakpoint-xl) mx-auto pb-10">
       <section className="pb-8 flex flex-col space-y-3.5">
-        <h1 className="text-4xl tracking-wide font-bold">Syllabus</h1>
+        <h1 className="text-4xl tracking-wide font-bold text-primary">Syllabus</h1>
         <p className="text-muted-foreground">
           Access and download syllabus for all semesters and branches
         </p>

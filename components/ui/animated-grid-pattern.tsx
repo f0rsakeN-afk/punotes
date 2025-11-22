@@ -34,7 +34,7 @@ export function AnimatedGridPattern({
   numSquares = 50,
   className,
   maxOpacity = 0.5,
-  duration = 4,
+  duration = 3,
   ...props
 }: AnimatedGridPatternProps) {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });

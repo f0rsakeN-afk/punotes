@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackClientApp } from "@/stack/client";
 import { Inter } from "next/font/google";
-import './globals.css'
+import "./globals.css";
 import {
   SidebarInset,
   SidebarProvider,
@@ -31,26 +30,22 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
-        <StackProvider app={stackClientApp}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <StackTheme>
-              <SidebarProvider>
-                <ScrollProgress />
-                <AppSidebar />
-                <SidebarInset className="p-2">
-                  <SidebarTrigger className="mt-2" />
-                  {children}
-                  <Footer />
-                </SidebarInset>
-              </SidebarProvider>
-            </StackTheme>
-          </ThemeProvider>
-        </StackProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <ScrollProgress />
+            <AppSidebar />
+            <SidebarInset className="p-2">
+              <SidebarTrigger className="mt-2" />
+              {children}
+              <Footer />
+            </SidebarInset>
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

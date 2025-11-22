@@ -29,7 +29,7 @@ export default function Page() {
             />
           </div>
           <Highlighter action="underline" color="#E7405C">
-            <h1 className="text-4xl xl:text-5xl font-bold text-foreground">
+            <h1 className="text-4xl xl:text-5xl font-bold text-primary">
               Note Sharing Platform
             </h1>
           </Highlighter>

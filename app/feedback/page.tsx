@@ -28,7 +28,7 @@ export default function Feedback() {
       {/* Page Heading */}
       <div className="text-center mb-12 space-y-3">
         <Highlighter action="underline" color="#E7405C">
-          <h1 className="text-3xl sm:text-4xl font-bold flex items-center justify-center gap-2">
+          <h1 className="text-3xl sm:text-4xl font-bold flex items-center justify-center gap-2 text-primary">
             <MessageCircle className="w-8 h-8 text-primary" />
             Share Your Feedback
           </h1>

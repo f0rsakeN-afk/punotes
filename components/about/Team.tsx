@@ -39,7 +39,7 @@ const TeamPage = () => {
     <div className="flex flex-col justify-center py-8 sm:py-4 px-2 lg:px-8 max-w-(--breakpoint-xl) mx-auto gap-16">
       <div className="text-center max-w-5xl mx-auto">
         <Highlighter action="underline" color="#E7405C" multiline={true}>
-          <h2 className="mt-3 text-4xl sm:text-5xl font-semibold tracking-tighter">
+          <h2 className="mt-3 text-4xl sm:text-5xl font-semibold tracking-tighter text-primary">
             Meet Our Team
           </h2>
         </Highlighter>

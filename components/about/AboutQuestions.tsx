@@ -28,8 +28,7 @@ const faq = [
   },
   {
     question: "What are your future plans?",
-    answer:
-      "We're continually improving PUNotes. Future plans include expanding our resource library, enhancing search functionality, and adding community features to facilitate collaboration amongst students.",
+    answer:      "We're continually improving PUNotes. Future plans include expanding our resource library, enhancing search functionality, and adding community features to facilitate collaboration amongst students.",
   },
   {
     question: "Are the materials on PUNotes reviewed for accuracy?",
@@ -42,7 +41,7 @@ const FAQ = () => {
   return (
     <div className="flex items-center justify-center px-2 py-12 max-w-(--breakpoint-xl) mx-auto">
       <div className="flex flex-col md:flex-row items-start gap-x-12 gap-y-6">
-        <h2 className="text-4xl lg:text-5xl leading-[1.15]! font-semibold tracking-tighter">
+        <h2 className="text-4xl lg:text-5xl leading-[1.15]! font-semibold tracking-tighter text-primary">
           Frequently Asked <br /> Questions
         </h2>
 
