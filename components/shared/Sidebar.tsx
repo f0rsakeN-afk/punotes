@@ -18,13 +18,22 @@ import {
   FileQuestionMark,
   FileText,
   House,
+  LogOut,
   MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggler";
 import Image from "next/image";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { usePathname } from "next/navigation";
+import { useUser } from "@stackframe/stack";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const sidebarData = [
   { name: "Home", route: "/", icon: <House size={6} /> },
@@ -62,6 +71,7 @@ const sidebarData = [
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const user = useUser();
 
   return (
     <Sidebar {...props}>
@@ -102,9 +112,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <section className="flex items-center justify-between gap-3">
           <ThemeToggle />
 
-          <Avatar className="">
-            <AvatarFallback>NR</AvatarFallback>
-          </Avatar>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="">
+                <AvatarImage
+                  src={user?.profileImageUrl || ""}
+                  alt="user-profile"
+                />
+
+                <AvatarFallback>{user?.displayName}</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>{user?.displayName}</DropdownMenuLabel>
+              <DropdownMenuItem>
+                <LogOut /> Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </section>
       </SidebarFooter>
       <SidebarRail />
