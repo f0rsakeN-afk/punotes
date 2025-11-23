@@ -32,6 +32,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
@@ -120,12 +121,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   alt="user-profile"
                 />
 
-                <AvatarFallback>{user?.displayName}</AvatarFallback>
+                <AvatarFallback>NR</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>{user?.displayName}</DropdownMenuLabel>
-              <DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => user?.signOut()}
+                className="font-semibold"
+              >
                 <LogOut /> Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

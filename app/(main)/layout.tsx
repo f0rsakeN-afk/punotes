@@ -6,12 +6,18 @@ import {
 import { AppSidebar } from "@/components/shared/Sidebar";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
+import { stackServerApp } from "@/stack/server";
+import { redirect } from "next/navigation";
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await stackServerApp.getUser();
+
+  if (!user) redirect("/handler/signin");
+
   return (
     <SidebarProvider>
       <ScrollProgress />
