@@ -1,6 +1,6 @@
 "use client";
 
-import { SyllabusInput, syllabusSchema, BranchEnum } from "@/schema/upload";
+import { BranchEnum, PyqInput, pyqSchema } from "@/schema/upload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
@@ -33,25 +33,28 @@ const semesterData = [
   { name: "8th semester", value: 8 },
 ];
 
-export default function UploadSyllabus() {
-  const form = useForm<SyllabusInput>({
-    resolver: zodResolver(syllabusSchema),
+export default function UploadPYQ() {
+  const date = new Date();
+
+  const form = useForm<PyqInput>({
+    resolver: zodResolver(pyqSchema),
     defaultValues: {
       semester: undefined,
       branch: BranchEnum.options[0],
       fileSize: "",
+      year: date.getFullYear().toString(),
       url: "",
     },
   });
 
-  const onSubmit = (data: SyllabusInput) => {
+  const onSubmit = (data: PyqInput) => {
     console.log("FORM SUBMIT:", data);
   };
 
   return (
     <div>
       <DialogHeader>
-        <DialogTitle>Upload Syllabus</DialogTitle>
+        <DialogTitle>Upload PYQs</DialogTitle>
         <DialogDescription>
           Provide required details carefully.
         </DialogDescription>
@@ -114,6 +117,25 @@ export default function UploadSyllabus() {
 
           <FormField
             control={form.control}
+            name="year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Select year(eg. 2026)</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-12"
+                    type="text"
+                    placeholder="Enter year"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="fileSize"
             render={({ field }) => (
               <FormItem>
@@ -151,7 +173,7 @@ export default function UploadSyllabus() {
           />
 
           <Button type="submit" className="w-full cursor-pointer">
-            Upload Syllabus
+            Upload PYQs
           </Button>
         </form>
       </Form>

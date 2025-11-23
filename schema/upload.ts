@@ -9,24 +9,29 @@ export const BranchEnum = z.enum([
   "BIT",
 ]);
 
-export const SemesterEnum = z
-  .enum(["1", "2", "3", "4", "5", "6", "7", "8"])
-  .transform(Number);
-
 export const syllabusSchema = z.object({
-  semester: SemesterEnum,
+  semester: z.string(),
   branch: BranchEnum,
-  fileSize: z.string().min(1, "File size is required"),
+  fileSize: z.string(),
   url: z.url("Invalid URL"),
 });
 
 export const pyqSchema = z.object({
-  semester: SemesterEnum,
+  semester: z.string(),
   year: z.string().regex(/^\d{4}$/, "Year must be a valid 4-digit year"),
   branch: BranchEnum,
-  fileSize: z.string().min(1, "File size is required"),
+  fileSize: z.string(),
   url: z.url("Invalid URL"),
 });
 
+export const notesSchema = z.object({
+  semester: z.string(),
+  branch: BranchEnum,
+  fileSize: z.string(),
+  url: z.url("Invalid URL"),
+  subject: z.string(),
+});
+
+export type NotesInput = z.infer<typeof notesSchema>;
 export type SyllabusInput = z.infer<typeof syllabusSchema>;
 export type PyqInput = z.infer<typeof pyqSchema>;

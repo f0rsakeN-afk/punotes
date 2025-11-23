@@ -13,6 +13,8 @@ import Image from "next/image";
 import { Highlighter } from "@/components/ui/highlighter";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import UploadSyllabus from "@/components/upload/UploadSyllabus";
+import UploadPYQ from "@/components/upload/UploadPYQ";
+import UploadNotes from "@/components/upload/UploadNotes";
 
 export default function Page() {
   return (
@@ -127,7 +129,7 @@ export default function Page() {
               <CardContent className="space-y-3">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="w-full justify-start gap-3 h-auto py-4 shadow-sm hover:shadow-md transition-all">
+                    <Button className="w-full justify-start gap-3 h-auto py-4 shadow-sm hover:shadow-md transition-all cursor-pointer">
                       <BookOpen className="h-5 w-5" />
                       <span className="font-medium">Upload Syllabus</span>
                     </Button>
@@ -136,15 +138,30 @@ export default function Page() {
                     <UploadSyllabus />
                   </DialogContent>
                 </Dialog>
-                <Button className="w-full justify-start gap-3 h-auto py-4 shadow-sm hover:shadow-md transition-all">
-                  <FileText className="h-5 w-5" />
-                  <span className="font-medium">Upload Notes</span>
-                </Button>
 
-                <Button className="w-full justify-start gap-3 h-auto py-4 shadow-sm hover:shadow-md transition-all">
-                  <HelpCircle className="h-5 w-5" />
-                  <span className="font-medium">Upload Past Questions</span>
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full justify-start gap-3 h-auto py-4 shadow-sm hover:shadow-md transition-all cursor-pointer">
+                      <FileText className="h-5 w-5" />
+                      <span className="font-medium">Upload Notes</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <UploadNotes />
+                  </DialogContent>
+                </Dialog>
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full justify-start gap-3 h-auto py-4 shadow-sm hover:shadow-md transition-all cursor-pointer">
+                      <HelpCircle className="h-5 w-5" />
+                      <span className="font-medium">Upload Past Questions</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <UploadPYQ />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
           </div>

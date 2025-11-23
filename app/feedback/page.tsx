@@ -56,6 +56,7 @@ export default function Feedback() {
                 </FormLabel>
                 <FormControl>
                   <Input
+                    className="h-12"
                     placeholder="you@example.com"
                     {...field}
                     type="email"
@@ -78,7 +79,7 @@ export default function Feedback() {
                   <User className="w-4 h-4 text-primary" /> Full Name
                 </FormLabel>
                 <FormControl>
-                  <Input type="text" {...field} placeholder="lorem ipsum" />
+                  <Input type="text" className="h-12" {...field} placeholder="lorem ipsum" />
                 </FormControl>
                 {/*<p className="text-sm text-muted-foreground mt-1">
                   Optional — only if you want us to address you personally.
@@ -113,7 +114,7 @@ export default function Feedback() {
 
           <Button
             type="submit"
-            className="w-full flex items-center justify-center gap-2"
+            className="w-full flex items-center justify-center gap-2 cursor-pointer h-12"
           >
             Submit Feedback
             <CheckCircle2 className="w-5 h-5" />

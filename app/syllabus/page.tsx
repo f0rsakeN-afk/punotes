@@ -71,7 +71,7 @@ export default function Syllabus() {
           onChange={(e) => setQuery(e.target.value)}
           type="text"
           placeholder="Search by semester, branch, size..."
-          className="max-w-3xl"
+          className="max-w-3xl h-12"
         />
       </section>
 
