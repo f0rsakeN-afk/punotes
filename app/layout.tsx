@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { stackClientApp } from "../stack/client";
 import { stackClientApp } from "@/stack/client";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -29,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} antialiased`}><StackProvider app={stackClientApp}><StackTheme>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -46,7 +48,7 @@ export default function RootLayout({
             </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>
-      </body>
+      </StackTheme></StackProvider></body>
     </html>
   );
 }
