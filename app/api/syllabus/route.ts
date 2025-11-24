@@ -1,10 +1,10 @@
 import prisma from "@/lib/prisma";
-import { feedbackSchema } from "@/schema/feedbackSchema";
+import { syllabusSchema } from "@/schema/upload";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
 import { treeifyError } from "zod";
 
-export async function POST(req: NextRequest) {
+export async function GET() {
   try {
     const user = await stackServerApp.getUser();
 
@@ -17,38 +17,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const body = await req.json();
-
-    const parsed = feedbackSchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: treeifyError(parsed.error) },
-        { status: 400 },
-      );
-    }
-
-    const saved = await prisma.feedback.create({
-      data: { ...parsed.data },
+    const data = await prisma.syllabus.findMany({
+      orderBy: { createdAt: "asc" },
     });
-
-    return NextResponse.json(
-      { message: "Feedback submitted", data: saved },
-      { status: 200 },
-    );
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    // console.error(err);
+    // console.log(error);
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : "Internal server error",
+        error:
+          error instanceof Error ? error.message : "Failed to fetch syllabus",
       },
       { status: 500 },
     );
   }
 }
 
-export async function GET() {
+export async function POST(req: NextRequest) {
   try {
+    const body = await req.json();
+
+    const parsed = syllabusSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          error: treeifyError(parsed.error),
+        },
+        { status: 400 },
+      );
+    }
+
     const user = await stackServerApp.getUser();
+
     if (!user) {
       return NextResponse.json(
         {
@@ -66,18 +67,17 @@ export async function GET() {
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(
-        { message: "Only admins can access all feedbacks." },
+        { message: "Only admins can publish notes." },
         { status: 403 },
       );
     }
 
-    const feedbackData = await prisma.feedback.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    const saved = await prisma.syllabus.create({ data: parsed.data });
 
     return NextResponse.json(
       {
-        data: feedbackData,
+        message: "Syllabus added successfully.",
+        data: saved,
       },
       { status: 200 },
     );
@@ -85,9 +85,7 @@ export async function GET() {
     return NextResponse.json(
       {
         error:
-          error instanceof Error
-            ? error.message
-            : "Failed to fetch user feedbacks.",
+          error instanceof Error ? error.message : "Internal server error.",
       },
       { status: 500 },
     );

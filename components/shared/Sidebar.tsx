@@ -114,7 +114,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <ThemeToggle />
 
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild className="cursor-pointer">
               <Avatar className="">
                 <AvatarImage
                   src={user?.profileImageUrl || ""}
@@ -125,7 +125,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>{user?.displayName}</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                {user?.displayName || user?.primaryEmail}
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 variant="destructive"

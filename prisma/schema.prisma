@@ -13,9 +13,59 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
 
-model Feedback{
-  id        String @id @default(cuid())
+model User {
+  id        String   @id @default(cuid())
+  stackID   String   @unique
+  email     String   @unique
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Syllabus {
+  id        String   @id @default(cuid())
+  branch    String
+  fileSize  String
+  url       String
+  semester  String
+  createdAt DateTime @default(now())
+
+  @@index([branch])
+}
+
+model PYQ {
+  id        String   @id @default(cuid())
+  semester  String
+  year      String
+  branch    String
+  fileSize  String
+  url       String
+  createdAt DateTime @default(now())
+
+  @@index([branch])
+  @@index([semester])
+}
+
+model Notes {
+  id        String   @id @default(cuid())
+  semester  String
+  branch    String
+  fileSize  String
+  url       String
+  subject   String
+  createdAt DateTime @default(now())
+
+  @@index([semester])
+  @@index([branch])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
   email     String
   name      String
   message   String

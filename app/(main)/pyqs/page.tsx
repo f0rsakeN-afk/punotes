@@ -5,70 +5,34 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   ExternalLink,
-  Download,
+  // Download,
   FileText,
   Loader2,
   AlertCircle,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-
-const syllabusData = [
-  {
-    id: 1,
-    semester: "2",
-    year: "2025",
-    branch: "Computer Engineering",
-    fileSize: "2.3 MB",
-    url: "https://docs.google.com/document/d/1U_8vfv2wPuGIYZExxBzeytCnkmgZegWjhVwJSANWiJA/edit?usp=drive_link",
-  },
-  {
-    id: 2,
-    semester: "2",
-    year: "2025",
-    branch: "Computer Engineering",
-    fileSize: "1.8 MB",
-    url: "https://example.com/syllabus/discrete-math.pdf",
-  },
-  {
-    id: 3,
-    semester: "2",
-    year: "2025",
-    branch: "Computer Engineering",
-    fileSize: "2.0 MB",
-    url: "https://example.com/syllabus/digital-logic.pdf",
-  },
-  {
-    id: 4,
-    semester: "3",
-    year: "2025",
-    branch: "Computer Engineering",
-    fileSize: "3.1 MB",
-    url: "https://example.com/syllabus/dsa.pdf",
-  },
-  {
-    id: 5,
-    semester: "3",
-    year: "2025",
-    branch: "Computer Engineering",
-    fileSize: "2.7 MB",
-    url: "https://example.com/syllabus/computer-architecture.pdf",
-  },
-];
+import { useGetPYQS } from "@/services/pyq";
+import { toOrdinalWord } from "@/utils/toOrdinalWord";
 
 export default function PYQS() {
   const [query, setQuery] = useState("");
 
-  const filtered = syllabusData.filter((el) =>
-    `${el.semester} ${el.branch} ${el.fileSize} ${el.year}`
-      .toLowerCase()
-      .includes(query.toLowerCase()),
-  );
+  const { data, isLoading, isError } = useGetPYQS();
+
+  const filtered =
+    data?.filter((el) =>
+      `${toOrdinalWord(Number(el.semester))} ${el.branch} ${el.fileSize} ${el.year}`
+        .toLowerCase()
+        .includes(query.toLowerCase()),
+    ) ?? [];
 
   return (
     <div className="w-full max-w-(--breakpoint-xl) mx-auto pb-10">
       <section className="pb-8 flex flex-col space-y-3.5">
-        <h1 className="text-4xl tracking-wide font-bold text-primary">Past Questions</h1>
+        <h1 className="text-4xl tracking-wide font-bold text-primary">
+          Past Questions
+        </h1>
         <p className="text-muted-foreground">
           Access and download PYQs for all semesters and branches
         </p>
@@ -81,30 +45,31 @@ export default function PYQS() {
         />
       </section>
 
-      {/*{loading && (
+      {isLoading && (
         <div className="w-full flex justify-center py-16">
           <Loader2 className="animate-spin w-8 h-8 text-primary" />
         </div>
       )}
 
-      {!loading && error && (
+      {!isLoading && isError && (
         <div className="w-full flex flex-col items-center py-16 text-center gap-2">
           <AlertCircle className="w-10 h-10 text-red-500" />
-          <p className="text-red-500 font-semibold">{error}</p>
+          <p className="text-red-500 font-semibold">
+            Failed to fetch PYQs. Please try again...
+          </p>
         </div>
       )}
 
-      {!loading && !error && filtered.length === 0 && (
+      {!isLoading && !isError && filtered.length === 0 && (
         <div className="w-full flex flex-col items-center py-16 text-center gap-2">
           <FileText className="w-10 h-10 text-gray-400" />
           <p className="text-muted-foreground">
             No syllabus found that matches your search.
           </p>
         </div>
-      )}*/}
+      )}
 
-      {/*{!loading && !error && filtered.length > 0 && (*/}
-      {filtered.length > 0 && (
+      {!isLoading && !isError && filtered.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 xl:gap-6">
           {filtered.map((el) => (
             <Card
@@ -140,7 +105,7 @@ export default function PYQS() {
                     </Button>
                   </a>
 
-                  <a href={el.url} download>
+                  {/*<a href={el.url} download>
                     <Button
                       variant="outline"
                       className="flex gap-2 items-center text-xs lg:text-sm"
@@ -148,7 +113,7 @@ export default function PYQS() {
                       <Download className="w-4 h-4" />
                       Download
                     </Button>
-                  </a>
+                  </a>*/}
                 </div>
               </CardContent>
             </Card>

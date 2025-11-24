@@ -1,13 +1,7 @@
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/shared/Sidebar";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
-import Footer from "@/components/shared/Footer";
-import { stackServerApp } from "@/stack/server";
 import { redirect } from "next/navigation";
+import { stackServerApp } from "@/stack/server";
+import prisma from "@/lib/prisma";
+import MainLayoutClient from "./mainLayoutClient";
 
 export default async function MainLayout({
   children,
@@ -16,19 +10,15 @@ export default async function MainLayout({
 }) {
   const user = await stackServerApp.getUser();
 
-  if (!user) redirect("/handler/signin");
+  if (!user || !user.primaryEmail) {
+    redirect("/handler/signin");
+  }
 
-  return (
-    <SidebarProvider>
-      <ScrollProgress />
+  await prisma.user.upsert({
+    where: { stackID: user.id },
+    update: { email: user.primaryEmail },
+    create: { stackID: user.id, email: user.primaryEmail, role: "USER" },
+  });
 
-      <AppSidebar />
-
-      <SidebarInset className="p-2">
-        <SidebarTrigger className="mt-2" />
-        {children}
-        <Footer />
-      </SidebarInset>
-    </SidebarProvider>
-  );
+  return <MainLayoutClient>{children}</MainLayoutClient>;
 }
