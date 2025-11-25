@@ -21,6 +21,8 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useUploadSyllabus } from "@/services/syllabus";
+import { CheckCircle2, Loader } from "lucide-react";
 
 const semesterData = [
   { name: "1st semester", value: 1 },
@@ -34,6 +36,8 @@ const semesterData = [
 ];
 
 export default function UploadSyllabus() {
+  const mutation = useUploadSyllabus();
+
   const form = useForm<SyllabusInput>({
     resolver: zodResolver(syllabusSchema),
     defaultValues: {
@@ -45,7 +49,12 @@ export default function UploadSyllabus() {
   });
 
   const onSubmit = (data: SyllabusInput) => {
-    console.log("FORM SUBMIT:", data);
+    // console.log("FORM SUBMIT:", data);
+    mutation.mutate(data, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
 
   return (
@@ -150,8 +159,22 @@ export default function UploadSyllabus() {
             )}
           />
 
-          <Button type="submit" className="w-full cursor-pointer">
-            Upload Syllabus
+          <Button
+            type="submit"
+            className="w-full cursor-pointer"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? (
+              <span className="flex items-center gap-2">
+                <Loader className="animate-spin ease-linear repeat-infinite " />{" "}
+                Submitting...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                Upload Syllabus
+                <CheckCircle2 className="w-5 h-5" />
+              </span>
+            )}
           </Button>
         </form>
       </Form>

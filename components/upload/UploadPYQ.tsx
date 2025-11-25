@@ -21,6 +21,8 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { usePostPYQ } from "@/services/pyq";
+import { CheckCircle2, Loader } from "lucide-react";
 
 const semesterData = [
   { name: "1st semester", value: 1 },
@@ -36,6 +38,8 @@ const semesterData = [
 export default function UploadPYQ() {
   const date = new Date();
 
+  const mutation = usePostPYQ();
+
   const form = useForm<PyqInput>({
     resolver: zodResolver(pyqSchema),
     defaultValues: {
@@ -48,7 +52,11 @@ export default function UploadPYQ() {
   });
 
   const onSubmit = (data: PyqInput) => {
-    console.log("FORM SUBMIT:", data);
+    mutation.mutate(data, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
 
   return (
@@ -172,8 +180,22 @@ export default function UploadPYQ() {
             )}
           />
 
-          <Button type="submit" className="w-full cursor-pointer">
-            Upload PYQs
+          <Button
+            type="submit"
+            className="w-full cursor-pointer"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? (
+              <span className="flex items-center gap-2">
+                <Loader className="animate-spin ease-linear repeat-infinite " />{" "}
+                Submitting...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                Upload PYQs
+                <CheckCircle2 className="w-5 h-5" />
+              </span>
+            )}
           </Button>
         </form>
       </Form>

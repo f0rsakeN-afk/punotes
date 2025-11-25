@@ -102,7 +102,7 @@ export default function Page() {
               aria-label={`Open ${semester.title}`}
               onClick={() =>
                 router.push(
-                  `/pdfs/${rawBranch}/${encodeURIComponent(`semester-${index + 1}`)}`,
+                  `/pdfs/${rawBranch}/${encodeURIComponent(`${index + 1}`)}`,
                 )
               }
               className="cursor-pointer group"

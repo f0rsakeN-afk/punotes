@@ -21,6 +21,8 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useUploadNotes } from "@/services/notes";
+import { CheckCircle2, Loader } from "lucide-react";
 
 const semesterData = [
   { name: "1st semester", value: 1 },
@@ -34,6 +36,8 @@ const semesterData = [
 ];
 
 export default function UploadNotes() {
+  const mutation = useUploadNotes();
+
   const form = useForm<NotesInput>({
     resolver: zodResolver(notesSchema),
     defaultValues: {
@@ -46,7 +50,13 @@ export default function UploadNotes() {
   });
 
   const onSubmit = (data: NotesInput) => {
-    console.log("FORM SUBMIT:", data);
+    // console.log("FORM SUBMIT:", data);
+
+    mutation.mutate(data, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
 
   return (
@@ -170,8 +180,22 @@ export default function UploadNotes() {
             )}
           />
 
-          <Button type="submit" className="w-full cursor-pointer">
-            Upload PYQs
+          <Button
+            type="submit"
+            className="w-full cursor-pointer"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? (
+              <span className="flex items-center gap-2">
+                <Loader className="animate-spin ease-linear repeat-infinite " />{" "}
+                Submitting...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                Upload Notes
+                <CheckCircle2 className="w-5 h-5" />
+              </span>
+            )}
           </Button>
         </form>
       </Form>
