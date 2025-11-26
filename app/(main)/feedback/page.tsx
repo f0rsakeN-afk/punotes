@@ -26,10 +26,11 @@ import { useUser } from "@stackframe/stack";
 import { useSendFeedback } from "@/services/feedback";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import FeedbackContent from "@/components/me/FeedbackContent";
-// import { useGetMe } from "@/services/me";
+import { useGetMe } from "@/services/me";
 
 export default function Feedback() {
   const user = useUser();
+  const { data: meData } = useGetMe();
 
   const form = useForm({
     resolver: zodResolver(feedbackSchema),
@@ -50,18 +51,22 @@ export default function Feedback() {
     });
   };
 
+  const isAdmin = meData?.data?.role === "ADMIN";
+
   return (
     <div className="relative">
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="absolute bottom-5 right-5 py-5 cursor-pointer rounded-full">
-            <ScrollText />
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <FeedbackContent />
-        </DialogContent>
-      </Dialog>
+      {isAdmin && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="fixed bottom-5 left-5 py-5 cursor-pointer rounded-full z-50">
+              <ScrollText />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <FeedbackContent />
+          </DialogContent>
+        </Dialog>
+      )}
       <div className="max-w-5xl w-full xl:w-3xl mx-auto py-8 px-4">
         {/* Page Heading */}
         <div className="text-center mb-12 space-y-3">

@@ -15,8 +15,27 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import UploadSyllabus from "@/components/upload/UploadSyllabus";
 import UploadPYQ from "@/components/upload/UploadPYQ";
 import UploadNotes from "@/components/upload/UploadNotes";
+import { stackServerApp } from "@/stack/server";
+import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
-export default function Page() {
+export default async function Page() {
+  const user = await stackServerApp.getUser();
+
+  if (!user) {
+    redirect("/");
+  }
+
+  const userData = await prisma.user.findUnique({
+    where: {
+      stackID: user.id,
+    },
+  });
+
+  if (!userData || userData.role !== "ADMIN") {
+    redirect("/");
+  }
+
   return (
     <div className=" bg-linear-to-br from-background via-muted/30 to-muted/50 flex items-center justify-center">
       <div className="w-full max-w-(--breakpoint-xl) mx-auto pb-10">

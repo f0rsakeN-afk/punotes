@@ -56,6 +56,7 @@ model Notes {
   semester  String
   branch    String
   fileSize  String
+  name      String
   url       String
   subject   String
   createdAt DateTime @default(now())

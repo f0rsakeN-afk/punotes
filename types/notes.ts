@@ -4,6 +4,7 @@ export interface notesResponse {
   branch: string;
   fileSize: string;
   url: string;
+  name: string;
   subject: string;
   createdAt: string;
 }

@@ -27,7 +27,7 @@ export function useSendFeedback() {
 
 async function getFeedbackData(): Promise<getFeedbackResponse[]> {
   const response = await axiosInstance.get("/api/feedback/");
-  return response.data;
+  return response.data.data;
 }
 
 export function useGetFeedbackData() {

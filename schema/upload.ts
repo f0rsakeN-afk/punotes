@@ -28,6 +28,7 @@ export const notesSchema = z.object({
   semester: z.string(),
   branch: BranchEnum,
   fileSize: z.string(),
+  name: z.string(),
   url: z.url("Invalid URL"),
   subject: z.string(),
 });

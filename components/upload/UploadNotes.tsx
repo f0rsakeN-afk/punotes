@@ -43,14 +43,15 @@ export default function UploadNotes() {
     defaultValues: {
       semester: "1",
       branch: BranchEnum.options[0],
-      fileSize: "",
+      fileSize: "24",
+      name: "",
       url: "",
       subject: "",
     },
   });
 
   const onSubmit = (data: NotesInput) => {
-    // console.log("FORM SUBMIT:", data);
+     // console.log("FORM SUBMIT:", data);
 
     mutation.mutate(data, {
       onSuccess: () => {
@@ -134,6 +135,25 @@ export default function UploadNotes() {
                     className="h-12"
                     type="text"
                     placeholder="Type subject's name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-12"
+                    type="text"
+                    placeholder="Enter notes name"
                     {...field}
                   />
                 </FormControl>

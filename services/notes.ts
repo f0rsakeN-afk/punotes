@@ -32,6 +32,7 @@ export function useUploadNotes() {
       toast.success(data.message || "Notes posted successfully.");
     },
     onError: (error) => {
+      console.log(error)
       toast.error(error.message || "Failed to upload notes.");
     },
   });

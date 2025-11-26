@@ -18,7 +18,7 @@ export function useGetSyllabus() {
 }
 
 async function uploadSyllabus(data: SyllabusInput) {
-  const response = await axiosInstance.post("/api/notes/", data);
+  const response = await axiosInstance.post("/api/syllabus/", data);
   return response.data;
 }
 
@@ -29,6 +29,7 @@ export function useUploadSyllabus() {
       toast.success(data.message || "Uploaded successfully.");
     },
     onError: (error) => {
+      console.log(error);
       toast.error(error.message || "Failed to upload. Please try again.");
     },
   });

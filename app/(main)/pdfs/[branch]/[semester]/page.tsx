@@ -2,7 +2,7 @@
 
 import { useGetNotes } from "@/services/notes";
 import { useParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Loader2,
@@ -59,10 +59,11 @@ export default function PDFS() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {notes.map((note) => (
           <Card key={note.id} className="border hover:shadow-md transition">
-            <CardHeader className="flex flex-row items-center gap-3">
+            <CardHeader className="flex flex-row items-start gap-3">
               <FileText className="h-6 w-6 text-primary" />
               <div>
-                <CardTitle className="text-lg">{note.subject}</CardTitle>
+                <CardTitle className="text-lg">{note.name}</CardTitle>
+                <CardDescription className="text-xs">{note.subject}</CardDescription>
                 <p className="text-sm text-muted-foreground">
                   {note.fileSize} MB
                 </p>
