@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   BadgeInfo,
@@ -77,10 +78,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const user = useUser();
   const { data: meData } = useGetMe();
 
+  const { setOpenMobile } = useSidebar();
+
   const isAdmin = meData?.data?.role === "ADMIN";
 
   const filteredSidebarData = sidebarData.filter(
-    (item) => !item.adminOnly || isAdmin
+    (item) => !item.adminOnly || isAdmin,
   );
 
   return (
@@ -108,6 +111,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               >
                 <Link
                   href={item.route}
+                  onClick={() => {
+                    setTimeout(() => {
+                      setOpenMobile(false);
+                    }, 150);
+                  }}
                   className="flex items-center gap-2 tracking-widest text-base font-semibold"
                 >
                   {item.icon}

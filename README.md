@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 PU Notes
 
-## Getting Started
+PU Notes is a clean, fast, and organized platform where students can access faculty wise and semester wise notes.  
+The goal is to provide a simple, secure, and reliable study resource fully free for students.
 
-First, run the development server:
+All content is uploaded and verified by a single admin, so updates happen gradually thanks for your patience!
+
+---
+
+## 🚀 Features
+
+- 🔐 **Login Required** – Only used to keep track of authentic users. No personal data is ever shared or misused.
+- 📂 **All Notes in One Place** – Organized by faculty & semester.
+- ⚡ **Minimal & Fast UI** – Built using Next.js, shadcn/ui, and Radix UI.
+- 🆓 **Completely Free** – No fees, no hidden limits.
+- ☁️ **Highly Reliable Hosting** – Fast and accessible anytime.
+- 📥 **Admin-Verified Uploads** – Ensures accuracy and quality of notes.
+- 🔄 **More Coming Soon** – Past papers, model sets, reference books, and more.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Next.js 16**
+- **React 19**
+- **Tailwind CSS v4**
+- **shadcn/ui & Radix UI**
+- **Prisma ORM**
+- **PostgreSQL**
+- **TanStack React Query**
+- **Zod**
+- **Axios**
+- **TypeScript**
+
+---
+
+## 📦 Installation
+
+Clone the project:
+
+```bash
+git clone https://github.com/f0rsakeN-afk/punotes.git
+cd punotes
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+---
+
+## 🗄️ Environment Variables Setup
+
+Create a `.env` file in the root:
+
+```env
+DATABASE_URL=
+NEXT_PUBLIC_STACK_PROJECT_ID=
+NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=
+STACK_SECRET_SERVER_KEY=
+BACKEND_URL=
+```
+
+Make sure PostgreSQL is running and accessible.
+
+---
+
+## 🧩 Prisma Setup
+
+Generate Prisma client:
+
+```bash
+npx prisma generate
+```
+
+Push schema to your database:
+
+```bash
+npx prisma db push
+```
+
+(Optional) Open Prisma Studio:
+
+```bash
+npx prisma studio
+```
+
+---
+
+## ▶️ Running the App
+
+Development:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🤝 Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are welcome! 🎉
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You can:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Report bugs  
+- Suggest features  
+- Improve UI/UX  
+- Send PRs  
+- Improve docs  
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🐞 Found a Bug?
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open an issue here:
+
+👉 https://github.com/f0rsakeN-afk/punotes/issues
+
+When reporting a bug, please include:
+
+- Steps to reproduce  
+- Expected behavior  
+- Screenshots (if any)  
+- System info  
+
+---
+
+## ⭐ Support the Project
+
+If PU Notes helped you:
+
+- ⭐ Star the repository  
+- 🍴 Fork the repo  
+- 🔁 Share with friends  
+
+Your support motivates further development!
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 💬 Feedback
+
+Have ideas to improve the platform?  
+Open an issue or contribute directly. Community feedback is always appreciated.
+
+---
+
+Built with ❤️ to help students learn better.

@@ -58,7 +58,7 @@ export default function Feedback() {
       {isAdmin && (
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="fixed bottom-5 left-5 py-5 cursor-pointer rounded-full z-50">
+            <Button className="fixed bottom-5 right-5 py-5 cursor-pointer rounded-full z-50">
               <ScrollText />
             </Button>
           </DialogTrigger>

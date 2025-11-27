@@ -15,49 +15,48 @@ export default function Features() {
     {
       title: "All Notes in One Place",
       description:
-        "Access semester-wise notes, uploaded and managed by the admin for accuracy.",
+        "Access semester-wise notes collected and uploaded by the admin. Content updates take time since the platform is maintained by one person.",
       icon: <IconTerminal2 />,
     },
     {
       title: "Simple & Clean Interface",
       description:
-        "A minimal, fast, and distraction-free UI built with Next.js and shadcn.",
+        "A fast, minimal, and distraction-free UI built with Next.js and shadcn.",
       icon: <IconEaseInOut />,
     },
     {
       title: "Completely Free",
       description:
-        "No fees, no signup, no limits. Students can access everything without hassle.",
+        "All resources are 100% free to access after logging in. No fees, no hidden charges.",
       icon: <IconCurrencyDollar />,
     },
     {
-      title: "Always Available",
+      title: "Secure Login Required",
       description:
-        "Hosted reliably with fast loading and near 100% availability.",
+        "Login is required only to keep track of users and maintain authenticity. No personal data is shared or misused.",
+      icon: <IconHelp />,
+    },
+    {
+      title: "Always Available",
+      description: "Hosted reliably for fast loading and near 100% uptime.",
       icon: <IconCloud />,
     },
     {
       title: "Organized by Faculty & Semester",
       description:
-        "Notes, syllabus, reports, and papers are neatly categorized for easy navigation.",
+        "Notes, syllabus, reports, and papers are neatly categorized for easy browsing.",
       icon: <IconRouteAltLeft />,
-    },
-    {
-      title: "Instant Access",
-      description:
-        "No login required. Open, read, and download any resource instantly.",
-      icon: <IconHelp />,
     },
     {
       title: "Admin-Verified Content",
       description:
-        "All uploads are maintained by a single admin to ensure quality and correctness.",
+        "All uploads are reviewed and managed by a single admin to ensure accuracy and quality.",
       icon: <IconAdjustmentsBolt />,
     },
     {
       title: "More Coming Soon",
       description:
-        "Past papers, model sets, reference books and more resources on the way.",
+        "Past papers, model sets, reference books, and more will be added gradually.",
       icon: <IconHeart />,
     },
   ];
