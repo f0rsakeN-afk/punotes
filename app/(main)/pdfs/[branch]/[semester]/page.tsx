@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { DownloadButton } from "@/components/common/DownloadButton";
 
 export default function PDFS() {
   const [query, setQuery] = useState("");
@@ -66,9 +67,12 @@ export default function PDFS() {
   return (
     <div className="w-full max-w-(--breakpoint-xl) mx-auto pb-10">
       <section className="pb-8 flex flex-col spce-y-3.5">
-        <h1 className="text-4xl tracking-wide font-bold text-primary pb-8">
+        <h1 className="text-4xl tracking-wide font-bold text-primary pb-2">
           Notes – {decodeURIComponent(branch)} / Semester {semester}
         </h1>
+        <p className="text-muted-foreground pb-6">
+          Total Notes: {filtered.length}
+        </p>
 
         <Input
           onChange={(e) => setQuery(e.target.value)}
@@ -89,25 +93,28 @@ export default function PDFS() {
                   {note.subject}
                 </CardDescription>
                 <p className="text-sm text-muted-foreground">
-                  {note.fileSize} MB
+                  {note.fileSize} MB •{" "}
+                  {new Date(note.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </CardHeader>
 
-            <CardContent className="flex justify-between items-center mt-2">
-              <div className="text-sm text-muted-foreground">
-                {new Date(note.createdAt).toLocaleDateString()}
-              </div>
-
-              <a href={note.url} target="_blank" rel="noopener noreferrer">
+            <CardContent className="grid grid-cols-2 gap-3 mt-2">
+              <a
+                href={note.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full"
+              >
                 <Button
                   variant="default"
-                  className="flex gap-2 items-center cursor-pointer text-xs lg:text-sm"
+                  className="flex gap-2 items-center cursor-pointer text-xs lg:text-sm w-full"
                 >
                   <ExternalLink className="w-4 h-4" />
                   View
                 </Button>
               </a>
+              <DownloadButton url={note.url} className="w-full" />
             </CardContent>
           </Card>
         ))}

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { LinkedinIcon } from "lucide-react";
+import { GlobeIcon, LinkedinIcon } from "lucide-react";
 import Image from "next/image";
 import { Highlighter } from "../ui/highlighter";
 
@@ -10,6 +10,7 @@ const teamMembers = [
     bio: "Frontend Developer at Kumari.ai",
     imageUrl: "/naresh.jpeg",
     linkedin: "https://www.linkedin.com/in/f0rsaken/",
+    portfolio: "https://nareshrajbanshi.com.np",
   },
   {
     name: "Pushkar Khawas",
@@ -17,6 +18,7 @@ const teamMembers = [
     bio: "",
     imageUrl: "/pushkar.jpeg",
     linkedin: "https://www.linkedin.com/in/pushkar-khawas-22256830a/",
+    portfolio: "",
   },
   {
     name: "Rakesh Ray",
@@ -24,6 +26,7 @@ const teamMembers = [
     bio: "",
     imageUrl: "/rakesh.jpeg",
     linkedin: "https://www.linkedin.com/in/rakesh-ray-001364341/",
+    portfolio: "",
   },
   {
     name: "Nishant Bishwakarma",
@@ -31,6 +34,7 @@ const teamMembers = [
     bio: "",
     imageUrl: "/nishant.jpeg",
     linkedin: "https://www.linkedin.com/in/nishant-bishwakarma-4631222b9/",
+    portfolio: "",
   },
 ];
 
@@ -54,18 +58,27 @@ const TeamPage = () => {
 
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
         {teamMembers.map((member) => (
-          <div key={member.name}>
-            <Image
-              src={member.imageUrl}
-              alt={member.name}
-              className="w-full aspect-square rounded-lg object-cover bg-secondary"
-              width={600}
-              height={600}
-            />
+          <div key={member.name} className="group relative">
+            <div className="relative overflow-hidden rounded-lg">
+              <Image
+                src={member.imageUrl}
+                alt={member.name}
+                className="w-full aspect-square object-cover bg-secondary transition-transform duration-300 group-hover:scale-105"
+                width={600}
+                height={600}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                <p className="text-white font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  {member.title}
+                </p>
+              </div>
+            </div>
 
             <h3 className="mt-4 text-lg font-semibold">{member.name}</h3>
-            <p className="text-muted-foreground text-sm">{member.title}</p>
-            <p className="mt-3">{member.bio}</p>
+
+            <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+              {member.bio}
+            </p>
             <div className="mt-4 flex items-center gap-2.5">
               <Button
                 className="bg-accent hover:bg-accent text-muted-foreground shadow-none"
@@ -76,6 +89,17 @@ const TeamPage = () => {
                   <LinkedinIcon className="stroke-muted-foreground" />
                 </a>
               </Button>
+              {member.portfolio && (
+                <Button
+                  className="bg-accent hover:bg-accent text-muted-foreground shadow-none"
+                  size="icon"
+                  asChild
+                >
+                  <a href={member.portfolio} target="_blank">
+                    <GlobeIcon className="stroke-muted-foreground" />
+                  </a>
+                </Button>
+              )}
             </div>
           </div>
         ))}

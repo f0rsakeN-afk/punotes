@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   ExternalLink,
-  // Download,
   FileText,
   Loader2,
   AlertCircle,
@@ -13,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useGetPYQS } from "@/services/pyq";
+import { DownloadButton } from "@/components/common/DownloadButton";
 import { toOrdinalWord } from "@/utils/toOrdinalWord";
 
 export default function PYQS() {
@@ -105,15 +105,7 @@ export default function PYQS() {
                     </Button>
                   </a>
 
-                  {/*<a href={el.url} download>
-                    <Button
-                      variant="outline"
-                      className="flex gap-2 items-center text-xs lg:text-sm"
-                    >
-                      <Download className="w-4 h-4" />
-                      Download
-                    </Button>
-                  </a>*/}
+                  <DownloadButton url={el.url} />
                 </div>
               </CardContent>
             </Card>

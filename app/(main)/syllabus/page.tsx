@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   ExternalLink,
-  // Download,
   FileText,
   Loader2,
   AlertCircle,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useGetSyllabus } from "@/services/syllabus";
+import { DownloadButton } from "@/components/common/DownloadButton";
 import { toOrdinalWord } from "@/utils/toOrdinalWord";
 
 export default function Syllabus() {
@@ -101,15 +101,7 @@ export default function Syllabus() {
                     </Button>
                   </a>
 
-                  {/*<a href={el.url} download>
-                    <Button
-                      variant="outline"
-                      className="flex gap-2 items-center text-xs lg:text-sm"
-                    >
-                      <Download className="w-4 h-4" />
-                      Download
-                    </Button>
-                  </a>*/}
+                  <DownloadButton url={el.url} />
                 </div>
               </CardContent>
             </Card>

@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +13,7 @@ import {
   Layers,
   Laptop,
   Database,
-  MoveRight,
+  ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
@@ -48,30 +42,30 @@ const branchCategory: Record<Branch, Category> = {
 
 const descriptions: Record<Branch, string> = {
   "Computer Engineering":
-    "Focuses on systems, architecture, AI, and cutting edge software engineering.",
+    "Systems, architecture, AI, and cutting-edge software engineering.",
   "Civil Engineering":
-    "Builds the world's infrastructure bridges, buildings, and massive structures.",
+    "Infrastructure, bridges, buildings, and massive structures.",
   "Electrical Engineering":
-    "Power, machines, circuits, energy the backbone of modern tech.",
+    "Power, machines, circuits, and energy systems.",
   "Electronics and Communication":
-    "Advanced telecom, embedded tech, chip design, IoT, and circuits.",
-  BCA: "Practical IT degree focused on programming, apps, and real world development.",
-  BIT: "IT systems, networking, cloud, enterprise solutions and modern system operations.",
+    "Telecom, embedded tech, chip design, and IoT.",
+  BCA: "Programming, apps, and real-world development.",
+  BIT: "IT systems, networking, cloud, and enterprise solutions.",
 };
 
 const icons: Record<Category, React.ReactNode> = {
-  Engineering: <Zap />,
-  IT: <Laptop />,
-  All: <Layers />,
+  Engineering: <Zap className="w-4 h-4" />,
+  IT: <Laptop className="w-4 h-4" />,
+  All: <Layers className="w-4 h-4" />,
 };
 
-const branchIcons: Record<Branch, React.ReactNode> = {
-  "Computer Engineering": <Cpu />,
-  "Civil Engineering": <Building2 />,
-  "Electrical Engineering": <Zap />,
-  "Electronics and Communication": <Network />,
-  BCA: <Laptop />,
-  BIT: <Database />,
+const branchIcons: Record<Branch, React.ElementType> = {
+  "Computer Engineering": Cpu,
+  "Civil Engineering": Building2,
+  "Electrical Engineering": Zap,
+  "Electronics and Communication": Network,
+  BCA: Laptop,
+  BIT: Database,
 };
 
 export default function BranchesPage() {
@@ -90,111 +84,144 @@ export default function BranchesPage() {
   }, [query, category]);
 
   return (
-    <div className="relative max-w-(--breakpoint-xl)  mx-auto py-10">
-      <div className="absolute inset-0 -z-10 bg-linear-to-br from-primary/10 via-primary/5 to-transparent blur-3xl opacity-40"></div>
+    <div className="max-w-(--breakpoint-xl) mx-auto py-12 px-4 sm:px-6 relative min-h-screen">
+      {/* Background Watermark */}
+      <div className="fixed inset-0 z-[-1] flex items-center justify-center pointer-events-none overflow-hidden">
+        <span className="text-[12vw] font-black text-slate-900/5 dark:text-white/5 whitespace-nowrap select-none uppercase tracking-tighter transform -rotate-12">
+          Departments
+        </span>
+      </div>
 
-      <motion.div
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-8"
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="text-center max-w-4xl mx-auto mb-20"
       >
-        <h1 className="text-5xl font-bold bg-linear-to-br from-primary to-primary/70 text-transparent bg-clip-text">
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-sm font-medium mb-6 backdrop-blur-sm"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          Department Selection
+        </motion.div>
+
+        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">
           Explore Branches
         </h1>
-      </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4 }}
-        className="flex justify-center gap-3 mb-10 flex-wrap"
-      >
-        {["All", "Engineering", "IT"].map((cat) => {
-          const icon = icons[cat as Category];
-          const active = category === cat;
-          return (
-            <motion.div whileTap={{ scale: 0.85 }} key={cat}>
-              <Button
-                variant={active ? "default" : "outline"}
-                className={cn(
-                  "flex items-center gap-2 px-6 py-2 transition-all",
-                  active && "shadow-lg shadow-primary/30",
-                )}
-                onClick={() => setCategory(cat as Category)}
-              >
-                {icon} {cat}
-              </Button>
-            </motion.div>
-          );
-        })}
-      </motion.div>
+        <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto mb-12">
+          Choose your department to access comprehensive study materials and
+          resources.
+        </p>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="max-w-xl mx-auto mb-14 relative"
-      >
-        <Input
-          placeholder="Search branches..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="py-6 shadow-md backdrop-blur-xl bg-background/60"
-        />
-      </motion.div>
+        {/* Filter Buttons */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="flex justify-center gap-3 mb-8 flex-wrap"
+        >
+          {(["All", "Engineering", "IT"] as Category[]).map((cat) => {
+            const icon = icons[cat];
+            const active = category === cat;
+            return (
+              <motion.div whileTap={{ scale: 0.95 }} key={cat}>
+                <Button
+                  variant={active ? "default" : "outline"}
+                  className={cn(
+                    "flex items-center gap-2 px-6 py-2 transition-all backdrop-blur-sm",
+                    active && "shadow-lg shadow-primary/20"
+                  )}
+                  onClick={() => setCategory(cat)}
+                >
+                  {icon} {cat}
+                </Button>
+              </motion.div>
+            );
+          })}
+        </motion.div>
 
-      <motion.div
+        {/* Search Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="max-w-xl mx-auto"
+        >
+          <Input
+            placeholder="Search branches..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="h-12 backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800"
+          />
+        </motion.div>
+      </motion.header>
+
+      <motion.main
         layout
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        {branches.map((b) => {
-          const icon = branchIcons[b];
+        {branches.map((b, index) => {
+          const Icon = branchIcons[b];
           return (
             <motion.div
               key={b}
-              layout
-              whileHover={{ scale: 1.03 }}
-              transition={{ type: "spring", stiffness: 200 }}
-              className="group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.4,
+                delay: index * 0.05,
+                ease: "easeOut",
+              }}
+              onClick={() => router.push(`/pdfs/${encodeURIComponent(b)}`)}
+              className="group cursor-pointer"
             >
-              <Card className="border bg-card/50 backdrop-blur-xl shadow-md hover:shadow-xl transition-all">
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    <div className="p-4 rounded-2xl bg-primary/10 text-primary shadow-inner">
-                      {icon}
+              <Card className="relative h-full overflow-hidden border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl hover:border-primary/30 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5">
+                {/* Large Background Icon */}
+                <div className="absolute -right-8 -bottom-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 pointer-events-none">
+                  <Icon className="w-48 h-48 text-primary" />
+                </div>
+
+                <div className="relative z-10 p-8 flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="p-3 rounded-2xl bg-primary/5 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
+                      <Icon className="w-6 h-6" />
                     </div>
-                    <CardTitle className="text-lg font-semibold group-hover:text-primary transition-colors">
-                      {b}
-                    </CardTitle>
+                    <motion.div
+                      initial={{ x: -10, opacity: 0 }}
+                      whileHover={{ x: 0, opacity: 1 }}
+                      className="text-primary/50 group-hover:text-primary transition-colors"
+                    >
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.div>
                   </div>
-                  <Badge
-                    variant="secondary"
-                    className="mt-3 w-fit text-xs px-3 py-1 rounded-lg"
-                  >
-                    {branchCategory[b]}
-                  </Badge>
-                </CardHeader>
 
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4 overflow-hidden leading-relaxed">
-                    {descriptions[b]}
-                  </p>
-                </CardContent>
+                  <div className="mt-auto">
+                    <Badge className="mb-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
+                      {branchCategory[b]}
+                    </Badge>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-primary transition-colors duration-300">
+                      {b}
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                      {descriptions[b]}
+                    </p>
+                  </div>
+                </div>
 
-                <CardFooter>
-                  <Button
-                    className="cursor-pointer"
-                    onClick={() => router.push(`/pdfs/${encodeURIComponent(b)}`)}
-                  >
-                    View semesters <MoveRight />
-                  </Button>
-                </CardFooter>
+                {/* Hover Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </Card>
             </motion.div>
           );
         })}
-      </motion.div>
+      </motion.main>
     </div>
   );
 }
