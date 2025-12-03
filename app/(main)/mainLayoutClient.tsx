@@ -25,8 +25,8 @@ export default function MainLayoutClient({
     const qc = new QueryClient({
       defaultOptions: {
         queries: {
-          staleTime: 1000 * 60 * 60 * 1,
-          gcTime: 1000 * 60 * 60 * 1,
+          staleTime: 1000 * 60 * 60 * 2,
+          gcTime: 1000 * 60 * 60 * 2,
           retry: 1,
         },
       },
