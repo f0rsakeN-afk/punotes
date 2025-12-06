@@ -179,7 +179,7 @@ export default function UsersTable() {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} className="hover:bg-muted/50 transition">
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-3">
+                    <TableCell key={cell.id} className="p
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
