@@ -8,6 +8,7 @@ import {
 import { AppSidebar } from "@/components/shared/Sidebar";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
@@ -59,6 +60,7 @@ export default function MainLayoutClient({
           <SidebarTrigger className="mt-2" />
           <Toaster position="top-right" />
           {children}
+          <ChatWidget />
           <Footer />
         </SidebarInset>
       </SidebarProvider>

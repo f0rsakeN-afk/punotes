@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -13,18 +7,18 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 model User {
-  id        String   @id @default(cuid())
-  stackID   String   @unique
-  email     String   @unique
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String     @id @default(cuid())
+  stackID         String     @unique
+  email           String     @unique
+  role            Role       @default(USER)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  lastSeenAt      DateTime   @default(now())
+  displayName     String?
+  profileImageUrl String?
+  messages        Message[]
+  reactions       Reaction[]
 }
 
 model Syllabus {
@@ -32,8 +26,8 @@ model Syllabus {
   branch    String
   fileSize  String
   url       String
-  semester  String
   createdAt DateTime @default(now())
+  semester  String
 
   @@index([branch])
 }
@@ -56,10 +50,10 @@ model Notes {
   semester  String
   branch    String
   fileSize  String
-  name      String
   url       String
   subject   String
   createdAt DateTime @default(now())
+  name      String
 
   @@index([semester])
   @@index([branch])
@@ -71,4 +65,34 @@ model Feedback {
   name      String
   message   String
   createdAt DateTime @default(now())
+}
+
+model Message {
+  id        String     @id @default(cuid())
+  content   String
+  userId    String
+  createdAt DateTime   @default(now())
+  user      User       @relation(fields: [userId], references: [id])
+  reactions Reaction[]
+
+  @@index([userId])
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  emoji     String
+  userId    String
+  messageId String
+  createdAt DateTime @default(now())
+  message   Message  @relation(fields: [messageId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, messageId, emoji])
+  @@index([messageId])
+  @@index([userId])
+}
+
+enum Role {
+  USER
+  ADMIN
 }

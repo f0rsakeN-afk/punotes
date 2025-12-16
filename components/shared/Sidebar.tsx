@@ -123,7 +123,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       setOpenMobile(false);
                     }, 150);
                   }}
-                  className="flex items-center gap-2 tracking-widest text-base font-semibold"
+                  className="flex items-center gap-2 tracking-widest text-base font-semibold transition-transform duration-200 hover:translate-x-1"
                 >
                   {item.icon}
                   {item.name}

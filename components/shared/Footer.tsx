@@ -50,7 +50,7 @@ const Footer = () => {
                 <li key={title}>
                   <Link
                     href={href}
-                    className="text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground transition-colors duration-200 hover:text-primary"
                   >
                     {title}
                   </Link>
@@ -72,7 +72,11 @@ const Footer = () => {
             </span>
 
             <div className="flex items-center gap-5 text-muted-foreground">
-              <a href="https://github.com/f0rsakeN-afk/punotes" target="_blank">
+              <a
+                href="https://github.com/f0rsakeN-afk/punotes"
+                target="_blank"
+                className="transition-transform duration-200 hover:scale-110 hover:text-foreground"
+              >
                 <GithubIcon className="h-5 w-5" />
               </a>
             </div>
