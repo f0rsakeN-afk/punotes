@@ -20,6 +20,7 @@ import {
   FileText,
   House,
   LogOut,
+  MessageCircle,
   MessageSquare,
   Users,
 } from "lucide-react";
@@ -66,6 +67,11 @@ const sidebarData = [
     name: "Feedback",
     route: "/feedback",
     icon: <MessageSquare size={6} />,
+  },
+  {
+    name: "Chat",
+    route: "/chat",
+    icon: <MessageCircle size={6} />,
   },
   {
     name: "About",

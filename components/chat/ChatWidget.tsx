@@ -67,7 +67,7 @@ export function ChatWidget() {
         },
         initialPageParam: undefined as string | undefined,
         getNextPageParam: (lastPage) => lastPage.nextCursor,
-        refetchInterval: isOpen ? 5000 : false,
+        refetchInterval: false,
         enabled: isOpen,
     });
 
