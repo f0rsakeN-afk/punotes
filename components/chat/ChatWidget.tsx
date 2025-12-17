@@ -308,8 +308,8 @@ export function ChatWidget() {
                         </div>
 
                         {/* Messages */}
-                        <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-                            <div className="flex flex-col-reverse gap-4 min-h-full">
+                        <ScrollArea className="flex-1 p-4 overflow-hidden" ref={scrollRef}>
+                            <div className="flex flex-col-reverse gap-4">
                                 {allMessages.map((msg: any) => {
                                     const isMe = user?.primaryEmail === msg.user.email;
                                     const displayName = getDisplayName(msg.user);
