@@ -133,7 +133,7 @@ export default function UsersTable() {
       {/* FILTERS */}
       <Highlighter action="underline" color="#E7405C" multiline={true}>
         <h2 className="my-3 text-4xl sm:text-5xl font-semibold tracking-tighter text-primary">
-          ALl Users
+          ALL Users
         </h2>
       </Highlighter>
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
