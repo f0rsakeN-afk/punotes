@@ -20,7 +20,6 @@ import {
   FileText,
   House,
   LogOut,
-  MessageCircle,
   MessageSquare,
   Users,
 } from "lucide-react";
@@ -38,7 +37,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useGetMe } from "@/services/me";
 
 const sidebarData = [
   { name: "Home", route: "/", icon: <House size={6} /> },
@@ -87,15 +85,8 @@ const sidebarData = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const user = useUser();
-  const { data: meData } = useGetMe();
 
   const { setOpenMobile } = useSidebar();
-
-  const isAdmin = meData?.data?.role === "ADMIN";
-
-  const filteredSidebarData = sidebarData.filter(
-    (item) => !item.adminOnly || isAdmin
-  );
 
   return (
     <Sidebar {...props}>
@@ -113,7 +104,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="p-2">
         <SidebarMenu>
-          {filteredSidebarData.map((item) => (
+          {sidebarData.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton
                 asChild
