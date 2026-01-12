@@ -61,7 +61,6 @@ const sidebarData = [
     name: "Upload",
     route: "/upload",
     icon: <CloudUpload size={6} />,
-    adminOnly: true,
   },
   {
     name: "Feedback",
@@ -82,7 +81,6 @@ const sidebarData = [
     name: "Users",
     route: "/users",
     icon: <Users size={6} />,
-    adminOnly: true,
   },
 ];
 
