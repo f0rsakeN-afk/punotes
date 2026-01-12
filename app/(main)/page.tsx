@@ -33,7 +33,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="relative min-h-100dvh flex items-center justify-center px-6 overflow-hidden">
+      <div className="relative min-h-dvh flex items-center justify-center px-6 overflow-hidden">
         {/* Background Watermark */}
         <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
           <span className="text-[15vw] font-black text-slate-900/[0.05] dark:text-white/[0.05] whitespace-nowrap select-none uppercase tracking-tighter transform -rotate-12">
