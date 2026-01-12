@@ -32,7 +32,7 @@ export default async function Page() {
     },
   });
 
-  if (!userData || userData.role !== "ADMIN") {
+  if (!userData) {
     redirect("/");
   }
 
