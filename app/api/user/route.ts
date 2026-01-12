@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { stackServerApp } from "@/stack/server";
 import { NextResponse } from "next/server";
 
-function maskEmail(email: string, visibleChars = 5) {
+function maskEmail(email: string, visibleChars = 7) {
   const [local, domain] = email.split("@");
   if (local.length <= visibleChars) {
     return "***@" + domain;
@@ -34,9 +34,10 @@ export async function GET() {
     }
 
     const users = await prisma.user.findMany({
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
+        stackID: true,
         email: true,
         role: true,
         createdAt: true,
