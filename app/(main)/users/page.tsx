@@ -133,7 +133,7 @@ export default function UsersTable() {
       {/* FILTERS */}
       <Highlighter action="underline" color="#E7405C" multiline={true}>
         <h2 className="my-3 text-4xl sm:text-5xl font-semibold tracking-tighter text-primary">
-          ALL Users
+          ALL Users(${data.length})
         </h2>
       </Highlighter>
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -166,7 +166,7 @@ export default function UsersTable() {
                   <TableHead key={header.id} className="">
                     {flexRender(
                       header.column.columnDef.header,
-                      header.getContext(),
+                      header.getContext()
                     )}
                   </TableHead>
                 ))}
@@ -182,7 +182,7 @@ export default function UsersTable() {
                     <TableCell key={cell.id} className="py-2">
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}

@@ -68,11 +68,11 @@ const sidebarData = [
     route: "/feedback",
     icon: <MessageSquare size={6} />,
   },
-  {
+  /*   {
     name: "Chat",
     route: "/chat",
     icon: <MessageCircle size={6} />,
-  },
+  }, */
   {
     name: "About",
     route: "/about",
@@ -96,7 +96,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const isAdmin = meData?.data?.role === "ADMIN";
 
   const filteredSidebarData = sidebarData.filter(
-    (item) => !item.adminOnly || isAdmin,
+    (item) => !item.adminOnly || isAdmin
   );
 
   return (
