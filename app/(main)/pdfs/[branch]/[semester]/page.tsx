@@ -1,50 +1,40 @@
-"use client";
-
-import { useGetNotes } from "@/services/notes";
-import { useParams } from "next/navigation";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  Loader2,
-  FileText,
   AlertTriangle,
   FileSearch,
-  ExternalLink,
 } from "lucide-react";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { DownloadButton } from "@/components/common/DownloadButton";
+import { SearchNotesClient } from "@/components/notes/SearchNotesClient";
+import prisma from "@/lib/prisma";
 
-export default function PDFS() {
-  const [query, setQuery] = useState("");
-  const params = useParams();
-
-  const branch = params?.branch as string;
-  const semester = params?.semester as string;
-
-  const { data, isLoading, isError } = useGetNotes(branch, semester);
-
-  const notes = Array.isArray(data) ? data : [];
-
-  const filtered = notes?.filter((el) =>
-    `${el.name} ${el.subject}`.toLowerCase().includes(query.toLowerCase()),
-  );
-
-  if (isLoading) {
-    return (
-      <div className="flex h-[70vh] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-primary" />
-      </div>
-    );
+async function getNoteData(branch: string, semester: string) {
+  try {
+    const decodedBranch = decodeURIComponent(branch).replace(/-/g, " ");
+    const data = await prisma.notes.findMany({
+      where: {
+        branch: {
+          contains: decodedBranch,
+          mode: "insensitive",
+        },
+        semester: semester,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch notes:", error);
+    return null;
   }
+}
 
-  if (isError) {
+export default async function PDFS({
+  params,
+}: {
+  params: Promise<{ branch: string; semester: string }>;
+}) {
+  const { branch, semester } = await params;
+  const data = await getNoteData(branch, semester);
+
+  if (data === null) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh] gap-3">
         <AlertTriangle className="h-10 w-10 text-red-500" />
@@ -55,7 +45,7 @@ export default function PDFS() {
     );
   }
 
-  if (notes.length === 0 || filtered.length === 0) {
+  if (data.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh] gap-3">
         <FileSearch className="h-10 w-10 text-muted-foreground" />
@@ -66,59 +56,16 @@ export default function PDFS() {
 
   return (
     <div className="w-full max-w-(--breakpoint-xl) mx-auto pb-10">
-      <section className="pb-8 flex flex-col spce-y-3.5">
+      <section className="pb-8 flex flex-col space-y-3.5">
         <h1 className="text-4xl tracking-wide font-bold text-primary pb-2">
-          Notes – {decodeURIComponent(branch)} / Semester {semester}
+          Notes – {decodeURIComponent(branch).replace(/-/g, " ")} / Semester {semester}
         </h1>
         <p className="text-muted-foreground pb-6">
-          Total Notes: {filtered.length}
+          Total Notes: {data.length}
         </p>
-
-        <Input
-          onChange={(e) => setQuery(e.target.value)}
-          type="text"
-          placeholder="Search by name, subject..."
-          className="max-w-3xl h-12"
-        />
       </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {filtered.map((note) => (
-          <Card key={note.id} className="border hover:shadow-md transition">
-            <CardHeader className="flex flex-row items-start gap-3">
-              <FileText className="h-6 w-6 text-primary" />
-              <div>
-                <CardTitle className="text-lg">{note.name}</CardTitle>
-                <CardDescription className="text-xs">
-                  {note.subject}
-                </CardDescription>
-                <p className="text-sm text-muted-foreground">
-                  {note.fileSize} MB •{" "}
-                  {new Date(note.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-            </CardHeader>
-
-            <CardContent className="grid grid-cols-2 gap-3 mt-2">
-              <a
-                href={note.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full"
-              >
-                <Button
-                  variant="default"
-                  className="flex gap-2 items-center cursor-pointer text-xs lg:text-sm w-full"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  View
-                </Button>
-              </a>
-              <DownloadButton url={note.url} className="w-full" />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <SearchNotesClient initialData={data} />
     </div>
   );
 }

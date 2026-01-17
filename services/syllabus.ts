@@ -1,21 +1,7 @@
 import axiosInstance from "./axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { syllabusData } from "@/types/syllabus";
+import { useMutation } from "@tanstack/react-query";
 import { SyllabusInput } from "@/schema/upload";
 import toast from "react-hot-toast";
-
-async function getSyllabus(): Promise<syllabusData[]> {
-  const response = await axiosInstance.get("/api/syllabus/");
-  return response.data;
-}
-
-export function useGetSyllabus() {
-  return useQuery({
-    queryKey: ["getSyllabus"],
-    queryFn: getSyllabus,
-    retry: 1,
-  });
-}
 
 async function uploadSyllabus(data: SyllabusInput) {
   const response = await axiosInstance.post("/api/syllabus/", data);
