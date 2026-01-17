@@ -71,10 +71,12 @@ const branchIcons: Record<Branch, React.ElementType> = {
 export default function BranchesPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category>("All");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const router = useRouter();
+  const itemsPerPage = 50;
 
-  const branches = useMemo(() => {
+  const filteredBranches = useMemo(() => {
     return BranchEnum.filter((b) => {
       const matchesQuery = b.toLowerCase().includes(query.toLowerCase());
       const matchesCategory =
@@ -82,6 +84,17 @@ export default function BranchesPage() {
       return matchesQuery && matchesCategory;
     });
   }, [query, category]);
+
+  const branches = useMemo(() => {
+    setCurrentPage(1);
+    return filteredBranches;
+  }, [filteredBranches]);
+
+  const totalPages = Math.ceil(branches.length / itemsPerPage);
+  const paginatedBranches = branches.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="max-w-(--breakpoint-xl) mx-auto py-12 px-4 sm:px-6 relative min-h-screen">
@@ -167,7 +180,7 @@ export default function BranchesPage() {
         layout
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        {branches.map((b, index) => {
+        {paginatedBranches.map((b, index) => {
           const Icon = branchIcons[b];
           return (
             <motion.div
@@ -182,10 +195,10 @@ export default function BranchesPage() {
               onClick={() => router.push(`/pdfs/${encodeURIComponent(b)}`)}
               className="group cursor-pointer"
             >
-              <Card className="relative h-full overflow-hidden border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl hover:border-primary/30 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5">
+              <Card className="relative h-full overflow-hidden border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-[#1b1c1d] backdrop-blur-xl hover:border-primary/30 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5">
                 {/* Large Background Icon */}
-                <div className="absolute -right-8 -bottom-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 pointer-events-none">
-                  <Icon className="w-48 h-48 text-primary" />
+                <div className="absolute -right-8 -bottom-8 opacity-[0.05] group-hover:opacity-[0.12] transition-opacity duration-500 pointer-events-none">
+                  <Icon className="w-48 h-48 text-slate-400 dark:text-slate-600" />
                 </div>
 
                 <div className="relative z-10 p-8 flex flex-col h-full">
@@ -222,6 +235,45 @@ export default function BranchesPage() {
           );
         })}
       </motion.main>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center justify-center gap-3 mt-12 pb-8"
+        >
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="px-6"
+          >
+            Previous
+          </Button>
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Button
+                key={page}
+                variant={currentPage === page ? "default" : "outline"}
+                onClick={() => setCurrentPage(page)}
+                className="w-10 h-10 p-0"
+              >
+                {page}
+              </Button>
+            ))}
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className="px-6"
+          >
+            Next
+          </Button>
+        </motion.div>
+      )}
     </div>
   );
 }

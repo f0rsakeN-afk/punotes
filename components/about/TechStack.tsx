@@ -79,11 +79,11 @@ export default function TechStack() {
           return (
             <Card
               key={section.title}
-              className="relative overflow-hidden border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 group"
+              className="relative overflow-hidden border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-[#1b1c1d] backdrop-blur-xl hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 group"
             >
               {/* Background Icon */}
-              <div className="absolute -right-8 -bottom-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 pointer-events-none">
-                <Icon className="w-48 h-48 text-primary" />
+              <div className="absolute -right-8 -bottom-8 opacity-[0.05] group-hover:opacity-[0.12] transition-opacity duration-500 pointer-events-none">
+                <Icon className="w-48 h-48 text-slate-400 dark:text-slate-600" />
               </div>
 
               <div className="relative z-10 p-8 space-y-6">

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/shared/Sidebar";
+import { TopHeader } from "@/components/shared/TopHeader";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
 
@@ -51,17 +46,13 @@ export default function MainLayoutClient({
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right" />
-
-      <SidebarProvider>
-        <ScrollProgress />
-        <AppSidebar />
-        <SidebarInset className="p-2">
-          <SidebarTrigger className="mt-2" />
-          <Toaster position="top-right" />
-          {children}
-          <Footer />
-        </SidebarInset>
-      </SidebarProvider>
+      <ScrollProgress />
+      <TopHeader />
+      <main className="min-h-screen">
+        <Toaster position="top-right" />
+        {children}
+        <Footer />
+      </main>
     </QueryClientProvider>
   );
 }

@@ -5,6 +5,8 @@ import TechStack from "@/components/about/TechStack";
 
 import { Metadata } from "next";
 
+export const revalidate = 7200; // ISR with 2-hour revalidation for public data
+
 export const metadata: Metadata = {
   title: "About Us",
   description:
