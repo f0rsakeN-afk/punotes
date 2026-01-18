@@ -11,27 +11,8 @@ import { motion } from "motion/react";
 export default function Home() {
   const router = useRouter();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "PuNotes",
-    url: "https://punotes.vercel.app",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: "https://punotes.vercel.app/search?q={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
-  };
-
   return (
     <div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <div className="relative min-h-dvh flex items-center justify-center px-6 overflow-hidden">
         {/* Background Watermark */}
         <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">

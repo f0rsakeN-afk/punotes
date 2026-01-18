@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | PuNotes",
   },
   description:
-    "Your one-stop destination for Purbanchal University (PU) notes, syllabus, previous year questions (PYQs), and academic resources for all engineering branches and semesters.",
+    "Your one-stop destination for Purbanchal University (PU) notes, syllabus, previous year questions (PYQs), and academic resources for all engineering branches and semesters. Download PDFs for free.",
   keywords: [
     "Purbanchal University",
     "PU Notes",
@@ -35,10 +35,16 @@ export const metadata: Metadata = {
     "B.E. Notes",
     "Nepal Engineering",
     "Academic Resources",
+    "PU PDF Downloads",
+    "Purbanchal University Engineering Syllabus",
   ],
   authors: [{ name: "PuNotes Team" }],
   creator: "PuNotes",
   publisher: "PuNotes",
+  alternates: {
+    canonical: "/",
+  },
+  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -46,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "PuNotes",
     title: "PuNotes | Purbanchal University Academic Resources",
     description:
-      "Access comprehensive notes, syllabus, and question papers for Purbanchal University engineering students.",
+      "Access comprehensive notes, syllabus, and question papers for Purbanchal University engineering students. The ultimate academic companion.",
     images: [
       {
         url: "/og-image.png",
@@ -82,8 +88,26 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "PuNotes",
+    "url": "https://punotes.vercel.app",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://punotes.vercel.app/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${inter.variable} antialiased`}>
         <StackProvider app={stackClientApp}>
           <StackTheme>
