@@ -5,28 +5,28 @@ import Link from "next/link";
 
 const footerLinks = [
   {
-    title: "Overview",
-    href: "#",
+    title: "Home",
+    href: "/",
   },
   {
-    title: "Features",
-    href: "#",
+    title: "About",
+    href: "/about",
   },
   {
-    title: "Pricing",
-    href: "#",
-  },
-  {
-    title: "Careers",
-    href: "#",
-  },
-  {
-    title: "Help",
-    href: "#",
+    title: "Terms",
+    href: "/terms",
   },
   {
     title: "Privacy",
-    href: "#",
+    href: "/privacy",
+  },
+  {
+    title: "Changelog",
+    href: "/changelog",
+  },
+  {
+    title: "Feedback",
+    href: "/feedback",
   },
 ];
 

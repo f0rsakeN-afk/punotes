@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -171,7 +172,7 @@ export default function BranchesPage() {
             placeholder="Search branches..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-12 backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800"
+            className="h-12 bg-card/50 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-primary/20 transition-all shadow-sm"
           />
         </motion.div>
       </motion.header>
@@ -192,88 +193,76 @@ export default function BranchesPage() {
                 delay: index * 0.05,
                 ease: "easeOut",
               }}
-              onClick={() => router.push(`/pdfs/${encodeURIComponent(b)}`)}
-              className="group cursor-pointer"
             >
-              <Card className="relative h-full overflow-hidden border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-[#1b1c1d] backdrop-blur-xl hover:border-primary/30 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5">
-                {/* Large Background Icon */}
-                <div className="absolute -right-8 -bottom-8 opacity-[0.05] group-hover:opacity-[0.12] transition-opacity duration-500 pointer-events-none">
-                  <Icon className="w-48 h-48 text-slate-400 dark:text-slate-600" />
-                </div>
-
-                <div className="relative z-10 p-8 flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 rounded-2xl bg-primary/5 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
+              <Link href={`/pdfs/${encodeURIComponent(b)}`} prefetch={true} className="block h-full">
+                <div className="relative h-full p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:bg-card hover:shadow-lg hover:border-primary/20 hover:-translate-y-1">
+                  <div className="flex items-start justify-between mb-8">
+                    <div className="p-3 rounded-xl bg-primary/5 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                      {/* @ts-ignore */}
                       <Icon className="w-6 h-6" />
                     </div>
-                    <motion.div
-                      initial={{ x: -10, opacity: 0 }}
-                      whileHover={{ x: 0, opacity: 1 }}
-                      className="text-primary/50 group-hover:text-primary transition-colors"
-                    >
-                      <ArrowRight className="w-5 h-5" />
-                    </motion.div>
-                  </div>
-
-                  <div className="mt-auto">
-                    <Badge className="mb-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
+                    <Badge variant="secondary" className="bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                       {branchCategory[b]}
                     </Badge>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-primary transition-colors duration-300">
+                  </div>
+
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200">
                       {b}
                     </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
                       {descriptions[b]}
                     </p>
                   </div>
-                </div>
 
-                {/* Hover Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              </Card>
+                  <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-primary/20 transition-all duration-300" />
+                </div>
+              </Link>
             </motion.div>
           );
         })}
       </motion.main>
 
       {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="flex items-center justify-center gap-3 mt-12 pb-8"
-        >
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-            className="px-6"
+      {
+        totalPages > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center justify-center gap-3 mt-12 pb-8"
           >
-            Previous
-          </Button>
-          <div className="flex items-center gap-2">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                variant={currentPage === page ? "default" : "outline"}
-                onClick={() => setCurrentPage(page)}
-                className="w-10 h-10 p-0"
-              >
-                {page}
-              </Button>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-            disabled={currentPage === totalPages}
-            className="px-6"
-          >
-            Next
-          </Button>
-        </motion.div>
-      )}
-    </div>
+            <Button
+              variant="outline"
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className="px-6"
+            >
+              Previous
+            </Button>
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? "default" : "outline"}
+                  onClick={() => setCurrentPage(page)}
+                  className="w-10 h-10 p-0"
+                >
+                  {page}
+                </Button>
+              ))}
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+              className="px-6"
+            >
+              Next
+            </Button>
+          </motion.div>
+        )
+      }
+    </div >
   );
 }

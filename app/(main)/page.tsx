@@ -1,7 +1,6 @@
 "use client";
 
 import Features from "@/components/home/Features";
-import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 import { cn } from "@/lib/utils";
@@ -41,15 +40,7 @@ export default function Home() {
           </span>
         </div>
 
-        <AnimatedGridPattern
-          numSquares={70}
-          maxOpacity={0.1}
-          duration={3}
-          className={cn(
-            "mask-[radial-gradient(900px_circle_at_center,white,transparent)]",
-            "inset-x-0 h-full skew-y-6"
-          )}
-        />
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

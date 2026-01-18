@@ -3,6 +3,9 @@
 import { TopHeader } from "@/components/shared/TopHeader";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
+import SmoothScroll from "@/components/ui/smooth-scroll";
+import { GithubFollowDialog } from "@/components/shared/GithubFollowDialog";
+import { ChangelogDialog } from "@/components/shared/ChangelogDialog";
 
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
@@ -46,13 +49,18 @@ export default function MainLayoutClient({
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right" />
+      <SmoothScroll />
       <ScrollProgress />
-      <TopHeader />
-      <main className="min-h-screen">
-        <Toaster position="top-right" />
-        {children}
+      <div className="flex flex-col min-h-screen">
+        <TopHeader />
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <Toaster position="top-right" />
+          {children}
+        </main>
+        <GithubFollowDialog />
+        <ChangelogDialog />
         <Footer />
-      </main>
+      </div>
     </QueryClientProvider>
   );
 }
