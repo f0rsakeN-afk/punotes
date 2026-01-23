@@ -33,6 +33,14 @@ export const notesSchema = z.object({
   subject: z.string(),
 });
 
+export const readmeSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+  branch: BranchEnum,
+  semester: z.string(),
+});
+
 export type NotesInput = z.infer<typeof notesSchema>;
 export type SyllabusInput = z.infer<typeof syllabusSchema>;
 export type PyqInput = z.infer<typeof pyqSchema>;
+export type ReadmeInput = z.infer<typeof readmeSchema>;

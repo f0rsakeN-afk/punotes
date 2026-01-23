@@ -12,13 +12,25 @@ model User {
   stackID         String     @unique
   email           String     @unique
   role            Role       @default(USER)
+  status          UserStatus @default(ACTIVE)
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
   lastSeenAt      DateTime   @default(now())
   displayName     String?
   profileImageUrl String?
+
+  // Suspension fields
+  suspendedAt     DateTime?
+  suspendedUntil  DateTime?
+  suspensionReason String?
+  suspendedBy     String?
+
+  // Relations
   messages        Message[]
   reactions       Reaction[]
+  visits          Visit[]
+  auditLogsPerformed  AuditLog[] @relation("AuditLogsPerformed")
+  auditLogsReceived   AuditLog[] @relation("AuditLogsReceived")
 }
 
 model Syllabus {
@@ -92,7 +104,70 @@ model Reaction {
   @@index([userId])
 }
 
+model Visit {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  userAgent String?
+  ip        String   // Hashed IP
+  userId    String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([path])
+  @@index([userId])
+  @@index([ip])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  action      AuditAction
+  performedBy String   // Admin user ID
+  targetUser  String?  // User being affected
+  details     Json?    // { oldRole: "USER", newRole: "ADMIN", reason: "..." }
+  createdAt   DateTime @default(now())
+
+  admin  User  @relation("AuditLogsPerformed", fields: [performedBy], references: [id])
+  target User? @relation("AuditLogsReceived", fields: [targetUser], references: [id], onDelete: SetNull)
+
+  @@index([performedBy])
+  @@index([targetUser])
+  @@index([createdAt])
+  @@index([action])
+}
+
+model Readme {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String?
+  githubPath  String?
+  branch      String
+  semester    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([branch])
+  @@index([semester])
+  @@index([slug])
+}
+
 enum Role {
   USER
   ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+enum AuditAction {
+  ROLE_CHANGE
+  USER_SUSPEND
+  USER_UNSUSPEND
+  USER_BAN
+  USER_UNBAN
 }

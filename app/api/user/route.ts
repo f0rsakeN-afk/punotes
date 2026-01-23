@@ -53,7 +53,12 @@ export async function GET() {
       email: isAdmin ? user.email : maskEmail(user.email),
     }));
 
-    return NextResponse.json({ data: sanitizedUsers });
+    const response = NextResponse.json({ data: sanitizedUsers });
+
+    // Add cache headers for prefetching optimization
+    response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
+
+    return response;
   } catch (error) {
     return NextResponse.json(
       {
