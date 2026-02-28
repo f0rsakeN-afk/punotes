@@ -1,3 +1,23 @@
+export const getFileId = (url: string): string | null => {
+    const match = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
+    return match?.[1] ?? null;
+};
+
+export const getPreviewUrl = (url: string): string => {
+    try {
+        if (url.includes("drive.google.com")) {
+            const fileIdMatch =
+                url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
+            if (fileIdMatch && fileIdMatch[1]) {
+                return `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
+            }
+        }
+        return url;
+    } catch {
+        return url;
+    }
+};
+
 export const getDownloadUrl = (url: string): string => {
     try {
         // Check if it's a Google Drive URL

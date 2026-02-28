@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { FileText, FileSearch, ExternalLink } from "lucide-react";
+import { FileText, FileSearch } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DownloadButton } from "@/components/common/DownloadButton";
+import { PDFViewerDialog } from "@/components/common/PDFViewerDialog";
 import { toOrdinalWord } from "@/utils/toOrdinalWord";
 
 interface SyllabusData {
@@ -68,12 +68,7 @@ export function SearchSyllabusClient({ initialData }: { initialData: SyllabusDat
 
               {/* Actions */}
               <div className="flex items-center gap-2 pl-11">
-                <a href={el.url} target="_blank" rel="noopener noreferrer">
-                  <Button size="sm" className="h-8 text-xs gap-1.5">
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    View
-                  </Button>
-                </a>
+                <PDFViewerDialog url={el.url} title={`${toOrdinalWord(Number(el.semester))} Semester · ${el.branch}`} buttonClassName="h-8 text-xs gap-1.5" />
                 <DownloadButton url={el.url} className="h-8 text-xs" />
               </div>
             </div>
