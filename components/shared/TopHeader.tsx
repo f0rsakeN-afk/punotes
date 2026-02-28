@@ -5,10 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useUser } from "@stackframe/stack";
-import {
-  Menu,
-  LogOut,
-} from "lucide-react";
+import { Menu, LogOut, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,160 +16,198 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import ThemeToggle from "./ThemeToggler";
 import { cn } from "@/lib/utils";
 
-const navigationItems = [
-  { name: "Home", route: "/" },
+const navItems = [
   { name: "PDFs", route: "/pdfs" },
   { name: "Syllabus", route: "/syllabus" },
   { name: "Past Questions", route: "/pyqs" },
   { name: "Upload", route: "/upload" },
-  { name: "Feedback", route: "/feedback" },
   { name: "About", route: "/about" },
-  { name: "Users", route: "/users" },
 ];
+
+const mobileExtraItems = [{ name: "Feedback", route: "/feedback" }];
 
 export function TopHeader() {
   const pathname = usePathname();
   const user = useUser();
   const [open, setOpen] = React.useState(false);
 
+  const initials = user?.displayName
+    ? user.displayName.slice(0, 2).toUpperCase()
+    : user?.primaryEmail?.slice(0, 2).toUpperCase() ?? "??";
+
   return (
-    <>
-      {/* Desktop Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo and Brand */}
-            <Link href="/" className="flex items-center gap-2 mr-8 group">
-              <Image
-                src="/logo.webp"
-                width={32}
-                height={32}
-                alt="logo"
-                className="dark:invert group-hover:scale-105 transition-transform duration-300"
-              />
-              <span className="font-bold tracking-tight text-lg hidden sm:inline text-foreground">
-                Punotes
-              </span>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14">
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+            <Image
+              src="/logo.webp"
+              width={28}
+              height={28}
+              alt="PuNotes"
+              className="dark:invert transition-transform duration-200 group-hover:scale-105"
+            />
+            <span className="font-semibold text-base tracking-tight text-foreground hidden sm:inline">
+              PuNotes
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => {
+              const active =
+                item.route === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.route);
+              return (
+                <Link
+                  key={item.name}
+                  href={item.route}
+                  className={cn(
+                    "relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-150",
+                    active
+                      ? "text-foreground bg-muted"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Right actions */}
+          <div className="flex items-center gap-1.5">
+            <ThemeToggle />
+
+            {/* Feedback shortcut — desktop only */}
+            <Link href="/feedback" className="hidden lg:block">
+              <Button variant="ghost" size="icon" className="w-8 h-8 text-muted-foreground hover:text-foreground">
+                <MessageSquare className="w-4 h-4" />
+              </Button>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-6">
-              {navigationItems.map((item) => {
-                const isActive = item.route === pathname;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.route}
-                    className={cn(
-                      "text-sm font-medium transition-all duration-200 relative py-1",
-                      isActive
-                        ? "text-primary font-semibold"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {item.name}
-                    {isActive && (
-                      <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full" />
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Right Side Actions */}
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-
-              {/* Mobile Menu - Sheet */}
-              <div className="lg:hidden">
-                <Sheet open={open} onOpenChange={setOpen}>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="hover:bg-muted/50">
-                      <Menu className="w-5 h-5" />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="right" className="w-72 sm:w-80 border-l border-border/50">
-                    <div className="flex flex-col h-full mt-6">
-                      <div className="flex items-center gap-2 mb-8 px-2">
-                        <Image
-                          src="/logo.webp"
-                          width={28}
-                          height={28}
-                          alt="logo"
-                          className="dark:invert"
-                        />
-                        <span className="font-bold tracking-tight text-lg">
-                          Punotes
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        {navigationItems.map((item) => {
-                          const isActive = item.route === pathname;
-                          return (
-                            <Link
-                              key={item.name}
-                              href={item.route}
-                              onClick={() => setOpen(false)}
-                              className={cn(
-                                "flex items-center px-4 py-3 rounded-md text-sm font-medium transition-colors duration-200",
-                                isActive
-                                  ? "bg-primary/10 text-primary"
-                                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                              )}
-                            >
-                              {item.name}
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </SheetContent>
-                </Sheet>
-              </div>
-
-              {/* User Menu */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild className="cursor-pointer">
-                  <Avatar className="w-8 h-8 border border-border/50 transition-transform hover:scale-105">
-                    <AvatarImage
-                      src={user?.profileImageUrl || ""}
-                      alt="user-profile"
-                    />
-                    <AvatarFallback className="bg-muted text-xs font-medium">NR</AvatarFallback>
+            {/* User menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="rounded-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background">
+                  <Avatar className="w-8 h-8 border border-border/60 transition-opacity hover:opacity-80">
+                    <AvatarImage src={user?.profileImageUrl ?? ""} alt="avatar" />
+                    <AvatarFallback className="bg-muted text-[11px] font-semibold">
+                      {initials}
+                    </AvatarFallback>
                   </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user?.displayName}</p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user?.primaryEmail}
-                      </p>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuLabel className="font-normal py-2">
+                  <p className="text-sm font-semibold truncate">
+                    {user?.displayName ?? "Account"}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate mt-0.5">
+                    {user?.primaryEmail}
+                  </p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/feedback" className="cursor-pointer">
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Feedback
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
+                  onClick={() => user?.signOut()}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Mobile menu */}
+            <div className="lg:hidden">
+              <Sheet open={open} onOpenChange={setOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="w-8 h-8">
+                    <Menu className="w-4 h-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-64 p-0">
+                  <div className="flex flex-col h-full">
+                    {/* Sheet header */}
+                    <div className="flex items-center gap-2.5 px-5 py-4 border-b border-border/50">
+                      <Image
+                        src="/logo.webp"
+                        width={24}
+                        height={24}
+                        alt="PuNotes"
+                        className="dark:invert"
+                      />
+                      <span className="font-semibold text-base tracking-tight">PuNotes</span>
                     </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
-                    onClick={() => user?.signOut()}
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Log out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+
+                    {/* Nav links */}
+                    <nav className="flex flex-col px-3 py-3 gap-0.5">
+                      {[...navItems, ...mobileExtraItems].map((item) => {
+                        const active =
+                          item.route === "/"
+                            ? pathname === "/"
+                            : pathname.startsWith(item.route);
+                        return (
+                          <Link
+                            key={item.name}
+                            href={item.route}
+                            onClick={() => setOpen(false)}
+                            className={cn(
+                              "flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                              active
+                                ? "bg-muted text-foreground"
+                                : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                            )}
+                          >
+                            {item.name}
+                          </Link>
+                        );
+                      })}
+                    </nav>
+
+                    {/* Sheet footer */}
+                    <div className="mt-auto border-t border-border/50 px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="w-8 h-8 border border-border/60">
+                          <AvatarImage src={user?.profileImageUrl ?? ""} alt="avatar" />
+                          <AvatarFallback className="bg-muted text-[11px] font-semibold">
+                            {initials}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{user?.displayName ?? "Account"}</p>
+                          <p className="text-xs text-muted-foreground truncate">{user?.primaryEmail}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => { user?.signOut(); setOpen(false); }}
+                        className="mt-3 flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Log out
+                      </button>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 }

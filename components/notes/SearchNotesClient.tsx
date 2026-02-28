@@ -1,13 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, FileSearch, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -24,71 +17,67 @@ interface NotesData {
   branch: string;
 }
 
-interface SearchNotesClientProps {
-  initialData: NotesData[];
-}
-
-export function SearchNotesClient({ initialData }: SearchNotesClientProps) {
+export function SearchNotesClient({ initialData }: { initialData: NotesData[] }) {
   const [query, setQuery] = useState("");
 
-  const filtered = initialData.filter((el) =>
-    `${el.name} ${el.subject}`.toLowerCase().includes(query.toLowerCase()),
+  const filtered = initialData.filter((n) =>
+    `${n.name} ${n.subject}`.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
     <>
-      <section className="mb-8">
+      <div className="mb-7">
         <Input
+          value={query}
           onChange={(e) => setQuery(e.target.value)}
-          type="text"
-          placeholder="Search by name, subject..."
-          className="max-w-3xl h-12"
+          placeholder="Search by name or subject…"
+          className="max-w-sm h-10"
         />
-      </section>
+      </div>
 
       {filtered.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-[50vh] gap-3">
-          <FileSearch className="h-10 w-10 text-muted-foreground" />
-          <p className="text-lg text-muted-foreground">No notes found.</p>
+        <div className="flex flex-col items-center justify-center py-24 gap-3 text-muted-foreground">
+          <FileSearch className="h-8 w-8" />
+          <p className="text-sm">No notes match your search.</p>
         </div>
       )}
 
       {filtered.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((note) => (
-            <Card key={note.id} className="border hover:shadow-md transition">
-              <CardHeader className="flex flex-row items-start gap-3">
-                <FileText className="h-6 w-6 text-primary" />
-                <div>
-                  <CardTitle className="text-lg">{note.name}</CardTitle>
-                  <CardDescription className="text-xs">
-                    {note.subject}
-                  </CardDescription>
-                  <p className="text-sm text-muted-foreground">
-                    {note.fileSize} MB •{" "}
-                    {new Date(note.createdAt).toLocaleDateString()}
-                  </p>
+            <div
+              key={note.id}
+              className="group flex flex-col gap-3 p-4 rounded-xl border border-border/60 bg-background hover:border-border hover:shadow-sm transition-all duration-150"
+            >
+              {/* Top row */}
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
+                  <FileText className="w-4 h-4" strokeWidth={1.75} />
                 </div>
-              </CardHeader>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-foreground leading-snug truncate">
+                    {note.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate">{note.subject}</p>
+                </div>
+              </div>
 
-              <CardContent className="grid grid-cols-2 gap-3 mt-2">
-                <a
-                  href={note.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full"
-                >
-                  <Button
-                    variant="default"
-                    className="flex gap-2 items-center cursor-pointer text-xs lg:text-sm w-full"
-                  >
-                    <ExternalLink className="w-4 h-4" />
+              {/* Meta */}
+              <p className="text-xs text-muted-foreground pl-11">
+                {note.fileSize} MB &middot; {new Date(note.createdAt).toLocaleDateString()}
+              </p>
+
+              {/* Actions */}
+              <div className="flex items-center gap-2 pl-11">
+                <a href={note.url} target="_blank" rel="noopener noreferrer">
+                  <Button size="sm" className="h-8 text-xs gap-1.5">
+                    <ExternalLink className="w-3.5 h-3.5" />
                     View
                   </Button>
                 </a>
-                <DownloadButton url={note.url} className="w-full" />
-              </CardContent>
-            </Card>
+                <DownloadButton url={note.url} className="h-8 text-xs" />
+              </div>
+            </div>
           ))}
         </div>
       )}

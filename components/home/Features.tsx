@@ -1,112 +1,82 @@
-import { cn } from "@/lib/utils";
 import {
-  IconAdjustmentsBolt,
-  IconCloud,
-  IconCurrencyDollar,
-  IconEaseInOut,
-  IconHeart,
-  IconHelp,
-  IconRouteAltLeft,
-  IconTerminal2,
-} from "@tabler/icons-react";
+  BookOpen,
+  Download,
+  Lock,
+  FolderOpen,
+  Zap,
+  ShieldCheck,
+} from "lucide-react";
+
+const features = [
+  {
+    icon: BookOpen,
+    title: "All Notes in One Place",
+    description:
+      "Semester-wise notes, lab reports, and references — collected and verified by the admin.",
+  },
+  {
+    icon: Download,
+    title: "Free to Download",
+    description:
+      "Every resource is 100% free. No fees, no paywalls. Just log in and get what you need.",
+  },
+  {
+    icon: FolderOpen,
+    title: "Organized by Branch & Semester",
+    description:
+      "Content is neatly categorized so you spend time studying, not searching.",
+  },
+  {
+    icon: Zap,
+    title: "Fast & Reliable",
+    description:
+      "Hosted on edge infrastructure for near-instant load times and near-100% uptime.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Admin-Verified Content",
+    description:
+      "Every upload is reviewed before it goes live — no spam, no outdated material.",
+  },
+  {
+    icon: Lock,
+    title: "Secure Login",
+    description:
+      "Login is required only to maintain authenticity. No personal data is sold or shared.",
+  },
+];
 
 export default function Features() {
-  const features = [
-    {
-      title: "All Notes in One Place",
-      description:
-        "Access semester-wise notes collected and uploaded by the admin. Content updates take time since the platform is maintained by one person.",
-      icon: <IconTerminal2 />,
-    },
-    {
-      title: "Simple & Clean Interface",
-      description:
-        "A fast, minimal, and distraction-free UI built with Next.js and shadcn.",
-      icon: <IconEaseInOut />,
-    },
-    {
-      title: "Completely Free",
-      description:
-        "All resources are 100% free to access after logging in. No fees, no hidden charges.",
-      icon: <IconCurrencyDollar />,
-    },
-    {
-      title: "Secure Login Required",
-      description:
-        "Login is required only to keep track of users and maintain authenticity. No personal data is shared or misused.",
-      icon: <IconHelp />,
-    },
-    {
-      title: "Always Available",
-      description: "Hosted reliably for fast loading and near 100% uptime.",
-      icon: <IconCloud />,
-    },
-    {
-      title: "Organized by Faculty & Semester",
-      description:
-        "Notes, syllabus, reports, and papers are neatly categorized for easy browsing.",
-      icon: <IconRouteAltLeft />,
-    },
-    {
-      title: "Admin-Verified Content",
-      description:
-        "All uploads are reviewed and managed by a single admin to ensure accuracy and quality.",
-      icon: <IconAdjustmentsBolt />,
-    },
-    {
-      title: "More Coming Soon",
-      description:
-        "Past papers, model sets, reference books, and more will be added gradually.",
-      icon: <IconHeart />,
-    },
-  ];
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
-      {features.map((feature, index) => (
-        <Feature key={feature.title} {...feature} index={index} />
-      ))}
-    </div>
+    <section className="py-24 border-t border-border/50">
+      <div className="max-w-5xl mx-auto px-6">
+        {/* Section label */}
+        <div className="mb-14 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
+            Why PuNotes
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+            Everything you need, nothing you don't
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/50 rounded-2xl overflow-hidden border border-border/50">
+          {features.map((f) => (
+            <div
+              key={f.title}
+              className="group bg-background p-8 flex flex-col gap-4 hover:bg-muted/30 transition-colors duration-200"
+            >
+              <div className="w-9 h-9 rounded-lg bg-primary/8 flex items-center justify-center text-primary group-hover:bg-primary/12 transition-colors">
+                <f.icon className="w-4.5 h-4.5" strokeWidth={1.75} />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground mb-1.5">{f.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
-
-const Feature = ({
-  title,
-  description,
-  icon,
-  index,
-}: {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  index: number;
-}) => {
-  return (
-    <div
-      className={cn(
-        "flex flex-col lg:border-r  py-10 relative group/feature dark:border-neutral-800",
-        (index === 0 || index === 4) && "lg:border-l dark:border-neutral-800",
-        index < 4 && "lg:border-b dark:border-neutral-800",
-      )}
-    >
-      {index < 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-linear-to-t from-neutral-100 dark:from-neutral-800 to-transparent pointer-events-none" />
-      )}
-      {index >= 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-linear-to-b from-neutral-100 dark:from-neutral-800 to-transparent pointer-events-none" />
-      )}
-      <div className="mb-4 relative z-10 px-10 text-neutral-600 dark:text-neutral-400">
-        {icon}
-      </div>
-      <div className="text-lg font-bold mb-2 relative z-10 px-10">
-        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-neutral-300 dark:bg-neutral-700 group-hover/feature:bg-primary transition-all duration-200 origin-center" />
-        <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-neutral-800 dark:text-neutral-100">
-          {title}
-        </span>
-      </div>
-      <p className="text-sm text-neutral-600 dark:text-neutral-300 max-w-xs relative z-10 px-10">
-        {description}
-      </p>
-    </div>
-  );
-};

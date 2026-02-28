@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, FileText } from "lucide-react";
+import { FileText, FileSearch, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DownloadButton } from "@/components/common/DownloadButton";
 import { toOrdinalWord } from "@/utils/toOrdinalWord";
@@ -17,76 +16,67 @@ interface SyllabusData {
   createdAt: Date;
 }
 
-interface SearchSyllabusClientProps {
-  initialData: SyllabusData[];
-}
-
-export function SearchSyllabusClient({ initialData }: SearchSyllabusClientProps) {
+export function SearchSyllabusClient({ initialData }: { initialData: SyllabusData[] }) {
   const [query, setQuery] = useState("");
 
   const filtered = initialData.filter((el) =>
     `${toOrdinalWord(Number(el.semester))} ${el.branch} ${el.fileSize}`
       .toLowerCase()
-      .includes(query.toLowerCase()),
+      .includes(query.toLowerCase())
   );
 
   return (
     <>
-      <section className="mb-8">
+      <div className="mb-7">
         <Input
+          value={query}
           onChange={(e) => setQuery(e.target.value)}
-          type="text"
-          placeholder="Search by semester, branch, size..."
-          className="max-w-3xl h-12"
+          placeholder="Search by semester or branch…"
+          className="max-w-sm h-10"
         />
-      </section>
+      </div>
 
       {filtered.length === 0 && (
-        <div className="w-full flex flex-col items-center py-16 text-center gap-2">
-          <FileText className="w-10 h-10 text-gray-400" />
-          <p className="text-muted-foreground">
-            No syllabus found that matches your search.
-          </p>
+        <div className="flex flex-col items-center justify-center py-24 gap-3 text-muted-foreground">
+          <FileSearch className="h-8 w-8" />
+          <p className="text-sm">No syllabus found matching your search.</p>
         </div>
       )}
 
       {filtered.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 xl:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((el) => (
-            <Card
+            <div
               key={el.id}
-              className="border shadow-sm hover:shadow-md transition-all duration-200 flex flex-col"
+              className="group flex flex-col gap-3 p-4 rounded-xl border border-border/60 bg-background hover:border-border hover:shadow-sm transition-all duration-150"
             >
-              <CardHeader className="flex flex-row items-center gap-3">
-                <FileText className="w-6 h-6 text-primary" />
-                <div>
-                  <CardTitle className="text-base font-semibold">
+              {/* Top row */}
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
+                  <FileText className="w-4 h-4" strokeWidth={1.75} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-foreground leading-snug">
                     {toOrdinalWord(Number(el.semester))} Semester
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground">{el.branch}</p>
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate">{el.branch}</p>
                 </div>
-              </CardHeader>
+              </div>
 
-              <CardContent className="flex flex-col gap-3 h-full">
-                <p className="text-sm text-muted-foreground">
-                  Size: {el.fileSize}
-                </p>
+              {/* Meta */}
+              <p className="text-xs text-muted-foreground pl-11">{el.fileSize}</p>
 
-                <div className="mt-auto flex items-center gap-3 pt-2">
-                  <a href={el.url} target="_blank" rel="noopener noreferrer">
-                    <Button
-                      variant="default"
-                      className="flex gap-2 items-center cursor-pointer text-xs lg:text-sm"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      View
-                    </Button>
-                  </a>
-
-                  <DownloadButton url={el.url} />
-                </div>
-              </CardContent>
-            </Card>
+              {/* Actions */}
+              <div className="flex items-center gap-2 pl-11">
+                <a href={el.url} target="_blank" rel="noopener noreferrer">
+                  <Button size="sm" className="h-8 text-xs gap-1.5">
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    View
+                  </Button>
+                </a>
+                <DownloadButton url={el.url} className="h-8 text-xs" />
+              </div>
+            </div>
           ))}
         </div>
       )}

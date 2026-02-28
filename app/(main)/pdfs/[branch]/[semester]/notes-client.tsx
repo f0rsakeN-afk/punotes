@@ -4,32 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import axiosInstance from "@/services/axios";
 import { SearchNotesClient } from "@/components/notes/SearchNotesClient";
-import { AlertCircle, FileSearch, RefreshCw } from "lucide-react";
+import { AlertCircle, FileSearch, Loader, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-
-function NotesSkeleton() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="border rounded-lg p-4 space-y-3">
-          <div className="flex items-center gap-3">
-            <Skeleton className="w-6 h-6 rounded" />
-            <div className="space-y-1.5 flex-1">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-3 w-1/2" />
-            </div>
-          </div>
-          <Skeleton className="h-3 w-20" />
-          <div className="flex gap-2 pt-1">
-            <Skeleton className="h-8 w-16" />
-            <Skeleton className="h-8 w-24" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function NotesClient() {
   const params = useParams<{ branch: string; semester: string }>();
@@ -47,17 +23,24 @@ export default function NotesClient() {
   });
 
   return (
-    <div className="w-full max-w-(--breakpoint-xl) mx-auto pb-10">
-      <section className="pb-8 flex flex-col space-y-3.5">
-        <h1 className="text-4xl tracking-wide font-bold text-primary pb-2">
-          Notes – {decodedBranch} / Semester {semester}
+    <div className="w-full max-w-5xl mx-auto pb-10">
+      <div className="mb-8">
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
+          {decodedBranch} · Semester {semester}
+        </p>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          Notes
         </h1>
         {!isLoading && !isError && data && (
-          <p className="text-muted-foreground pb-6">Total Notes: {data.length}</p>
+          <p className="text-sm text-muted-foreground mt-1">{data.length} file{data.length !== 1 ? "s" : ""}</p>
         )}
-      </section>
+      </div>
 
-      {isLoading && <NotesSkeleton />}
+      {isLoading && (
+        <div className="flex items-center justify-center py-24">
+          <Loader className="w-6 h-6 animate-spin text-muted-foreground" />
+        </div>
+      )}
 
       {isError && (
         <div className="flex flex-col items-center justify-center h-[50vh] gap-4">

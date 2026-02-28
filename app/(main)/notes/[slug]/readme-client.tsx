@@ -3,42 +3,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import axiosInstance from "@/services/axios";
-import { ArrowLeft, Calendar, Github, User, AlertCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, Calendar, Github, Loader, User, AlertCircle, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-
-function ReadmeSkeleton() {
-  return (
-    <div className="max-w-4xl mx-auto px-6 py-12 min-h-screen">
-      <Skeleton className="h-9 w-32 mb-8 rounded-md" />
-      <div className="space-y-6 mb-12">
-        <div className="flex gap-2">
-          <Skeleton className="h-6 w-24 rounded-full" />
-          <Skeleton className="h-6 w-20 rounded-full" />
-        </div>
-        <Skeleton className="h-14 w-3/4" />
-        <div className="flex gap-6 py-4 border-y">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-4 w-28" />
-          <Skeleton className="h-4 w-32" />
-        </div>
-      </div>
-      <div className="space-y-4">
-        <Skeleton className="h-6 w-full" />
-        <Skeleton className="h-4 w-5/6" />
-        <Skeleton className="h-4 w-4/5" />
-        <Skeleton className="h-6 w-2/3 mt-6" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-5/6" />
-        <Skeleton className="h-4 w-3/4" />
-      </div>
-    </div>
-  );
-}
 
 export default function ReadmeClient() {
   const { slug } = useParams<{ slug: string }>();
@@ -51,7 +21,11 @@ export default function ReadmeClient() {
     },
   });
 
-  if (isLoading) return <ReadmeSkeleton />;
+  if (isLoading) return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Loader className="w-6 h-6 animate-spin text-muted-foreground" />
+    </div>
+  );
 
   if (isError) {
     return (
