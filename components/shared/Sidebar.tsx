@@ -21,7 +21,6 @@ import {
   House,
   LogOut,
   MessageSquare,
-  Users,
 } from "lucide-react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggler";
@@ -74,11 +73,6 @@ const sidebarData = [
     name: "About",
     route: "/about",
     icon: <BadgeInfo size={6} />,
-  },
-  {
-    name: "Users",
-    route: "/users",
-    icon: <Users size={6} />,
   },
 ];
 
