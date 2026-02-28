@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  //url      = env("DATABASE_URL")
 }
 
 model User {
@@ -21,17 +21,17 @@ model User {
   profileImageUrl String?
 
   // Suspension fields
-  suspendedAt     DateTime?
-  suspendedUntil  DateTime?
+  suspendedAt      DateTime?
+  suspendedUntil   DateTime?
   suspensionReason String?
-  suspendedBy     String?
+  suspendedBy      String?
 
   // Relations
-  messages        Message[]
-  reactions       Reaction[]
-  visits          Visit[]
-  auditLogsPerformed  AuditLog[] @relation("AuditLogsPerformed")
-  auditLogsReceived   AuditLog[] @relation("AuditLogsReceived")
+  messages           Message[]
+  reactions          Reaction[]
+  visits             Visit[]
+  auditLogsPerformed AuditLog[] @relation("AuditLogsPerformed")
+  auditLogsReceived  AuditLog[] @relation("AuditLogsReceived")
 }
 
 model Syllabus {
@@ -110,7 +110,7 @@ model Visit {
   path      String
   referrer  String?
   userAgent String?
-  ip        String   // Hashed IP
+  ip        String // Hashed IP
   userId    String?
   createdAt DateTime @default(now())
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -122,12 +122,12 @@ model Visit {
 }
 
 model AuditLog {
-  id          String   @id @default(cuid())
+  id          String      @id @default(cuid())
   action      AuditAction
-  performedBy String   // Admin user ID
-  targetUser  String?  // User being affected
-  details     Json?    // { oldRole: "USER", newRole: "ADMIN", reason: "..." }
-  createdAt   DateTime @default(now())
+  performedBy String // Admin user ID
+  targetUser  String? // User being affected
+  details     Json? // { oldRole: "USER", newRole: "ADMIN", reason: "..." }
+  createdAt   DateTime    @default(now())
 
   admin  User  @relation("AuditLogsPerformed", fields: [performedBy], references: [id])
   target User? @relation("AuditLogsReceived", fields: [targetUser], references: [id], onDelete: SetNull)
@@ -139,15 +139,15 @@ model AuditLog {
 }
 
 model Readme {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  content     String?
-  githubPath  String?
-  branch      String
-  semester    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(cuid())
+  title      String
+  slug       String   @unique
+  content    String?
+  githubPath String?
+  branch     String
+  semester   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([branch])
   @@index([semester])
