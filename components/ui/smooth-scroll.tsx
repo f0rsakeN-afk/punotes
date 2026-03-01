@@ -13,25 +13,25 @@ export default function SmoothScroll() {
             smoothWheel: true,
             wheelMultiplier: 1,
             // touchMultiplier: 2,
+            prevent: (node) => !!node.closest('[role="dialog"]'),
         });
 
         // Handle scroll locking (e.g., when dialogs/sheets are open)
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === "attributes" && mutation.attributeName === "style") {
-                    const isLocked = document.body.style.overflow === "hidden";
-                    if (isLocked) {
-                        lenis.stop();
-                    } else {
-                        lenis.start();
-                    }
-                }
-            });
+        // Radix UI sets data-scroll-locked on body; also check overflow:hidden for other cases
+        const observer = new MutationObserver(() => {
+            const isLocked =
+                document.body.hasAttribute("data-scroll-locked") ||
+                document.body.style.overflow === "hidden";
+            if (isLocked) {
+                lenis.stop();
+            } else {
+                lenis.start();
+            }
         });
 
         observer.observe(document.body, {
             attributes: true,
-            attributeFilter: ["style"],
+            attributeFilter: ["style", "data-scroll-locked"],
         });
 
         function raf(time: number) {

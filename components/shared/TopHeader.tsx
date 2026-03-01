@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useUser } from "@stackframe/stack";
-import { Menu, LogOut, MessageSquare } from "lucide-react";
+import { Menu, LogOut, MessageSquare, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,6 +19,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import ThemeToggle from "./ThemeToggler";
 import { cn } from "@/lib/utils";
+import { isAdviceDue } from "@/lib/advice-cookie";
 
 const navItems = [
   { name: "PDFs", route: "/pdfs" },
@@ -34,6 +35,11 @@ export function TopHeader() {
   const pathname = usePathname();
   const user = useUser();
   const [open, setOpen] = React.useState(false);
+  const [adviceDue, setAdviceDue] = React.useState(false);
+
+  React.useEffect(() => {
+    setAdviceDue(isAdviceDue());
+  }, [pathname]);
 
   const initials = user?.displayName
     ? user.displayName.slice(0, 2).toUpperCase()
@@ -80,6 +86,21 @@ export function TopHeader() {
                 </Link>
               );
             })}
+            <Link
+              href="/advice"
+              className={cn(
+                "relative flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-150",
+                pathname.startsWith("/advice")
+                  ? "text-foreground bg-muted"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              )}
+            >
+              <Flame className="w-3.5 h-3.5 text-orange-400" />
+              For You
+              {adviceDue && (
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+              )}
+            </Link>
           </nav>
 
           {/* Right actions */}
@@ -177,6 +198,22 @@ export function TopHeader() {
                           </Link>
                         );
                       })}
+                      <Link
+                        href="/advice"
+                        onClick={() => setOpen(false)}
+                        className={cn(
+                          "relative flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                          pathname.startsWith("/advice")
+                            ? "bg-muted text-foreground"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                        )}
+                      >
+                        <Flame className="w-3.5 h-3.5 text-orange-400" />
+                        For You
+                        {adviceDue && (
+                          <span className="ml-auto w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                        )}
+                      </Link>
                     </nav>
 
                     {/* Sheet footer */}
