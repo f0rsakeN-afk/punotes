@@ -57,6 +57,7 @@ export function TopHeader() {
               width={28}
               height={28}
               alt="PuNotes"
+              priority
               className="dark:invert transition-transform duration-200 group-hover:scale-105"
             />
             <span className="font-semibold text-base tracking-tight text-foreground hidden sm:inline">

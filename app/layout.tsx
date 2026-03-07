@@ -8,6 +8,9 @@ import { ThemeProvider } from "@/components/shared/ThemeProvider";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+  fallback: ["system-ui", "sans-serif"],
+  preload: true,
 });
 
 export const viewport: Viewport = {
