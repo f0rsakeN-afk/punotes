@@ -1,4 +1,11 @@
 import { NextResponse } from "next/server";
+
+export async function GET() {
+  return NextResponse.json({ message: "Analytics disabled" }, { status: 404 });
+}
+
+/*
+import { NextResponse } from "next/server";
 import { stackServerApp } from "@/stack/server";
 import prisma from "@/lib/prisma";
 import { startOfDay, subDays, format } from "date-fns";
@@ -27,12 +34,10 @@ export async function GET(req: Request) {
         const days = parseInt(url.searchParams.get("days") || "30");
         const startDate = startOfDay(subDays(new Date(), days - 1));
 
-        // 1. Total Hits & Unique Visitors (Last 'days' days)
         const totalHits = await prisma.visit.count({
             where: { createdAt: { gte: startDate } }
         });
 
-        // For unique visitors, we need to group by hashed IP
         const uniqueVisitorsRaw = await prisma.visit.groupBy({
             by: ['ip'],
             where: { createdAt: { gte: startDate } },
@@ -40,9 +45,8 @@ export async function GET(req: Request) {
         });
         const uniqueVisitors = uniqueVisitorsRaw.length;
 
-        // 2. Daily Stats (for Graph)
         const dailyVisits = await prisma.$queryRaw`
-            SELECT 
+            SELECT
                 DATE_TRUNC('day', "createdAt") as date,
                 COUNT(*) as count,
                 COUNT(DISTINCT "ip") as unique_count
@@ -52,7 +56,6 @@ export async function GET(req: Request) {
             ORDER BY date ASC
         `;
 
-        // 3. Top Paths
         const topPaths = await prisma.visit.groupBy({
             by: ['path'],
             _count: { _all: true },
@@ -60,7 +63,6 @@ export async function GET(req: Request) {
             take: 10
         });
 
-        // 4. Browser & OS Breakdown
         const allVisits = await prisma.visit.findMany({
             where: { createdAt: { gte: startDate } },
             select: { userAgent: true }
@@ -71,7 +73,6 @@ export async function GET(req: Request) {
 
         allVisits.forEach(v => {
             const ua = v.userAgent || "Unknown";
-            // Simple parsing (can be replaced with 'ua-parser-js' if needed)
             const browser = ua.includes("Chrome") ? "Chrome" : ua.includes("Firefox") ? "Firefox" : ua.includes("Safari") ? "Safari" : ua.includes("Edge") ? "Edge" : "Other";
             const os = ua.includes("Windows") ? "Windows" : ua.includes("Mac") ? "MacOS" : ua.includes("Android") ? "Android" : ua.includes("iPhone") ? "iOS" : ua.includes("Linux") ? "Linux" : "Other";
 
@@ -79,10 +80,9 @@ export async function GET(req: Request) {
             osMap[os] = (osMap[os] || 0) + 1;
         });
 
-        // 5. Hourly Activity (Last 24 hours)
         const last24h = subDays(new Date(), 1);
         const hourlyStats = await prisma.$queryRaw`
-            SELECT 
+            SELECT
                 EXTRACT(hour from "createdAt") as hour,
                 COUNT(*) as count
             FROM "Visit"
@@ -91,7 +91,6 @@ export async function GET(req: Request) {
             ORDER BY hour ASC
         `;
 
-        // 6. Recent Activity with User Details
         const recentActivity = await prisma.visit.findMany({
             take: 15,
             orderBy: { createdAt: 'desc' },
@@ -107,7 +106,6 @@ export async function GET(req: Request) {
             }
         });
 
-        // 7. Growth Calculation
         const prevStartDate = subDays(startDate, days);
         const prevTotalHits = await prisma.visit.count({
             where: { createdAt: { gte: prevStartDate, lt: startDate } }
@@ -121,7 +119,7 @@ export async function GET(req: Request) {
                 uniqueVisitors,
                 growth: parseFloat(growth.toFixed(2)),
                 period: days,
-                activeUsersNow: Math.floor(Math.random() * 5) + 1 // Simulated live users
+                activeUsersNow: Math.floor(Math.random() * 5) + 1
             },
             dailyStats: dailyVisits,
             hourlyStats,
@@ -144,3 +142,4 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: "Failed to fetch analytics data" }, { status: 500 });
     }
 }
+*/

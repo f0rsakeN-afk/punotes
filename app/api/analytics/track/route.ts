@@ -1,4 +1,11 @@
 import { NextResponse } from "next/server";
+
+export async function POST() {
+  return NextResponse.json({ message: "Analytics disabled" }, { status: 404 });
+}
+
+/*
+import { NextResponse } from "next/server";
 import { stackServerApp } from "@/stack/server";
 import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
@@ -8,15 +15,11 @@ export async function POST(req: Request) {
     try {
         const { path, referrer } = await req.json();
 
-        // Log in background or wait? 
-        // For simplicity, we wait, but in production this should be async/background
-
         const stackUser = await stackServerApp.getUser();
         const headerList = await headers();
         const userAgent = headerList.get("user-agent");
         const ip = headerList.get("x-forwarded-for") || "unknown";
 
-        // Hash IP for privacy
         const hashedIp = crypto.createHash("sha256").update(ip).digest("hex");
 
         let userId = null;
@@ -42,3 +45,4 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Failed to track visit" }, { status: 500 });
     }
 }
+*/

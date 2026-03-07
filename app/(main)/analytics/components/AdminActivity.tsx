@@ -1,3 +1,8 @@
+export function AdminActivity() {
+  return null;
+}
+
+/*
 "use client";
 
 import { useEffect, useState } from "react";
@@ -56,7 +61,6 @@ export function AdminActivity() {
 
   useEffect(() => {
     fetchRecentActivity();
-    // Refresh every 30 seconds
     const interval = setInterval(fetchRecentActivity, 30000);
     return () => clearInterval(interval);
   }, []);
@@ -64,10 +68,7 @@ export function AdminActivity() {
   const fetchRecentActivity = async () => {
     try {
       const response = await axios.get("/api/audit-logs", {
-        params: {
-          page: 1,
-          limit: 10,
-        },
+        params: { page: 1, limit: 10 },
       });
       setLogs(response.data.logs);
     } catch (error) {
@@ -109,13 +110,10 @@ export function AdminActivity() {
                 key={log.id}
                 className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition"
               >
-                {/* Admin Avatar */}
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={log.admin.profileImageUrl || undefined} />
                   <AvatarFallback>{log.admin.email[0]}</AvatarFallback>
                 </Avatar>
-
-                {/* Activity Details */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-medium text-sm truncate">
@@ -137,11 +135,7 @@ export function AdminActivity() {
                     {format(new Date(log.createdAt), "PPP p")}
                   </div>
                 </div>
-
-                {/* Action Badge */}
-                <Badge
-                  className={`${actionColors[log.action] || "bg-gray-100 text-gray-800"} text-xs`}
-                >
+                <Badge className={`${actionColors[log.action] || "bg-gray-100 text-gray-800"} text-xs`}>
                   {log.action}
                 </Badge>
               </div>
@@ -152,3 +146,4 @@ export function AdminActivity() {
     </Card>
   );
 }
+*/
