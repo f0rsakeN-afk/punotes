@@ -5,7 +5,7 @@ const withPWA = withPWAInit({
   dest: "public",
 
   cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: false,
+  aggressiveFrontEndNavCaching: true,
 
   reloadOnOnline: true,
 

@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import SyllabusClient from "./syllabus-client";
+import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import prisma from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Syllabus",
@@ -21,6 +23,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SyllabusPage() {
-  return <SyllabusClient />;
+export default async function SyllabusPage() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["syllabus"],
+    queryFn: () => prisma.syllabus.findMany({ orderBy: { createdAt: "asc" } }),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <SyllabusClient />
+    </HydrationBoundary>
+  );
 }

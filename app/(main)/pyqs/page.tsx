@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import PyqsClient from "./pyqs-client";
+import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import prisma from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Past Year Questions",
@@ -20,6 +22,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PyqsPage() {
-  return <PyqsClient />;
+export default async function PyqsPage() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["pyqs"],
+    queryFn: () => prisma.pYQ.findMany({ orderBy: { createdAt: "asc" } }),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <PyqsClient />
+    </HydrationBoundary>
+  );
 }

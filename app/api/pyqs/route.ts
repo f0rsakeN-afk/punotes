@@ -9,7 +9,10 @@ export async function GET() {
     const data = await prisma.pYQ.findMany({
       orderBy: { createdAt: "asc" },
     });
-    return NextResponse.json(data, { status: 200 });
+    return NextResponse.json(data, {
+      status: 200,
+      headers: { "Cache-Control": "private, max-age=3600, stale-while-revalidate=300" },
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
