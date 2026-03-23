@@ -125,11 +125,12 @@ export default function BranchesPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: i * 0.04, ease: "easeOut" }}
+                className="h-full"
               >
                 <Link
                   href={`/pdfs/${encodeURIComponent(b)}`}
                   prefetch
-                  className="group flex flex-col gap-4 p-5 rounded-xl border border-border/60 bg-background hover:border-border hover:shadow-md transition-all duration-150"
+                  className="group flex flex-col gap-4 p-5 rounded-xl border border-border/60 bg-background hover:border-border hover:shadow-md transition-all duration-150 h-full"
                 >
                   <div className="flex items-start justify-between">
                     <div className="w-9 h-9 rounded-lg bg-primary/8 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">

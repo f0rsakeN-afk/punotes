@@ -4,8 +4,6 @@ import { TopHeader } from "@/components/shared/TopHeader";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
 import SmoothScroll from "@/components/ui/smooth-scroll";
-import { GithubFollowDialog } from "@/components/shared/GithubFollowDialog";
-import { VolunteerDialog } from "@/components/shared/VolunteerDialog";
 
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
@@ -57,8 +55,6 @@ export default function MainLayoutClient({
           <Toaster position="top-right" />
           {children}
         </main>
-        <GithubFollowDialog />
-        <VolunteerDialog />
         <Footer />
       </div>
     </QueryClientProvider>
