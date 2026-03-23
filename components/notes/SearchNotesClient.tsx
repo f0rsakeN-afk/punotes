@@ -3,8 +3,12 @@
 import { useState } from "react";
 import { FileText, FileSearch } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Eye, Download } from "lucide-react";
 import { DownloadButton } from "@/components/common/DownloadButton";
 import { PDFViewerDialog } from "@/components/common/PDFViewerDialog";
+import { AuthGateDialog } from "@/components/common/AuthGateDialog";
+import { useUser } from "@stackframe/stack";
 
 interface NotesData {
   id: string;
@@ -19,13 +23,25 @@ interface NotesData {
 
 export function SearchNotesClient({ initialData }: { initialData: NotesData[] }) {
   const [query, setQuery] = useState("");
+  const [authGateOpen, setAuthGateOpen] = useState(false);
+  const user = useUser();
 
   const filtered = initialData.filter((n) =>
     `${n.name} ${n.subject}`.toLowerCase().includes(query.toLowerCase())
   );
 
+  const handleGatedAction = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      e.stopPropagation();
+      setAuthGateOpen(true);
+    }
+  };
+
   return (
     <>
+      <AuthGateDialog open={authGateOpen} onOpenChange={setAuthGateOpen} />
+
       <div className="mb-7">
         <Input
           value={query}
@@ -68,9 +84,24 @@ export function SearchNotesClient({ initialData }: { initialData: NotesData[] })
               </p>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pl-11">
-                <PDFViewerDialog url={note.url} title={note.name} buttonClassName="h-8 text-xs gap-1.5" />
-                <DownloadButton url={note.url} className="h-8 text-xs" />
+              <div className="flex items-center gap-2 pl-11" onClick={handleGatedAction}>
+                {user ? (
+                  <>
+                    <PDFViewerDialog url={note.url} title={note.name} buttonClassName="h-8 text-xs gap-1.5" />
+                    <DownloadButton url={note.url} className="h-8 text-xs" />
+                  </>
+                ) : (
+                  <>
+                    <Button size="sm" className="h-8 text-xs gap-1.5">
+                      <Eye className="w-3.5 h-3.5" />
+                      View
+                    </Button>
+                    <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5">
+                      <Download className="w-3.5 h-3.5" />
+                      Download
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           ))}

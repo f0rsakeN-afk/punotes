@@ -3,6 +3,26 @@ import NotesClient from "./notes-client";
 import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import prisma from "@/lib/prisma";
 
+export const revalidate = 86400;
+
+const branches = [
+  "Computer Engineering",
+  "Civil Engineering",
+  "Electrical Engineering",
+  "Electronics and Communication",
+  "BCA",
+  "BIT",
+];
+
+export function generateStaticParams() {
+  return branches.flatMap((branch) =>
+    Array.from({ length: 8 }, (_, i) => ({
+      branch: encodeURIComponent(branch),
+      semester: String(i + 1),
+    }))
+  );
+}
+
 export async function generateMetadata({
   params,
 }: {

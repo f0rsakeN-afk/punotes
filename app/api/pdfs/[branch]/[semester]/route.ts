@@ -1,21 +1,13 @@
 import prisma from "@/lib/prisma";
-import { stackServerApp } from "@/stack/server";
 import { NextResponse } from "next/server";
+
+export const revalidate = 86400;
 
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ semester: string; branch: string }> },
 ) {
   try {
-    const user = await stackServerApp.getUser();
-
-    if (!user) {
-      return NextResponse.json(
-        { message: "You are not authorized. Please signin to get access." },
-        { status: 401 },
-      );
-    }
-
     const { branch: rawBranch, semester } = await params;
     const branch = decodeURIComponent(rawBranch).replace(/-/g, " ");
 
@@ -33,7 +25,7 @@ export async function GET(
 
     return NextResponse.json(data, {
       status: 200,
-      headers: { "Cache-Control": "private, max-age=3600, stale-while-revalidate=300" },
+      headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
     });
   } catch (error) {
     console.log(error);

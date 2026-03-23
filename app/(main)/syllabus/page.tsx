@@ -3,6 +3,8 @@ import SyllabusClient from "./syllabus-client";
 import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import prisma from "@/lib/prisma";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "Syllabus",
   description:

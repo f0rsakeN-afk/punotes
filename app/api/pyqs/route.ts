@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import { pyqSchema } from "@/schema/upload";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
+
+export const revalidate = 86400;
 import { treeifyError } from "zod";
 
 export async function GET() {
@@ -11,7 +13,7 @@ export async function GET() {
     });
     return NextResponse.json(data, {
       status: 200,
-      headers: { "Cache-Control": "private, max-age=3600, stale-while-revalidate=300" },
+      headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
     });
   } catch (error) {
     console.log(error);

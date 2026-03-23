@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useUser } from "@stackframe/stack";
-import { Menu, LogOut, MessageSquare } from "lucide-react";
+import { Menu, LogOut, MessageSquare, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -93,43 +93,52 @@ export function TopHeader() {
             </Link>
 
             {/* User menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="rounded-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background">
-                  <Avatar className="w-8 h-8 border border-border/60 transition-opacity hover:opacity-80">
-                    <AvatarImage src={user?.profileImageUrl ?? ""} alt="avatar" />
-                    <AvatarFallback className="bg-muted text-[11px] font-semibold">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-52">
-                <DropdownMenuLabel className="font-normal py-2">
-                  <p className="text-sm font-semibold truncate">
-                    {user?.displayName ?? "Account"}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate mt-0.5">
-                    {user?.primaryEmail}
-                  </p>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/feedback" className="cursor-pointer">
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    Feedback
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
-                  onClick={() => user?.signOut()}
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="rounded-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background">
+                    <Avatar className="w-8 h-8 border border-border/60 transition-opacity hover:opacity-80">
+                      <AvatarImage src={user.profileImageUrl ?? ""} alt="avatar" />
+                      <AvatarFallback className="bg-muted text-[11px] font-semibold">
+                        {initials}
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-52">
+                  <DropdownMenuLabel className="font-normal py-2">
+                    <p className="text-sm font-semibold truncate">
+                      {user.displayName ?? "Account"}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate mt-0.5">
+                      {user.primaryEmail}
+                    </p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/feedback" className="cursor-pointer">
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Feedback
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
+                    onClick={() => user.signOut()}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/handler/signin">
+                <Button size="sm" className="rounded-full gap-1.5 h-8 px-4 text-xs">
+                  <LogIn className="w-3.5 h-3.5" />
+                  Sign in
+                </Button>
+              </Link>
+            )}
 
             {/* Mobile menu */}
             <div className="lg:hidden">
@@ -180,25 +189,38 @@ export function TopHeader() {
 
                     {/* Sheet footer */}
                     <div className="mt-auto border-t border-border/50 px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="w-8 h-8 border border-border/60">
-                          <AvatarImage src={user?.profileImageUrl ?? ""} alt="avatar" />
-                          <AvatarFallback className="bg-muted text-[11px] font-semibold">
-                            {initials}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{user?.displayName ?? "Account"}</p>
-                          <p className="text-xs text-muted-foreground truncate">{user?.primaryEmail}</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => { user?.signOut(); setOpen(false); }}
-                        className="mt-3 flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Log out
-                      </button>
+                      {user ? (
+                        <>
+                          <div className="flex items-center gap-3">
+                            <Avatar className="w-8 h-8 border border-border/60">
+                              <AvatarImage src={user.profileImageUrl ?? ""} alt="avatar" />
+                              <AvatarFallback className="bg-muted text-[11px] font-semibold">
+                                {initials}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">{user.displayName ?? "Account"}</p>
+                              <p className="text-xs text-muted-foreground truncate">{user.primaryEmail}</p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => { user.signOut(); setOpen(false); }}
+                            className="mt-3 flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            Log out
+                          </button>
+                        </>
+                      ) : (
+                        <Link
+                          href="/handler/signin"
+                          onClick={() => setOpen(false)}
+                          className="flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium bg-foreground text-background hover:bg-foreground/90 transition-colors justify-center"
+                        >
+                          <LogIn className="w-4 h-4" />
+                          Sign in
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </SheetContent>

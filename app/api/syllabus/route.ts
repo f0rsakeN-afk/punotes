@@ -2,27 +2,18 @@ import prisma from "@/lib/prisma";
 import { syllabusSchema } from "@/schema/upload";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
+
+export const revalidate = 86400;
 import { treeifyError } from "zod";
 
 export async function GET() {
   try {
-    const user = await stackServerApp.getUser();
-
-    if (!user) {
-      return NextResponse.json(
-        {
-          message: "You are not authorized. Please signin to get access.",
-        },
-        { status: 401 },
-      );
-    }
-
     const data = await prisma.syllabus.findMany({
       orderBy: { createdAt: "asc" },
     });
     return NextResponse.json(data, {
       status: 200,
-      headers: { "Cache-Control": "private, max-age=3600, stale-while-revalidate=300" },
+      headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
     });
   } catch (error) {
     // console.log(error);

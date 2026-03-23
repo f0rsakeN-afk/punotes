@@ -1,6 +1,21 @@
 import { Metadata } from "next";
 import BranchPage from "./branch-client";
 
+export const revalidate = 86400;
+
+const branches = [
+  "Computer Engineering",
+  "Civil Engineering",
+  "Electrical Engineering",
+  "Electronics and Communication",
+  "BCA",
+  "BIT",
+];
+
+export function generateStaticParams() {
+  return branches.map((branch) => ({ branch: encodeURIComponent(branch) }));
+}
+
 export async function generateMetadata({
   params,
 }: {
