@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "node";
+export const runtime = "nodejs";
 
 export const alt = "PuNotes - Purbanchal University Notes & Resources";
 export const size = {
