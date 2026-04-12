@@ -2,18 +2,35 @@ import prisma from "@/lib/prisma";
 import { pyqSchema } from "@/schema/upload";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
+import { cacheGet, cacheSet, cacheDelete, getCachedUser } from "@/lib/cache";
+import limiter from "@/lib/rateLimit";
 
-export const revalidate = 86400;
 import { treeifyError } from "zod";
+
+const CACHE_KEY = "pyqs:all";
+const CACHE_TTL = 86400; // 1 day
 
 export async function GET() {
   try {
+    // Try cache first
+    const cached = await cacheGet<unknown>(CACHE_KEY);
+    if (cached) {
+      return NextResponse.json(cached, {
+        status: 200,
+        headers: { "X-Cache": "HIT", "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
+      });
+    }
+
     const data = await prisma.pYQ.findMany({
       orderBy: { createdAt: "asc" },
     });
+
+    // Store in cache
+    await cacheSet(CACHE_KEY, data, { expire: CACHE_TTL });
+
     return NextResponse.json(data, {
       status: 200,
-      headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
+      headers: { "X-Cache": "MISS", "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
     });
   } catch (error) {
     console.log(error);
@@ -28,6 +45,16 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    // Rate limit: 10 requests per minute per IP
+    try {
+      limiter.checkNext(req, 10);
+    } catch {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
 
     const parsed = pyqSchema.safeParse(body);
@@ -52,11 +79,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const data = await prisma.user.findUnique({
-      where: {
-        stackID: user.id,
-      },
-    });
+    const data = await getCachedUser(user.id);
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(
@@ -66,6 +89,9 @@ export async function POST(req: NextRequest) {
     }
 
     const saved = await prisma.pYQ.create({ data: parsed.data });
+
+    // Invalidate cache
+    await cacheDelete(CACHE_KEY);
 
     return NextResponse.json(
       {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stackServerApp } from "@/stack/server";
 import prisma from "@/lib/prisma";
 import { getAuditLogs } from "@/lib/audit";
+import { getCachedUser } from "@/lib/cache";
 
 /**
  * GET /api/audit-logs
@@ -26,10 +27,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get current user and check if admin
-    const currentUser = await prisma.user.findUnique({
-      where: { stackID: stackUser.id },
-      select: { id: true, role: true },
-    });
+    const currentUser = await getCachedUser(stackUser.id);
 
     if (!currentUser || currentUser.role !== "ADMIN") {
       return NextResponse.json(

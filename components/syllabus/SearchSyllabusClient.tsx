@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { FileText, FileSearch } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DownloadButton } from "@/components/common/DownloadButton";
-import { PDFViewerDialog } from "@/components/common/PDFViewerDialog";
 import { toOrdinalWord } from "@/utils/toOrdinalWord";
+
+const PDFViewerDialog = dynamic(
+  () => import("@/components/common/PDFViewerDialog").then((m) => m.PDFViewerDialog),
+  { loading: () => <button className="h-8 text-xs gap-1.5 inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground hover:bg-primary/90 px-3 text-xs font-medium animate-pulse">Loading...</button> }
+);
 
 interface SyllabusData {
   id: string;

@@ -1,8 +1,19 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import limiter from "@/lib/rateLimit";
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit: 30 requests per minute per IP (more lenient since it's a webhook)
+    try {
+      limiter.checkNext(request, 30);
+    } catch {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const { secret, path } = await request.json();
 
     // Simple secret-based validation (in production, use a more secure method)

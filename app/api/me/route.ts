@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { stackServerApp } from "@/stack/server";
 import { NextResponse } from "next/server";
+import { getCachedUser } from "@/lib/cache";
 
 export async function GET() {
   try {
@@ -15,11 +16,7 @@ export async function GET() {
       );
     }
 
-    const data = await prisma.user.findUnique({
-      where: {
-        stackID: user.id,
-      },
-    });
+    const data = await getCachedUser(user.id);
 
     return NextResponse.json(
       {

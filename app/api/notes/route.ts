@@ -2,10 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { notesSchema } from "@/schema/upload";
 import { stackServerApp } from "@/stack/server";
 import prisma from "@/lib/prisma";
+import { getCachedUser } from "@/lib/cache";
+import limiter from "@/lib/rateLimit";
 import { treeifyError } from "zod";
 
 export async function POST(req: NextRequest) {
   try {
+    // Rate limit: 10 requests per minute per IP
+    try {
+      limiter.checkNext(req, 10);
+    } catch {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
 
     const parsed = notesSchema.safeParse(body);
@@ -30,9 +42,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const data = await prisma.user.findUnique({
-      where: { stackID: user.id },
-    });
+    const data = await getCachedUser(user.id);
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(

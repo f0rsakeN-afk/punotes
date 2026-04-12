@@ -3,9 +3,21 @@ import { feedbackSchema } from "@/schema/feedbackSchema";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
 import { treeifyError } from "zod";
+import limiter from "@/lib/rateLimit";
+import { getCachedUser } from "@/lib/cache";
 
 export async function POST(req: NextRequest) {
   try {
+    // Rate limit: 10 requests per minute per IP
+    try {
+      limiter.checkNext(req, 10);
+    } catch {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const user = await stackServerApp.getUser();
 
     if (!user) {
@@ -58,11 +70,7 @@ export async function GET() {
       );
     }
 
-    const data = await prisma.user.findUnique({
-      where: {
-        stackID: user.id,
-      },
-    });
+    const data = await getCachedUser(user.id);
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(

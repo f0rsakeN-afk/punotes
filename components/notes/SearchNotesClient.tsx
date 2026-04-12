@@ -1,14 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { FileText, FileSearch } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, Download } from "lucide-react";
 import { DownloadButton } from "@/components/common/DownloadButton";
-import { PDFViewerDialog } from "@/components/common/PDFViewerDialog";
-import { AuthGateDialog } from "@/components/common/AuthGateDialog";
 import { useUser } from "@stackframe/stack";
+
+const PDFViewerDialog = dynamic(
+  () => import("@/components/common/PDFViewerDialog").then((m) => m.PDFViewerDialog),
+  { loading: () => <Button size="sm" className="h-8 text-xs gap-1.5" disabled>Loading...</Button> }
+);
+
+const AuthGateDialog = dynamic(
+  () => import("@/components/common/AuthGateDialog").then((m) => m.AuthGateDialog),
+  { loading: () => null }
+);
 
 interface NotesData {
   id: string;
