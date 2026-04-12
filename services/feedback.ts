@@ -34,5 +34,6 @@ export function useGetFeedbackData() {
   return useQuery({
     queryKey: ["getFeedbackData"],
     queryFn: getFeedbackData,
+    staleTime: 1000 * 60 * 60,
   });
 }

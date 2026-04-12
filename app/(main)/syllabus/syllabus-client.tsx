@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/services/axios";
 import { SearchSyllabusClient } from "@/components/syllabus/SearchSyllabusClient";
-import { AlertCircle, Loader, RefreshCw } from "lucide-react";
+import { AlertCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 async function fetchSyllabus() {
@@ -12,9 +12,10 @@ async function fetchSyllabus() {
 }
 
 export default function SyllabusClient() {
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isError, refetch } = useQuery({
     queryKey: ["syllabus"],
     queryFn: fetchSyllabus,
+    staleTime: 1000 * 60 * 60,
   });
 
   return (
@@ -27,12 +28,6 @@ export default function SyllabusClient() {
           Official syllabus for all branches and semesters
         </p>
       </div>
-
-      {isLoading && (
-        <div className="flex items-center justify-center py-24">
-          <Loader className="w-6 h-6 animate-spin text-muted-foreground" />
-        </div>
-      )}
 
       {isError && (
         <div className="w-full flex flex-col items-center py-16 text-center gap-4">
@@ -47,7 +42,7 @@ export default function SyllabusClient() {
         </div>
       )}
 
-      {!isLoading && !isError && data && (
+      {!isError && data && (
         <SearchSyllabusClient initialData={data} />
       )}
     </div>

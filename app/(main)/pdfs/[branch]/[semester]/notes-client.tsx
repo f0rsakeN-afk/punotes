@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import axiosInstance from "@/services/axios";
 import { SearchNotesClient } from "@/components/notes/SearchNotesClient";
-import { AlertCircle, FileSearch, Loader, RefreshCw } from "lucide-react";
+import { AlertCircle, FileSearch, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotesClient() {
@@ -14,12 +14,13 @@ export default function NotesClient() {
 
   const decodedBranch = decodeURIComponent(branch).replace(/-/g, " ");
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isError, refetch } = useQuery({
     queryKey: ["notes", branch, semester],
     queryFn: async () => {
       const res = await axiosInstance.get(`/api/pdfs/${branch}/${semester}`);
       return res.data;
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   return (
@@ -31,16 +32,10 @@ export default function NotesClient() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Notes
         </h1>
-        {!isLoading && !isError && data && (
+        {!isError && data && (
           <p className="text-sm text-muted-foreground mt-1">{data.length} file{data.length !== 1 ? "s" : ""}</p>
         )}
       </div>
-
-      {isLoading && (
-        <div className="flex items-center justify-center py-24">
-          <Loader className="w-6 h-6 animate-spin text-muted-foreground" />
-        </div>
-      )}
 
       {isError && (
         <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
@@ -53,14 +48,14 @@ export default function NotesClient() {
         </div>
       )}
 
-      {!isLoading && !isError && data?.length === 0 && (
+      {!isError && data?.length === 0 && (
         <div className="flex flex-col items-center justify-center h-[50vh] gap-3">
           <FileSearch className="h-10 w-10 text-muted-foreground" />
           <p className="text-lg text-muted-foreground">No notes found.</p>
         </div>
       )}
 
-      {!isLoading && !isError && data?.length > 0 && (
+      {!isError && data?.length > 0 && (
         <SearchNotesClient initialData={data} />
       )}
     </div>

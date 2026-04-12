@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/services/axios";
 import { SearchPYQClient } from "@/components/pyqs/SearchPYQClient";
-import { AlertCircle, Loader, RefreshCw } from "lucide-react";
+import { AlertCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 async function fetchPYQs() {
@@ -12,9 +12,10 @@ async function fetchPYQs() {
 }
 
 export default function PyqsClient() {
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isError, refetch } = useQuery({
     queryKey: ["pyqs"],
     queryFn: fetchPYQs,
+    staleTime: 1000 * 60 * 60,
   });
 
   return (
@@ -27,12 +28,6 @@ export default function PyqsClient() {
           Previous year question papers for all branches and semesters
         </p>
       </div>
-
-      {isLoading && (
-        <div className="flex items-center justify-center py-24">
-          <Loader className="w-6 h-6 animate-spin text-muted-foreground" />
-        </div>
-      )}
 
       {isError && (
         <div className="w-full flex flex-col items-center py-16 text-center gap-4">
@@ -47,7 +42,7 @@ export default function PyqsClient() {
         </div>
       )}
 
-      {!isLoading && !isError && data && (
+      {!isError && data && (
         <SearchPYQClient initialData={data} />
       )}
     </div>
