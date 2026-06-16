@@ -16,8 +16,10 @@ export const metadata: Metadata = {
     "PuNotes Team",
     "PU Student Initiative",
     "Study Materials Nepal",
+    "f0rsaken-afk",
+    "naresh rajbanshi",
   ],
-  authors: [{ name: "PuNotes Team" }],
+  authors: [{ name: "f0rsaken-afk" }],
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About PuNotes",
@@ -38,5 +40,29 @@ export const metadata: Metadata = {
 };
 
 export default async function About() {
-  return <AboutPage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "f0rsaken-afk",
+            url: "https://punotes.vercel.app/about",
+            image: "https://avatars.githubusercontent.com/u/125626718?v=4",
+            sameAs: [
+              "https://github.com/f0rsaken-afk",
+            ],
+            description: "Computer Engineering Student at Purbanchal University, Nepal. Creator of PuNotes.",
+            affiliation: {
+              "@type": "Organization",
+              name: "Purbanchal University",
+            },
+          }),
+        }}
+      />
+      <AboutPage />
+    </>
+  );
 }

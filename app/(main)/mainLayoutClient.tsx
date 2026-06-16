@@ -3,6 +3,7 @@
 import { TopHeader } from "@/components/shared/TopHeader";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
+import { MaintenanceBanner } from "@/components/shared/MaintenanceBanner";
 
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
@@ -52,6 +53,7 @@ export default function MainLayoutClient({
       )}
       <ScrollProgress />
       <div className="flex flex-col min-h-screen">
+        <MaintenanceBanner />
         <TopHeader isAdmin={isAdmin} />
         <main className="flex-1 w-full max-w-6xl mx-auto px-2 sm:px-4 py-6">
           <Toaster position="top-right" />

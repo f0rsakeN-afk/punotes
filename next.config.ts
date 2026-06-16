@@ -17,8 +17,6 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-
   productionBrowserSourceMaps: false,
 
   webpack: (config, { isServer }) => {
@@ -36,7 +34,16 @@ const nextConfig: NextConfig = {
   turbopack: {},
 
   images: {
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "github.com",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+    ],
   },
 
   poweredByHeader: false,

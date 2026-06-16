@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import {
   GraduationCap,
   Users,
   Globe,
   Heart,
   Loader2,
+  Github,
 } from "lucide-react";
 import {
   Accordion,
@@ -13,7 +15,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useGetStats } from "@/services/stats";
 
 const faqs = [
@@ -23,7 +25,7 @@ const faqs = [
   },
   {
     q: "How can I contribute?",
-    a: "You can share notes by contacting us directly, or contribute code via our GitHub repository.",
+    a: "Head to /share to submit notes, syllabus, or past questions. Your contributions go live after admin review and help hundreds of PU students.",
   },
   {
     q: "Is it free?",
@@ -195,6 +197,58 @@ export default function AboutPage() {
               </div>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* Creator */}
+      <section className="py-12 px-2 sm:px-4 border-t border-border/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-2">
+              Maintainer
+            </p>
+            <h2 className="text-2xl font-bold tracking-tight">
+              Built & Maintained by
+            </h2>
+          </div>
+          <div className="flex justify-center">
+            <Card className="p-6 w-full max-w-md">
+              <CardContent className="flex flex-col items-center text-center">
+                <Image
+                  src="https://avatars.githubusercontent.com/u/125626718?v=4"
+                  alt="f0rsakeN-afk"
+                  width={80}
+                  height={80}
+                  className="w-20 h-20 rounded-full mb-4 border-2 border-primary/20"
+                />
+                <h3 className="font-semibold text-lg mb-1">f0rsakeN-afk</h3>
+                <p className="text-sm text-muted-foreground mb-4 italic">
+                  "I&apos;m afraid I&apos;ll disappear long before<br />
+                  my heart ever learns to let go."
+                </p>
+                <div className="flex items-center gap-3">
+                  <a
+                    href="https://github.com/f0rsaken-afk"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors"
+                  >
+                    <Github className="w-4 h-4" />
+                    GitHub
+                  </a>
+                  <a
+                    href="/share"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+                  >
+                    Contribute
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <p className="text-center text-muted-foreground text-sm mt-6 italic">
+            Built with code and a whole lot of love 💕
+          </p>
         </div>
       </section>
 

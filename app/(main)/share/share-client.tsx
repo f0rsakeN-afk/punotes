@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,17 +14,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUser } from "@stackframe/stack";
-import { Link2, FileText, BookOpen, ScrollText, CheckCircle, Loader2 } from "lucide-react";
+import { Link2, FileText, BookOpen, ScrollText, CheckCircle, Loader2, Users, FileUp, BookMarked, HelpCircle } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import confetti from "canvas-confetti";
 
 interface ShareClientProps {
   branches: string[];
 }
 
+interface Stats {
+  userCount: number;
+  notesCount: number;
+  syllabusCount: number;
+  pyqCount: number;
+}
+
 export default function ShareClient({ branches }: ShareClientProps) {
   const user = useUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [stats, setStats] = useState<Stats | null>(null);
   const [form, setForm] = useState({
     url: "",
     branch: "",
@@ -33,6 +42,12 @@ export default function ShareClient({ branches }: ShareClientProps) {
     title: "",
     description: "",
   });
+
+  useEffect(() => {
+    axios.get("/api/stats/about").then((res) => {
+      setStats(res.data);
+    }).catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +73,12 @@ export default function ShareClient({ branches }: ShareClientProps) {
         description: form.description || undefined,
       });
       toast.success("Link submitted! It will be reviewed by an admin.");
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#6366f1", "#ec4899", "#f59e0b", "#10b981"],
+      });
       setForm({
         url: "",
         branch: "",
@@ -88,6 +109,64 @@ export default function ShareClient({ branches }: ShareClientProps) {
           Help the PU community by sharing study materials. Submit a Google Drive link and our admins will review it.
         </p>
       </div>
+
+      {/* Stats Section */}
+      {stats && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{stats.userCount}+</p>
+                  <p className="text-xs text-muted-foreground">Contributors</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <FileUp className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{stats.notesCount}</p>
+                  <p className="text-xs text-muted-foreground">Notes Shared</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <BookMarked className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{stats.syllabusCount}</p>
+                  <p className="text-xs text-muted-foreground">Syllabus Files</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <HelpCircle className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{stats.pyqCount}</p>
+                  <p className="text-xs text-muted-foreground">PYQs Shared</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <div className="grid lg:grid-cols-5 gap-6">
         {/* Form */}

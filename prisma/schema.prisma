@@ -187,6 +187,23 @@ model Readme {
   @@index([slug])
 }
 
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String   // Stack Auth ID (not Prisma User ID)
+  type      FavoriteType
+  itemId    String   // ID of the Notes/PYQ/Syllabus
+  createdAt DateTime @default(now())
+
+  @@unique([userId, type, itemId])
+  @@index([userId])
+}
+
+enum FavoriteType {
+  NOTES
+  SYLLABUS
+  PYQ
+}
+
 enum Role {
   USER
   ADMIN

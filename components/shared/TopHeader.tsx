@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useUser } from "@stackframe/stack";
-import { Menu, LogOut, MessageSquare, LogIn, FileText, Shield } from "lucide-react";
+import { Menu, LogOut, MessageSquare, LogIn, FileText, Shield, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -28,8 +28,9 @@ const navItems = [
 ];
 
 const mobileExtraItems = [
-  { name: "Feedback", route: "/feedback" },
+  { name: "My Favorites", route: "/favorites" },
   { name: "My Submissions", route: "/submissions" },
+  { name: "Feedback", route: "/feedback" },
 ];
 
 export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
@@ -67,6 +68,23 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
                 item.route === "/"
                   ? pathname === "/"
                   : pathname.startsWith(item.route);
+              if (item.name === "Share") {
+                return (
+                  <Link key={item.name} href={item.route}>
+                    <Button
+                      size="sm"
+                      className={cn(
+                        "gap-1.5 h-8 px-4 text-xs font-medium",
+                        active
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-primary/10 text-primary hover:bg-primary/20"
+                      )}
+                    >
+                      Contribute
+                    </Button>
+                  </Link>
+                );
+              }
               return (
                 <Link
                   key={item.name}
@@ -119,15 +137,21 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/feedback" className="cursor-pointer">
-                      <MessageSquare className="w-4 h-4 mr-2" />
-                      Feedback
+                    <Link href="/favorites" className="cursor-pointer">
+                      <Star className="w-4 h-4 mr-2" />
+                      My Favorites
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/submissions" className="cursor-pointer">
                       <FileText className="w-4 h-4 mr-2" />
                       My Submissions
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/feedback" className="cursor-pointer">
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Feedback
                     </Link>
                   </DropdownMenuItem>
                   {isAdmin && (

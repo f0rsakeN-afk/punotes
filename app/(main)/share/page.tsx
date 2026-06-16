@@ -4,6 +4,14 @@ import ShareClient from "./share-client";
 export const metadata: Metadata = {
   title: "Share Resources | PuNotes",
   description: "Share study resources with the PuNotes community by submitting a Google Drive link",
+  keywords: [
+    "PuNotes Share",
+    "Upload Notes PU",
+    "Contribute Study Materials",
+    "Share PYQs Purbanchal",
+    "Upload Syllabus Nepal",
+    "f0rsaken-afk",
+  ],
   alternates: { canonical: "/share" },
   openGraph: {
     title: "Share Resources | PuNotes",

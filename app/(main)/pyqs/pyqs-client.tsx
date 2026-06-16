@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { FileText, FileSearch } from "lucide-react";
+import { FileText, FileSearch, Link2, Check, Star, Share2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toOrdinalWord } from "@/utils/toOrdinalWord";
+import { useFavorites } from "@/hooks/useFavorites";
+import { toast } from "react-hot-toast";
 
 const PDFViewerDialog = dynamic(
   () => import("@/components/common/PDFViewerDialog").then((m) => m.PDFViewerDialog),
@@ -20,6 +22,86 @@ interface PYQData {
   fileSize: string;
   url: string;
   createdAt: Date;
+}
+
+function CopyLinkButton({ url }: { url: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleCopy();
+      }}
+      className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+      title="Copy link"
+    >
+      {copied ? <Check className="w-3 h-3" /> : <Link2 className="w-3 h-3" />}
+    </button>
+  );
+}
+
+function ShareButton({ url, title }: { url: string; title: string }) {
+  const handleShare = () => {
+    const shareUrl = encodeURIComponent(url);
+    const text = encodeURIComponent(`Check out this PYQ: ${title} - ${shareUrl}`);
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+  };
+
+  return (
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleShare();
+      }}
+      className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-green-600 hover:border-green-600"
+      title="Share on WhatsApp"
+    >
+      <Share2 className="w-3 h-3" />
+    </button>
+  );
+}
+
+function FavoriteButton({ itemId, type }: { itemId: string; type: "NOTES" | "SYLLABUS" | "PYQ" }) {
+  const { toggleFavorite, isFavorited } = useFavorites();
+  const [loading, setLoading] = useState(false);
+  const favorited = isFavorited(type, itemId);
+
+  const handleClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLoading(true);
+    try {
+      await toggleFavorite(type, itemId);
+    } catch {
+      toast.error("Failed to update favorite");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={loading}
+      className={`inline-flex items-center justify-center h-8 px-2 text-xs font-medium rounded-md border transition-colors ${
+        favorited
+          ? "border-amber-500 bg-amber-50 text-amber-600 hover:border-amber-600 dark:bg-amber-950/30"
+          : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
+      }`}
+      title={favorited ? "Remove from favorites" : "Add to favorites"}
+    >
+      <Star className={`w-3 h-3 ${favorited ? "fill-amber-500" : ""}`} />
+    </button>
+  );
 }
 
 function SkeletonCard() {
@@ -90,7 +172,7 @@ export function SearchPYQClient({
             >
               {/* Top row */}
               <div className="flex items-start justify-between gap-2">
-                <div className="flex items-start gap-3 min-w-0">
+                <div className="flex items-start gap-3 min-w-0 flex-1">
                   <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
                     <FileText className="w-4 h-4" strokeWidth={1.75} />
                   </div>
@@ -101,25 +183,30 @@ export function SearchPYQClient({
                     <p className="text-xs text-muted-foreground mt-0.5 truncate">{el.branch}</p>
                   </div>
                 </div>
-                <Badge variant="secondary" className="shrink-0 text-xs font-semibold">
-                  {el.year}
-                </Badge>
+                <div className="flex items-center gap-1">
+                  <FavoriteButton itemId={el.id} type="PYQ" />
+                  <Badge variant="secondary" className="shrink-0 text-xs font-semibold">
+                    {el.year}
+                  </Badge>
+                </div>
               </div>
 
               {/* Meta */}
               <p className="text-xs text-muted-foreground pl-11">{el.fileSize}</p>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pl-11">
+              <div className="flex items-center gap-1.5 pl-11">
                 <PDFViewerDialog url={el.url} title={`Semester ${el.semester} · ${el.year}`} buttonClassName="h-8 text-xs gap-1.5" />
                 <a
                   href={`https://drive.google.com/uc?export=download&id=${el.url.match(/\/d\/([^\/]+)/)?.[1]}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 h-8 px-3 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+                  className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   Download
                 </a>
+                <CopyLinkButton url={el.url} />
+                <ShareButton url={el.url} title={`Semester ${el.semester} ${el.year}`} />
               </div>
             </div>
           ))}

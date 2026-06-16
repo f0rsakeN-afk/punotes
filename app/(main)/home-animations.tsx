@@ -2,7 +2,10 @@
 
 import { ArrowUpRight, FileSearch, BookMarked, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 const quickLinks = [
   { icon: BookMarked, label: "Notes", href: "/pdfs", desc: "8 semesters" },
@@ -17,7 +20,36 @@ const floatingZs = [
   { className: "z-4", top: "70%", right: "5%" },
 ];
 
+const WELCOME_KEY = "punotes_welcome_shown";
+
 export default function HomeHero() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const hasSeenWelcome = localStorage.getItem(WELCOME_KEY);
+    if (!hasSeenWelcome) {
+      setTimeout(() => {
+        toast(
+          <div className="flex items-center gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-lg">📚</span>
+            </div>
+            <div>
+              <p className="font-medium text-sm">PuNotes needs you!</p>
+              <p className="text-xs text-muted-foreground">Have notes to share? Help other students!</p>
+            </div>
+          </div>,
+          {
+            duration: 8000,
+            position: "bottom-right",
+          }
+        );
+        localStorage.setItem(WELCOME_KEY, "true");
+      }, 3000);
+    }
+  }, []);
+
   return (
     <div className="relative z-10">
       {/* Floating Z decorations */}
@@ -52,7 +84,7 @@ export default function HomeHero() {
         .z-float-3 { animation: swayUpToRight 3s ease-out 1.2s infinite; }
         .z-float-4 { animation: swayUpToRight 3s ease-out 1.8s infinite; }
       `}</style>
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none pt-16">
         {floatingZs.map((z, i) => (
           <span
             key={i}
@@ -71,12 +103,12 @@ export default function HomeHero() {
       {/* Hero Section */}
       <section className="text-center max-w-3xl mx-auto px-2 sm:px-4 py-12 sm:py-16">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium mb-8 animate-in fade-in duration-300">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-500 text-xs font-medium mb-8 animate-in fade-in duration-300">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500" />
           </span>
-          Active &amp; Updated
+          Community Maintained
         </div>
 
         {/* Headline */}
@@ -118,9 +150,6 @@ export default function HomeHero() {
           ))}
         </div>
       </section>
-
-      {/* Decorative gradient */}
-      {/* <div className="absolute inset-x-0 top-1/2 -z-10 h-[500px] bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" /> */}
     </div>
   );
 }
