@@ -17,22 +17,10 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import axios from "axios";
-import { format, subDays, parseISO } from "date-fns";
+import { format, subDays } from "date-fns";
 import { Download } from "lucide-react";
+import { ChartsWrapper, ChartLoading } from "./ChartsWrapper";
 
 type Period = "daily" | "weekly" | "monthly";
 
@@ -117,11 +105,11 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Usage Reports</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Usage Reports</h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Track platform activity and engagement metrics
         </p>
       </div>
@@ -182,10 +170,10 @@ export default function ReportsPage() {
 
       {/* Summary Cards */}
       {report && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Messages</CardTitle>
+              <CardTitle className="text-sm font-medium">Messages</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{report.summary.totalMessages}</div>
@@ -194,7 +182,7 @@ export default function ReportsPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Reactions</CardTitle>
+              <CardTitle className="text-sm font-medium">Reactions</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{report.summary.totalReactions}</div>
@@ -203,7 +191,7 @@ export default function ReportsPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Visits</CardTitle>
+              <CardTitle className="text-sm font-medium">Visits</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{report.summary.totalVisits}</div>
@@ -232,98 +220,28 @@ export default function ReportsPage() {
 
       {/* Charts */}
       {report && report.data.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Activity Trend */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Activity Trend</CardTitle>
-              <CardDescription>Messages, Reactions, and Visits over time</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={report.data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="date"
-                    tick={{ fontSize: 12 }}
-                    angle={-45}
-                    textAnchor="end"
-                    height={80}
-                  />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="messages"
-                    stroke="#3b82f6"
-                    strokeWidth={2}
-                    name="Messages"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="reactions"
-                    stroke="#8b5cf6"
-                    strokeWidth={2}
-                    name="Reactions"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="visits"
-                    stroke="#ec4899"
-                    strokeWidth={2}
-                    name="Visits"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* User Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle>User Activity</CardTitle>
-              <CardDescription>Active Users and New Users over time</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={report.data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="date"
-                    tick={{ fontSize: 12 }}
-                    angle={-45}
-                    textAnchor="end"
-                    height={80}
-                  />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="activeUsers"
-                    fill="#10b981"
-                    name="Active Users"
-                  />
-                  <Bar
-                    dataKey="newUsers"
-                    fill="#f59e0b"
-                    name="New Users"
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Activity Overview</CardTitle>
+            <CardDescription>Trends over time</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartsWrapper data={report.data} />
+          </CardContent>
+        </Card>
       ) : loading ? (
         <Card>
-          <CardContent className="py-12">
-            <div className="text-center text-gray-500">Loading report...</div>
+          <CardHeader>
+            <CardTitle>Activity Overview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartLoading />
           </CardContent>
         </Card>
       ) : (
         <Card>
-          <CardContent className="py-12">
-            <div className="text-center text-gray-500">No data available for this period</div>
+          <CardContent className="py-12 text-center">
+            <p className="text-muted-foreground">No data available for this period</p>
           </CardContent>
         </Card>
       )}

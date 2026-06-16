@@ -3,7 +3,6 @@
 import { TopHeader } from "@/components/shared/TopHeader";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
-import SmoothScroll from "@/components/ui/smooth-scroll";
 
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
@@ -14,8 +13,10 @@ import { Toaster } from "react-hot-toast";
 
 export default function MainLayoutClient({
   children,
+  isAdmin,
 }: {
   children: React.ReactNode;
+  isAdmin?: boolean;
 }) {
   const [queryClient] = useState(() => {
     const qc = new QueryClient({
@@ -46,12 +47,13 @@ export default function MainLayoutClient({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right" />
-      <SmoothScroll />
+      {process.env.NODE_ENV === "development" && (
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right" />
+      )}
       <ScrollProgress />
       <div className="flex flex-col min-h-screen">
-        <TopHeader />
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <TopHeader isAdmin={isAdmin} />
+        <main className="flex-1 w-full max-w-6xl mx-auto px-2 sm:px-4 py-6">
           <Toaster position="top-right" />
           {children}
         </main>

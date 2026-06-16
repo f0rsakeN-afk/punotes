@@ -1,0 +1,284 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useUser } from "@stackframe/stack";
+import { Link2, FileText, BookOpen, ScrollText, CheckCircle, Loader2 } from "lucide-react";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+
+interface ShareClientProps {
+  branches: string[];
+}
+
+export default function ShareClient({ branches }: ShareClientProps) {
+  const user = useUser();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    url: "",
+    branch: "",
+    semester: "",
+    type: "NOTES" as "NOTES" | "SYLLABUS" | "PYQ",
+    title: "",
+    description: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!form.url || !form.branch || !form.semester || !form.title) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!form.url.includes("drive.google.com")) {
+      toast.error("Only Google Drive links are accepted");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await axios.post("/api/public-links", {
+        url: form.url,
+        branch: form.branch,
+        semester: form.semester,
+        type: form.type,
+        title: form.title,
+        description: form.description || undefined,
+      });
+      toast.success("Link submitted! It will be reviewed by an admin.");
+      setForm({
+        url: "",
+        branch: "",
+        semester: "",
+        type: "NOTES",
+        title: "",
+        description: "",
+      });
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { error?: string } } };
+      toast.error(err.response?.data?.error || "Failed to submit link");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <>
+      {/* Header */}
+      <div className="text-center mb-10">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
+          <Link2 className="w-8 h-8 text-primary" />
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
+          Share Resources
+        </h1>
+        <p className="text-muted-foreground max-w-xl mx-auto">
+          Help the PU community by sharing study materials. Submit a Google Drive link and our admins will review it.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-5 gap-6">
+        {/* Form */}
+        <div className="lg:col-span-3">
+          <Card>
+            <CardContent className="p-6 sm:p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Google Drive Link */}
+                <div className="space-y-2">
+                  <Label htmlFor="url">
+                    Google Drive Link <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="url"
+                    placeholder="https://drive.google.com/..."
+                    value={form.url}
+                    onChange={(e) => setForm({ ...form, url: e.target.value })}
+                    className="h-11"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Make sure the link is publicly accessible (anyone with the link can view)
+                  </p>
+                </div>
+
+                {/* Title */}
+                <div className="space-y-2">
+                  <Label htmlFor="title">
+                    Title <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="title"
+                    placeholder="e.g., Data Structures Notes - Semester 3"
+                    value={form.title}
+                    onChange={(e) => setForm({ ...form, title: e.target.value })}
+                    className="h-11"
+                  />
+                </div>
+
+                {/* Type */}
+                <div className="space-y-2">
+                  <Label>Type <span className="text-destructive">*</span></Label>
+                  <Select
+                    value={form.type}
+                    onValueChange={(v) => setForm({ ...form, type: v as typeof form.type })}
+                  >
+                    <SelectTrigger className="h-11">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="NOTES">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          Notes
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="SYLLABUS">
+                        <div className="flex items-center gap-2">
+                          <BookOpen className="w-4 h-4" />
+                          Syllabus
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="PYQ">
+                        <div className="flex items-center gap-2">
+                          <ScrollText className="w-4 h-4" />
+                          Past Questions
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Branch and Semester */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>
+                      Branch <span className="text-destructive">*</span>
+                    </Label>
+                    <Select
+                      value={form.branch}
+                      onValueChange={(v) => setForm({ ...form, branch: v })}
+                    >
+                      <SelectTrigger className="h-11">
+                        <SelectValue placeholder="Select branch" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {branches.map((b) => (
+                          <SelectItem key={b} value={b}>
+                            {b}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>
+                      Semester <span className="text-destructive">*</span>
+                    </Label>
+                    <Select
+                      value={form.semester}
+                      onValueChange={(v) => setForm({ ...form, semester: v })}
+                    >
+                      <SelectTrigger className="h-11">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 8 }, (_, i) => (
+                          <SelectItem key={i + 1} value={String(i + 1)}>
+                            Semester {i + 1}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description (optional)</Label>
+                  <Textarea
+                    id="description"
+                    placeholder="Brief description of what's in this file..."
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    className="min-h-[100px]"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full h-11"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      Submit Link
+                      <CheckCircle className="w-4 h-4 ml-2" />
+                    </>
+                  )}
+                </Button>
+
+                {!user && (
+                  <p className="text-xs text-muted-foreground text-center">
+                    You&apos;re submitting as a guest.{" "}
+                    <a href="/handler/signin" className="text-primary hover:underline">
+                      Sign in
+                    </a>{" "}
+                    to track your submissions.
+                  </p>
+                )}
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Guidelines */}
+        <div className="lg:col-span-2">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="text-lg">Guidelines</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
+              <div>
+                <h4 className="font-medium mb-1">Use Your Own Google Drive</h4>
+                <p className="text-muted-foreground">
+                  Upload your study materials to your own Google Drive and paste the share link here. Make sure the file is publicly accessible.
+                </p>
+              </div>
+              <div>
+                <h4 className="font-medium mb-1">Link Requirements</h4>
+                <ul className="text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>Must be a Google Drive link you own</li>
+                  <li>File must be publicly viewable (anyone with link can view)</li>
+                  <li>Accepted formats: PDF, DOCX</li>
+                  <li>Maximum file size: 100 MB</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-medium mb-1">What Happens Next?</h4>
+                <p className="text-muted-foreground">
+                  Admins will review your submission. Approved links are added to the resource library for everyone.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </>
+  );
+}

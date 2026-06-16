@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackClientApp } from "@/stack/client";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
+import { cn } from "@/lib/utils";
+
+const outfit = Outfit({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -58,9 +61,9 @@ export const metadata: Metadata = {
       "Access comprehensive notes, syllabus, and question papers for Purbanchal University engineering students. The ultimate academic companion.",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/logo.webp",
+        width: 512,
+        height: 512,
         alt: "PuNotes - Purbanchal University Resources",
       },
     ],
@@ -70,8 +73,13 @@ export const metadata: Metadata = {
     title: "PuNotes | Purbanchal University Notes & Syllabus",
     description:
       "The best academic resource for Purbanchal University students. Get notes, syllabus, and PYQs instantly.",
-    images: ["/og-image.png"],
+    images: ["/logo.webp"],
     creator: "@punotes",
+  },
+  icons: {
+    icon: "/logo.webp",
+    shortcut: "/logo.webp",
+    apple: "/logo.webp",
   },
   robots: {
     index: true,
@@ -91,27 +99,57 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const jsonLd = {
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "PuNotes",
+    "url": "https://punotes.vercel.app",
+    "logo": "https://punotes.vercel.app/logo.webp",
+    "description": "Free academic resources for Purbanchal University students - notes, syllabus, and past year questions.",
+    "sameAs": [
+      "https://twitter.com/punotes",
+      "https://github.com/f0rsaken-afk",
+    ],
+  };
+
+  const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "PuNotes",
     "url": "https://punotes.vercel.app",
+    "description": "Free academic resources for Purbanchal University students.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "PuNotes",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://punotes.vercel.app/logo.webp",
+      },
+    },
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://punotes.vercel.app/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://punotes.vercel.app/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+      "description": "Search for study notes and resources",
+    },
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", outfit.variable)}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://drive.google.com" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
       <body className={`${inter.variable} antialiased`}>

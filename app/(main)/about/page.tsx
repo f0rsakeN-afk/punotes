@@ -37,6 +37,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function About() {
+export default async function About() {
   return <AboutPage />;
 }

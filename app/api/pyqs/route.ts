@@ -93,6 +93,9 @@ export async function POST(req: NextRequest) {
     // Invalidate cache
     await cacheDelete(CACHE_KEY);
 
+    // Invalidate about page stats cache
+    await cacheDelete("stats:about");
+
     return NextResponse.json(
       {
         message: "PYQs added successfully.",

@@ -1,6 +1,6 @@
 import { stackServerApp } from "@/stack/server";
 import prisma from "@/lib/prisma";
-import { cacheDelete } from "@/lib/cache";
+import { cacheDelete, getCachedUser } from "@/lib/cache";
 import MainLayoutClient from "./mainLayoutClient";
 
 export default async function MainLayout({
@@ -16,9 +16,13 @@ export default async function MainLayout({
       update: { email: user.primaryEmail },
       create: { stackID: user.id, email: user.primaryEmail, role: "USER" },
     });
-    // Bust user cache so role changes reflect immediately
     await cacheDelete(`user:${user.id}`).catch(() => {});
+    // Invalidate about page stats cache when user count changes
+    await cacheDelete("stats:about").catch(() => {});
   }
 
-  return <MainLayoutClient>{children}</MainLayoutClient>;
+  const userData = user ? await getCachedUser(user.id) : null;
+  const isAdmin = userData?.role === "ADMIN";
+
+  return <MainLayoutClient isAdmin={isAdmin}>{children}</MainLayoutClient>;
 }

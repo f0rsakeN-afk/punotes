@@ -1,13 +1,11 @@
 "use client";
 
-import { motion } from "motion/react";
 import {
-  Palette,
-  Server,
-  Shield,
-  Wrench,
-  Cpu,
-  Database,
+  GraduationCap,
+  Users,
+  Globe,
+  Heart,
+  Loader2,
 } from "lucide-react";
 import {
   Accordion,
@@ -16,30 +14,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-
-const techStack = [
-  {
-    title: "Frontend",
-    icon: Palette,
-    items: ["Next.js 15", "React 19", "Tailwind 4", "Motion"],
-  },
-  {
-    title: "Backend",
-    icon: Server,
-    items: ["Route Handlers", "Prisma ORM", "PostgreSQL", "Edge Runtime"],
-  },
-  {
-    title: "Security",
-    icon: Shield,
-    items: ["Stack Auth", "Zod Validation", "Middleware", "RBAC"],
-  },
-  {
-    title: "DevOps",
-    icon: Wrench,
-    items: ["Docker", "Vercel", "Turbopack", "GitHub Actions"],
-  },
-];
+import { useGetStats } from "@/services/stats";
 
 const faqs = [
   {
@@ -60,137 +35,162 @@ const faqs = [
   },
 ];
 
-export default function AboutPage() {
+function FileText(props: React.SVGProps<SVGSVGElement> & { className?: string }) {
   return (
-    <div className="min-h-screen">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" x2="8" y1="13" y2="13" />
+      <line x1="16" x2="8" y1="17" y2="17" />
+      <line x1="10" x2="8" y1="9" y2="9" />
+    </svg>
+  );
+}
+
+function BookOpen(props: React.SVGProps<SVGSVGElement> & { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  );
+}
+
+function StatSkeleton() {
+  return (
+    <div className="text-center animate-pulse">
+      <div className="w-5 h-5 mx-auto mb-3 text-primary">
+        <Loader2 className="w-5 h-5 animate-spin" />
+      </div>
+      <div className="h-8 bg-muted rounded w-16 mx-auto mb-1" />
+      <div className="h-4 bg-muted rounded w-20 mx-auto" />
+    </div>
+  );
+}
+
+export default function AboutPage() {
+  const { data: stats, isLoading } = useGetStats();
+
+  const statItems = [
+    { label: "Active Students", value: stats?.userCount.toLocaleString() ?? "—", icon: Users },
+    { label: "Notes Available", value: stats?.notesCount.toLocaleString() ?? "—", icon: FileText },
+    { label: "Syllabus Files", value: stats?.syllabusCount.toLocaleString() ?? "—", icon: BookOpen },
+    { label: "Past Questions", value: stats?.pyqCount.toLocaleString() ?? "—", icon: GraduationCap },
+  ];
+
+  return (
+    <div>
       {/* Hero */}
-      <section className="py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Badge
-              variant="secondary"
-              className="mb-6 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full"
-            >
-              Our Mission
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent">
-              Empowering Students.
-              <br />
-              Sharing Knowledge.
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              A centralized hub for Purbanchal University notes, resources, and
-              academic materials — built by students, for students.
-            </p>
-          </motion.div>
+      <section className="py-12 px-2 sm:px-4">
+        <div className="max-w-6xl mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-6">
+            <Heart className="w-3.5 h-3.5" />
+            Built with purpose
+          </div>
+          <h1 className="text-4xl sm:text-6xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
+            Empowering Students.
+            <br />
+            <span className="text-primary">Sharing Knowledge.</span>
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            A centralized hub for Purbanchal University notes, resources, and
+            academic materials built by students, for students.
+          </p>
         </div>
       </section>
 
-      {/* Tech Stack */}
-      <section className="py-16 px-6 border-y border-border/40 bg-muted/20">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-              Stack
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              Built with modern tech
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {techStack.map((stack, i) => (
-              <motion.div
-                key={stack.title}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07, duration: 0.35 }}
-              >
-                <Card className="p-5 h-full hover:border-border transition-colors bg-background/60 backdrop-blur-sm">
-                  <div className="mb-4 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
-                    <stack.icon className="w-4 h-4" strokeWidth={1.75} />
+      {/* Stats */}
+      <section className="py-12 px-2 sm:px-4 border rounded-sm border-border/50 bg-muted/30">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {isLoading
+              ? Array.from({ length: 4 }).map((_, i) => <StatSkeleton key={i} />)
+              : statItems.map((stat, i) => (
+                  <div key={stat.label} className="text-center animate-in fade-in slide-in-from-bottom-4 duration-300" style={{ animationDelay: `${i * 75}ms` }}>
+                    <stat.icon className="w-5 h-5 mx-auto mb-3 text-primary" />
+                    <div className="text-2xl sm:text-3xl font-bold text-foreground mb-1">{stat.value}</div>
+                    <div className="text-sm text-muted-foreground">{stat.label}</div>
                   </div>
-                  <h3 className="font-semibold text-sm mb-3">{stack.title}</h3>
-                  <ul className="space-y-1.5">
-                    {stack.items.map((item) => (
-                      <li
-                        key={item}
-                        className="text-xs text-muted-foreground flex items-center gap-2"
-                      >
-                        <div className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              </motion.div>
-            ))}
+                ))}
           </div>
         </div>
       </section>
 
-      {/* Infrastructure */}
-      <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
+      {/* Mission */}
+      <section className="py-12 px-2 sm:px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-                Infrastructure
+              <p className="text-xs font-medium uppercase tracking-widest text-primary mb-3">
+                Our Mission
               </p>
-              <h2 className="text-2xl font-bold tracking-tight mb-4">
-                Reliable by design
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-foreground">
+                Democratizing Education
               </h2>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                PuNotes runs on auto-scaling, edge-optimized infrastructure —
-                so notes load fast whether it's a quiet Tuesday or exam week.
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                We believe that quality education resources should be accessible to everyone.
+                PuNotes bridges the gap between students who have notes and students who need them,
+                creating a collaborative learning environment where knowledge flows freely.
               </p>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-4 rounded-xl bg-card border">
-                  <div className="flex items-center gap-2 mb-1.5 text-primary">
-                    <Cpu className="w-4 h-4" />
-                    <span className="text-xs font-semibold">Compute</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Serverless Functions on Vercel Edge
-                  </p>
-                </div>
-                <div className="p-4 rounded-xl bg-card border">
-                  <div className="flex items-center gap-2 mb-1.5 text-primary">
-                    <Database className="w-4 h-4" />
-                    <span className="text-xs font-semibold">Storage</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    PostgreSQL with connection pooling
-                  </p>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Globe className="w-4 h-4 text-primary" />
+                  <span>Open to all PU students</span>
                 </div>
               </div>
             </div>
 
-            {/* Terminal card */}
-            <Card className="p-6 bg-zinc-950 text-white border-zinc-800 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-violet-500/10 blur-3xl rounded-full pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-cyan-500/10 blur-2xl rounded-full pointer-events-none" />
-              <div className="relative space-y-5 text-sm font-mono">
-                <div className="flex items-center justify-between border-b border-white/8 pb-4">
-                  <span className="text-zinc-500 text-xs">Region</span>
-                  <span className="text-zinc-200">ap-southeast-1</span>
+            {/* Mission visual */}
+            <Card className="p-6 bg-linear-to-br from-primary/5 to-primary/10 border-primary/20">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                    <GraduationCap className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">Academic Excellence</p>
+                    <p className="text-xs text-muted-foreground">Curated, verified content for every subject</p>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between border-b border-white/8 pb-4">
-                  <span className="text-zinc-500 text-xs">Runtime</span>
-                  <span className="text-zinc-200">Edge / Node 20</span>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                    <Users className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">Community Driven</p>
+                    <p className="text-xs text-muted-foreground">Students helping students succeed</p>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-500 text-xs">Status</span>
-                  <span className="flex items-center gap-2 text-zinc-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Operational
-                  </span>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                    <Heart className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">Always Free</p>
+                    <p className="text-xs text-muted-foreground">No paywalls, no hidden costs</p>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -199,10 +199,10 @@ export default function AboutPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 px-6 border-t border-border/40 bg-muted/20">
-        <div className="max-w-2xl mx-auto">
+      <section className="py-12 px-2 sm:px-4 border-t border-border/50">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-2">
               FAQ
             </p>
             <h2 className="text-2xl font-bold tracking-tight">

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { notesSchema } from "@/schema/upload";
 import { stackServerApp } from "@/stack/server";
 import prisma from "@/lib/prisma";
-import { getCachedUser } from "@/lib/cache";
+import { getCachedUser, cacheDelete, buildCacheKey, cacheDeletePattern } from "@/lib/cache";
 import limiter from "@/lib/rateLimit";
 import { treeifyError } from "zod";
 
@@ -54,6 +54,14 @@ export async function POST(req: NextRequest) {
     }
 
     const saved = await prisma.notes.create({ data: parsed.data });
+
+    // Invalidate PDF cache for this branch/semester
+    const cacheKey = buildCacheKey("pdfs", parsed.data.branch, parsed.data.semester);
+    await cacheDelete(cacheKey);
+
+    // Invalidate about page stats cache
+    await cacheDelete("stats:about");
+
     return NextResponse.json(
       {
         message: "Notes uploaded successfully.",

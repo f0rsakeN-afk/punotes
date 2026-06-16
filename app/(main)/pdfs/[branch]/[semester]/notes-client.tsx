@@ -1,63 +1,153 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import axiosInstance from "@/services/axios";
-import { SearchNotesClient } from "@/components/notes/SearchNotesClient";
-import { AlertCircle, FileSearch, RefreshCw } from "lucide-react";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import { FileText, FileSearch } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@stackframe/stack";
 
-export default function NotesClient() {
-  const params = useParams<{ branch: string; semester: string }>();
-  const branch = params.branch;
-  const semester = params.semester;
+const PDFViewerDialog = dynamic(
+  () => import("@/components/common/PDFViewerDialog").then((m) => m.PDFViewerDialog),
+  { loading: () => <Button size="sm" className="h-8 text-xs gap-1.5" disabled>Loading...</Button> }
+);
 
-  const decodedBranch = decodeURIComponent(branch).replace(/-/g, " ");
+const AuthGateDialog = dynamic(
+  () => import("@/components/common/AuthGateDialog").then((m) => m.AuthGateDialog),
+  { loading: () => null }
+);
 
-  const { data, isError, refetch } = useQuery({
-    queryKey: ["notes", branch, semester],
-    queryFn: async () => {
-      const res = await axiosInstance.get(`/api/pdfs/${branch}/${semester}`);
-      return res.data;
-    },
-    staleTime: 1000 * 60 * 60,
-  });
+interface NotesData {
+  id: string;
+  name: string;
+  subject: string;
+  fileSize: string;
+  url: string;
+  createdAt: Date;
+  semester: string;
+  branch: string;
+}
+
+function SkeletonCard() {
+  return (
+    <div className="flex flex-col gap-3 p-4 rounded-xl border border-border/60 bg-background animate-pulse">
+      <div className="flex items-start gap-3">
+        <div className="w-8 h-8 rounded-lg bg-muted shrink-0" />
+        <div className="space-y-2 flex-1">
+          <div className="h-4 w-3/4 bg-muted rounded" />
+          <div className="h-3 w-1/2 bg-muted rounded" />
+        </div>
+      </div>
+      <div className="h-3 w-1/3 ml-11 bg-muted rounded" />
+      <div className="flex items-center gap-2 ml-11">
+        <div className="h-8 w-16 bg-muted rounded-md" />
+        <div className="h-8 w-20 bg-muted rounded-md" />
+      </div>
+    </div>
+  );
+}
+
+export function SearchNotesClient({
+  initialData,
+  isLoading,
+}: {
+  initialData: NotesData[];
+  isLoading?: boolean;
+}) {
+  const [query, setQuery] = useState("");
+  const [authGateOpen, setAuthGateOpen] = useState(false);
+  const user = useUser();
+
+  const filtered = initialData.filter((n) =>
+    `${n.name} ${n.subject}`.toLowerCase().includes(query.toLowerCase())
+  );
+
+  const handleGatedAction = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      e.stopPropagation();
+      setAuthGateOpen(true);
+    }
+  };
 
   return (
-    <div className="w-full max-w-5xl mx-auto pb-10">
-      <div className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
-          {decodedBranch} · Semester {semester}
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-          Notes
-        </h1>
-        {!isError && data && (
-          <p className="text-sm text-muted-foreground mt-1">{data.length} file{data.length !== 1 ? "s" : ""}</p>
-        )}
+    <>
+      <AuthGateDialog open={authGateOpen} onOpenChange={setAuthGateOpen} />
+
+      <div className="mb-7">
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by name or subject…"
+          className="max-w-sm h-10"
+        />
       </div>
 
-      {isError && (
-        <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
-          <AlertCircle className="h-10 w-10 text-red-500" />
-          <p className="text-lg font-medium text-red-500">Failed to load notes.</p>
-          <Button variant="outline" onClick={() => refetch()} className="gap-2">
-            <RefreshCw className="w-4 h-4" />
-            Retry
-          </Button>
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-24 gap-3 text-muted-foreground">
+          <FileSearch className="h-8 w-8" />
+          <p className="text-sm">No notes match your search.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {filtered.map((note) => (
+            <div
+              key={note.id}
+              className="group flex flex-col gap-3 p-4 rounded-xl border border-border/60 bg-background hover:border-border hover:shadow-sm transition-all duration-150"
+            >
+              {/* Top row */}
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
+                  <FileText className="w-4 h-4" strokeWidth={1.75} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-foreground leading-snug truncate">
+                    {note.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate">{note.subject}</p>
+                </div>
+              </div>
+
+              {/* Meta */}
+              <p className="text-xs text-muted-foreground pl-11">
+                {note.fileSize} MB &middot; {new Date(note.createdAt).toLocaleDateString()}
+              </p>
+
+              {/* Actions */}
+              <div className="flex items-center gap-2 pl-11" onClick={handleGatedAction}>
+                {user ? (
+                  <>
+                    <PDFViewerDialog url={note.url} title={note.name} buttonClassName="h-8 text-xs gap-1.5" />
+                    <a
+                      href={`https://drive.google.com/uc?export=download&id=${note.url.match(/\/d\/([^\/]+)/)?.[1]}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 h-8 px-3 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
+                      Download
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <Button size="sm" className="h-8 text-xs gap-1.5">
+                      View
+                    </Button>
+                    <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5">
+                      Download
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       )}
-
-      {!isError && data?.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-[50vh] gap-3">
-          <FileSearch className="h-10 w-10 text-muted-foreground" />
-          <p className="text-lg text-muted-foreground">No notes found.</p>
-        </div>
-      )}
-
-      {!isError && data?.length > 0 && (
-        <SearchNotesClient initialData={data} />
-      )}
-    </div>
+    </>
   );
 }

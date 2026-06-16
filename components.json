@@ -1,12 +1,12 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
+  "style": "radix-nova",
   "rsc": true,
   "tsx": true,
   "tailwind": {
     "config": "",
     "css": "app/globals.css",
-    "baseColor": "slate",
+    "baseColor": "mauve",
     "cssVariables": true,
     "prefix": ""
   },
@@ -18,6 +18,9 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
+  "rtl": false,
+  "menuColor": "inverted",
+  "menuAccent": "subtle",
   "registries": {
     "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
     "@magicui": "https://magicui.design/r/{name}.json",

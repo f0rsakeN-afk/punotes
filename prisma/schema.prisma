@@ -80,6 +80,39 @@ model Feedback {
   createdAt DateTime @default(now())
 }
 
+model PublicLink {
+  id          String          @id @default(cuid())
+  url         String
+  branch      String
+  semester    String
+  type        PublicLinkType  @default(NOTES)
+  status      LinkStatus      @default(PENDING)
+  submittedBy  String?          // Stack ID of submitter
+  submitterEmail String?
+  title       String
+  description String?
+  adminNotes  String?         // Reason for rejection
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([status])
+  @@index([branch])
+  @@index([semester])
+  @@index([submittedBy])
+}
+
+enum PublicLinkType {
+  NOTES
+  SYLLABUS
+  PYQ
+}
+
+enum LinkStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Message {
   id        String     @id @default(cuid())
   content   String

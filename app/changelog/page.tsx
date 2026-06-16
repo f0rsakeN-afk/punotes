@@ -1,51 +1,23 @@
-"use client";
-
-import React from "react";
-import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Sparkles, Zap, Smartphone, CheckCircle2 } from "lucide-react";
 
 export default function ChangelogPage() {
-    const container = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
-
-    const item = {
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0 }
-    };
-
     return (
-        <div className="max-w-4xl mx-auto py-16 px-4 sm:px-6 min-h-screen">
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center mb-16"
-            >
+        <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+            <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <Badge variant="outline" className="mb-4 px-3 py-1 text-sm border-primary/20 text-primary bg-primary/5 rounded-full">
                     Release Notes
                 </Badge>
-                <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-linear-to-b from-foreground to-foreground/70">
+                <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-4 text-foreground">
                     Changelog
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    We're constantly improving PuNotes. Here's what we've been working on.
+                    We&apos;re constantly improving PuNotes. Here&apos;s what we&apos;ve been working on.
                 </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-                variants={container}
-                initial="hidden"
-                animate="show"
-                className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border before:to-transparent"
-            >
+            <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-border">
                 <ChangelogItem
                     version="v2.0.0"
                     date="January 18, 2026"
@@ -67,7 +39,7 @@ export default function ChangelogPage() {
                         <ChangeItem
                             icon={Zap}
                             title="Performance Boost"
-                            description="Implemented Lenis smooth scrolling and intelligent data prefetching for instant feel."
+                            description="Implemented intelligent data prefetching for instant feel."
                         />
                         <ChangeItem
                             icon={CheckCircle2}
@@ -89,17 +61,14 @@ export default function ChangelogPage() {
                         <li>Dark mode support</li>
                     </ul>
                 </ChangelogItem>
-            </motion.div>
+            </div>
         </div>
     );
 }
 
 function ChangelogItem({ version, date, title, description, children, isMajor }: any) {
     return (
-        <motion.div
-            variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}
-            className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
-        >
+        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active animate-in fade-in slide-in-from-bottom-4 duration-300">
             {/* Icon Node */}
             <div className="absolute left-0 md:left-1/2 flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-muted shadow-sm -translate-x-1/2 shrink-0 z-10 group-[.is-active]:bg-primary group-[.is-active]:text-primary-foreground">
                 <div className="w-2.5 h-2.5 bg-current rounded-full" />
@@ -124,7 +93,7 @@ function ChangelogItem({ version, date, title, description, children, isMajor }:
                     {children}
                 </Card>
             </div>
-        </motion.div>
+        </div>
     );
 }
 

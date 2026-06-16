@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useUser } from "@stackframe/stack";
-import { Menu, LogOut, MessageSquare, LogIn } from "lucide-react";
+import { Menu, LogOut, MessageSquare, LogIn, FileText, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -23,13 +23,16 @@ const navItems = [
   { name: "PDFs", route: "/pdfs" },
   { name: "Syllabus", route: "/syllabus" },
   { name: "Past Questions", route: "/pyqs" },
-  { name: "Upload", route: "/upload" },
+  { name: "Share", route: "/share" },
   { name: "About", route: "/about" },
 ];
 
-const mobileExtraItems = [{ name: "Feedback", route: "/feedback" }];
+const mobileExtraItems = [
+  { name: "Feedback", route: "/feedback" },
+  { name: "My Submissions", route: "/submissions" },
+];
 
-export function TopHeader() {
+export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
   const pathname = usePathname();
   const user = useUser();
   const [open, setOpen] = React.useState(false);
@@ -39,7 +42,7 @@ export function TopHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
 
           {/* Logo */}
@@ -121,6 +124,30 @@ export function TopHeader() {
                       Feedback
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/submissions" className="cursor-pointer">
+                      <FileText className="w-4 h-4 mr-2" />
+                      My Submissions
+                    </Link>
+                  </DropdownMenuItem>
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel className="text-xs text-muted-foreground">Admin</DropdownMenuLabel>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/public-links" className="cursor-pointer">
+                          <Shield className="w-4 h-4 mr-2" />
+                          Review Links
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/audit-logs" className="cursor-pointer">
+                          <Shield className="w-4 h-4 mr-2" />
+                          Audit Logs
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"

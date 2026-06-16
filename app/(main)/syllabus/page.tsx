@@ -1,5 +1,7 @@
 import { Metadata } from "next";
-import SyllabusClient from "./syllabus-client";
+import prisma from "@/lib/prisma";
+import { cacheGet, cacheSet } from "@/lib/cache";
+import { SearchSyllabusClient as SyllabusClient } from "./syllabus-client";
 
 export const metadata: Metadata = {
   title: "Syllabus | PuNotes – Purbanchal University Complete Syllabus",
@@ -23,7 +25,6 @@ export const metadata: Metadata = {
     "Semester Syllabus PU",
     "Engineering Syllabus Download",
   ],
-  authors: [{ name: "PuNotes Team" }],
   alternates: { canonical: "/syllabus" },
   openGraph: {
     title: "Syllabus | PuNotes",
@@ -43,6 +44,41 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function SyllabusPage() {
-  return <SyllabusClient />;
+const CACHE_KEY = "syllabus:all";
+
+async function getSyllabus() {
+  // Try cache first
+  const cached = await cacheGet<unknown>(CACHE_KEY);
+  if (cached) {
+    return cached;
+  }
+
+  const data = await prisma.syllabus.findMany({
+    orderBy: { createdAt: "asc" },
+  });
+
+  // Store in cache for 24 hours
+  await cacheSet(CACHE_KEY, data, { expire: 86400 });
+
+  return data;
+}
+
+export default async function SyllabusPage() {
+  const data = await getSyllabus();
+  const syllabusData = Array.isArray(data) ? data : [];
+
+  return (
+    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">
+          Syllabus
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          Official syllabus for all branches and semesters
+        </p>
+      </div>
+
+      <SyllabusClient initialData={syllabusData} />
+    </div>
+  );
 }

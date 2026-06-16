@@ -48,15 +48,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div>
+    <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative min-h-[calc(100dvh-56px)] flex items-center justify-center overflow-hidden">
-        {/* Watermark */}
-        <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden select-none">
-          <span className="text-[18vw] font-black text-foreground/[0.03] whitespace-nowrap uppercase tracking-tighter -rotate-12">
-            PU NOTES
-          </span>
-        </div>
+      <section className="relative flex-1 flex items-center justify-center py-16 sm:py-24">
         <HomeHero />
       </section>
 

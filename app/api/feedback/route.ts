@@ -4,7 +4,10 @@ import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
 import { treeifyError } from "zod";
 import limiter from "@/lib/rateLimit";
-import { getCachedUser } from "@/lib/cache";
+import { getCachedUser, cacheGet, cacheSet, cacheDelete } from "@/lib/cache";
+
+const FEEDBACK_CACHE_KEY = "feedback:all";
+const FEEDBACK_CACHE_TTL = 3600; // 1 hour
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,6 +46,9 @@ export async function POST(req: NextRequest) {
       data: { ...parsed.data },
     });
 
+    // Invalidate feedback cache
+    await cacheDelete(FEEDBACK_CACHE_KEY);
+
     return NextResponse.json(
       { message: "Feedback submitted", data: saved },
       { status: 200 },
@@ -79,9 +85,18 @@ export async function GET() {
       );
     }
 
+    // Try cache first
+    const cached = await cacheGet<unknown>(FEEDBACK_CACHE_KEY);
+    if (cached) {
+      return NextResponse.json({ data: cached }, { status: 200 });
+    }
+
     const feedbackData = await prisma.feedback.findMany({
       orderBy: { createdAt: "desc" },
     });
+
+    // Cache the result
+    await cacheSet(FEEDBACK_CACHE_KEY, feedbackData, { expire: FEEDBACK_CACHE_TTL });
 
     return NextResponse.json(
       {

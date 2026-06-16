@@ -59,17 +59,17 @@ export default async function AuditLogsPage() {
   const logs = logsData as any;
 
   return (
-    <div className="space-y-8">
+    <>
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Audit Logs</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">Audit Logs</h1>
+        <p className="text-sm text-muted-foreground">
           Track all administrative actions and system changes
         </p>
       </div>
 
       {/* Audit Logs Client */}
       <AuditLogsClient initialLogs={logs} initialTotal={total} />
-    </div>
+    </>
   );
 }
