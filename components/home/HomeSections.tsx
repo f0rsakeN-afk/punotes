@@ -7,7 +7,6 @@ import {
   ArrowUpRight,
   BookMarked,
   ScrollText,
-  FileSearch,
   Users,
   FileText,
   BookOpen,
@@ -18,7 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useHomeCustomization } from "@/hooks/useHomeCustomization";
 
 function HeroSection() {
   return (
@@ -317,39 +315,16 @@ function AnalyticsSection() {
   );
 }
 
-const sectionComponents: Record<string, React.ComponentType> = {
-  hero: HeroSection,
-  quickAccess: QuickAccessSection,
-  recentNotes: RecentNotesSection,
-  stats: StatsSection,
-  contribute: ContributeSection,
-  features: FeaturesSection,
-  analytics: AnalyticsSection,
-};
-
 export function HomeSections() {
-  const { enabledSections, isLoaded } = useHomeCustomization();
-
-  if (!isLoaded) {
-    return (
-      <div className="space-y-4 p-4">
-        <Skeleton className="h-64 rounded-xl" />
-        <div className="grid grid-cols-3 gap-3">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-20 rounded-lg" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-0">
-      {enabledSections.map((section) => {
-        const Component = sectionComponents[section.id];
-        if (!Component) return null;
-        return <Component key={section.id} />;
-      })}
+      <HeroSection />
+      <QuickAccessSection />
+      <RecentNotesSection />
+      <StatsSection />
+      <ContributeSection />
+      <FeaturesSection />
+      <AnalyticsSection />
     </div>
   );
 }
