@@ -1,6 +1,6 @@
-import Features from "@/components/home/Features";
 import type { Metadata } from "next";
-import HomeHero from "./home-animations";
+import { HomeSections } from "@/components/home/HomeSections";
+import { CustomizeHomeDialog } from "@/components/common/CustomizeHomeDialog";
 
 export const metadata: Metadata = {
   title: "PuNotes | Purbanchal University Notes, Syllabus & PYQs",
@@ -49,8 +49,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <HomeHero />
-      <Features />
+      <div className="flex justify-end px-4 py-2">
+        <CustomizeHomeDialog />
+      </div>
+      <HomeSections />
     </div>
   );
 }

@@ -19,6 +19,7 @@ model User {
   lastSeenAt      DateTime   @default(now())
   displayName     String?
   profileImageUrl String?
+  homeLayout      Json?
 
   // Suspension fields
   suspendedAt      DateTime?

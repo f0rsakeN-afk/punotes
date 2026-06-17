@@ -3,6 +3,14 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const subtitles = [
   "Foundation",
@@ -26,6 +34,33 @@ export default function BranchPage() {
 
   return (
     <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+      {/* Breadcrumbs */}
+      <Breadcrumb className="mb-6">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors">
+                Home
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/pdfs" className="hover:text-foreground transition-colors">
+                PDFs
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="font-medium text-foreground">
+              {formatted}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       {/* Header */}
       <div className="mb-10">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">

@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { FileText, FileSearch, Link2, Check, Star, Share2, Filter, X, QrCode } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,6 +12,14 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { toast } from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { ShareQRDialog } from "@/components/common/ShareQRDialog";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const PDFViewerDialog = dynamic(
   () => import("@/components/common/PDFViewerDialog").then((m) => m.PDFViewerDialog),
@@ -144,6 +154,10 @@ export function SearchNotesClient({
   initialData: NotesData[];
   isLoading?: boolean;
 }) {
+  const { branch, semester } = useParams<{ branch: string; semester: string }>();
+  const decodedBranch = decodeURIComponent(branch);
+  const formattedBranch = decodedBranch.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
   const [query, setQuery] = useState("");
   const [activeSubject, setActiveSubject] = useState<string | null>(null);
   const [authGateOpen, setAuthGateOpen] = useState(false);
@@ -176,6 +190,41 @@ export function SearchNotesClient({
   return (
     <>
       <AuthGateDialog open={authGateOpen} onOpenChange={setAuthGateOpen} />
+
+      {/* Breadcrumbs */}
+      <Breadcrumb className="mb-6">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors">
+                Home
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/pdfs" className="hover:text-foreground transition-colors">
+                PDFs
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href={`/pdfs/${branch}`} className="hover:text-foreground transition-colors">
+                {formattedBranch}
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="font-medium text-foreground">
+              Semester {semester}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       {/* Search and filter bar */}
       <div className="flex flex-col gap-3 mb-6">
