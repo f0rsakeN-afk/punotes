@@ -20,7 +20,7 @@ export const viewport: Viewport = {
   themeColor: "#DEDBC8",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
+  maximumScale: 5,
 };
 
 export const metadata: Metadata = {
@@ -80,9 +80,9 @@ export const metadata: Metadata = {
     creator: "@punotes",
   },
   icons: {
-    icon: "/logo.webp",
+    icon: "/favicon.ico",
     shortcut: "/logo.webp",
-    apple: "/logo.webp",
+    apple: "/icons/icon-512x512.png",
   },
   robots: {
     index: true,
@@ -146,6 +146,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://drive.google.com" />
+        <link rel="apple-touch-icon" href="/icons/icon-512x512.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="PuNotes" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

@@ -112,11 +112,11 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-8 h-8 text-muted-foreground hover:text-foreground relative"
+                className="w-11 h-11 text-muted-foreground hover:text-foreground relative"
                 title="Search (Cmd+K)"
               >
                 <Search className="w-4 h-4" />
-                <kbd className="absolute -bottom-0.5 right-0.5 text-[8px] font-mono text-muted-foreground/60 hidden sm:inline">
+                <kbd className="absolute -bottom-0.5 right-0 text-[8px] font-mono text-muted-foreground/60 hidden sm:inline">
                   ⌘K
                 </kbd>
               </Button>
@@ -126,7 +126,7 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
 
             {/* Feedback shortcut — desktop only */}
             <Link href="/feedback" className="hidden lg:block">
-              <Button variant="ghost" size="icon" className="w-8 h-8 text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="icon" className="w-11 h-11 text-muted-foreground hover:text-foreground">
                 <MessageSquare className="w-4 h-4" />
               </Button>
             </Link>
@@ -136,9 +136,9 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="rounded-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background">
-                    <Avatar className="w-8 h-8 border border-border/60 transition-opacity hover:opacity-80">
+                    <Avatar className="w-11 h-11 border border-border/60 transition-opacity hover:opacity-80">
                       <AvatarImage src={user.profileImageUrl ?? ""} alt="avatar" />
-                      <AvatarFallback className="bg-muted text-[11px] font-semibold">
+                      <AvatarFallback className="bg-muted text-xs font-semibold">
                         {initials}
                       </AvatarFallback>
                     </Avatar>
@@ -213,7 +213,7 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
             <div className="lg:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="w-8 h-8">
+                  <Button variant="ghost" size="icon" className="w-11 h-11">
                     <Menu className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
@@ -261,9 +261,9 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
                       {user ? (
                         <>
                           <div className="flex items-center gap-3">
-                            <Avatar className="w-8 h-8 border border-border/60">
+                            <Avatar className="w-11 h-11 border border-border/60">
                               <AvatarImage src={user.profileImageUrl ?? ""} alt="avatar" />
-                              <AvatarFallback className="bg-muted text-[11px] font-semibold">
+                              <AvatarFallback className="bg-muted text-xs font-semibold">
                                 {initials}
                               </AvatarFallback>
                             </Avatar>

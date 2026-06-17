@@ -193,7 +193,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
                           {result.subject && ` · ${result.subject}`}
                         </p>
                       </div>
-                      <span className="shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                      <span className="shrink-0 text-xs font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
                         {typeLabel[result.type]}
                       </span>
                       <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
@@ -205,7 +205,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Footer hint */}
-          <div className="px-4 py-2.5 border-t border-border/60 flex items-center gap-4 text-[11px] text-muted-foreground">
+          <div className="px-4 py-2.5 border-t border-border/60 flex items-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <kbd className="px-1.5 py-0.5 rounded bg-muted text-[10px] font-mono">↑↓</kbd>
               Navigate

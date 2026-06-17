@@ -103,7 +103,7 @@ export function ShareQRDialog({ url, title, open, onOpenChange }: ShareQRDialogP
                 className={`flex flex-col items-center gap-1.5 p-2.5 rounded-lg border border-transparent transition-colors ${social.color}`}
               >
                 <social.icon className="w-5 h-5" />
-                <span className="text-[10px] font-medium">{social.name}</span>
+                <span className="text-xs font-medium">{social.name}</span>
               </a>
             ))}
           </div>
