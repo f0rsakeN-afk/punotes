@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useMemo } from "react";
 import {
   ArrowUpRight,
   BookMarked,
@@ -17,6 +18,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+
+function useHomeStats() {
+  return useQuery({
+    queryKey: ["home-stats"],
+    queryFn: async () => {
+      const res = await axios.get("/api/stats/about");
+      return res.data;
+    },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+}
 
 function HeroSection() {
   return (
@@ -109,20 +122,16 @@ function QuickAccessSection() {
 }
 
 function StatsSection() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["home-stats"],
-    queryFn: async () => {
-      const res = await axios.get("/api/stats/about");
-      return res.data;
-    },
-    staleTime: 5 * 60 * 1000,
-  });
+  const { data, isLoading } = useHomeStats();
 
-  const stats = [
-    { label: "Notes", value: data?.notesCount ?? 0, icon: FileText },
-    { label: "Syllabus", value: data?.syllabusCount ?? 0, icon: BookOpen },
-    { label: "Past Questions", value: data?.pyqCount ?? 0, icon: ScrollText },
-  ];
+  const stats = useMemo(
+    () => [
+      { label: "Notes", value: data?.notesCount ?? 0, icon: FileText },
+      { label: "Syllabus", value: data?.syllabusCount ?? 0, icon: BookOpen },
+      { label: "Past Questions", value: data?.pyqCount ?? 0, icon: ScrollText },
+    ],
+    [data?.notesCount, data?.syllabusCount, data?.pyqCount]
+  );
 
   if (isLoading) {
     return (
@@ -184,14 +193,7 @@ function ContributeSection() {
 }
 
 function RecentNotesSection() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["home-recent-notes"],
-    queryFn: async () => {
-      const res = await axios.get("/api/stats/about");
-      return res.data;
-    },
-    staleTime: 5 * 60 * 1000,
-  });
+  const { data, isLoading } = useHomeStats();
 
   if (isLoading) {
     return (
@@ -281,6 +283,7 @@ function AnalyticsSection() {
       return res.data;
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 
   if (isLoading || !data) return null;

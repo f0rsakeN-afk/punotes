@@ -18,6 +18,14 @@ const publicLinkSchema = z.object({
 
 export async function GET(req: NextRequest) {
   try {
+    const rateLimit = await rateLimiters.standard(req);
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
+      );
+    }
+
     const user = await stackServerApp.getUser();
 
     if (!user) {
@@ -35,7 +43,9 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json(links);
+    return NextResponse.json(links, {
+      headers: { "Cache-Control": "private, max-age=30, stale-while-revalidate=60" },
+    });
   } catch (error) {
     console.error("Error fetching public links:", sanitizeError(error));
     return NextResponse.json(

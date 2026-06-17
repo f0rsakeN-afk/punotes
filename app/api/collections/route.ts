@@ -26,7 +26,10 @@ export async function GET() {
     const cacheKey = buildCacheKey("collections", user.id);
     const cached = await cacheGet<unknown[]>(cacheKey);
     if (cached) {
-      return NextResponse.json({ data: cached, cached: true });
+      return NextResponse.json(
+        { data: cached, cached: true },
+        { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=300" } }
+      );
     }
 
     const collections = await prisma.collection.findMany({
@@ -50,7 +53,10 @@ export async function GET() {
     // Cache for 5 minutes
     await cacheSet(cacheKey, data, { expire: COLLECTION_CACHE_TTL });
 
-    return NextResponse.json({ data, cached: false });
+    return NextResponse.json(
+      { data, cached: false },
+      { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=300" } }
+    );
   } catch (error) {
     console.error("Error fetching collections:", error);
     return NextResponse.json({ error: "Failed to fetch collections" }, { status: 500 });
@@ -91,6 +97,7 @@ export async function POST(req: NextRequest) {
     // Check for duplicate name
     const existing = await prisma.collection.findUnique({
       where: { userId_name: { userId: user.id, name: parsed.data.name } },
+      select: { id: true },
     });
 
     if (existing) {

@@ -32,6 +32,7 @@ export async function POST(req: Request) {
     if (stackUser) {
       const user = await prisma.user.findUnique({
         where: { stackID: stackUser.id },
+        select: { id: true },
       });
       userId = user?.id;
     }

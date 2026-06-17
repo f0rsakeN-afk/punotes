@@ -31,7 +31,10 @@ export async function GET(
     const cacheKey = buildCacheKey("collection", id);
     const cached = await cacheGet<unknown>(cacheKey);
     if (cached) {
-      return NextResponse.json({ data: cached, cached: true });
+      return NextResponse.json(
+        { data: cached, cached: true },
+        { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=300" } }
+      );
     }
 
     const collection = await prisma.collection.findFirst({
@@ -39,7 +42,9 @@ export async function GET(
       include: {
         items: {
           include: {
-            favorite: true,
+            favorite: {
+              select: { type: true, itemId: true },
+            },
           },
           orderBy: { addedAt: "desc" },
         },
@@ -66,7 +71,10 @@ export async function GET(
     // Cache for 5 minutes
     await cacheSet(cacheKey, data, { expire: COLLECTION_CACHE_TTL });
 
-    return NextResponse.json({ data, cached: false });
+    return NextResponse.json(
+      { data, cached: false },
+      { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=300" } }
+    );
   } catch (error) {
     console.error("Error fetching collection:", error);
     return NextResponse.json({ error: "Failed to fetch collection" }, { status: 500 });

@@ -17,7 +17,10 @@ export async function GET() {
     if (cached) {
       return NextResponse.json(cached, {
         status: 200,
-        headers: { "X-Cache": "HIT" },
+        headers: {
+          "X-Cache": "HIT",
+          "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=600",
+        },
       });
     }
 
@@ -35,7 +38,10 @@ export async function GET() {
 
     return NextResponse.json(stats, {
       status: 200,
-      headers: { "X-Cache": "MISS" },
+      headers: {
+        "X-Cache": "MISS",
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=600",
+      },
     });
   } catch (error) {
     console.error("Error fetching stats:", error);

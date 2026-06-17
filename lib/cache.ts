@@ -50,10 +50,14 @@ export async function cacheDelete(key: string): Promise<void> {
 export async function cacheDeletePattern(pattern: string): Promise<void> {
   try {
     const redis = await getRedis();
-    const keys = await redis.keys(pattern);
-    if (keys.length > 0) {
-      await redis.del(keys);
-    }
+    let cursor: string = "0";
+    do {
+      const result = await redis.scan(cursor, { MATCH: pattern, COUNT: 100 });
+      cursor = result.cursor;
+      if (result.keys.length > 0) {
+        await redis.unlink(result.keys);
+      }
+    } while (cursor !== "0");
   } catch (error) {
     console.error('Cache delete pattern error:', error);
   }
@@ -75,7 +79,10 @@ export async function getCachedUser(stackID: string) {
   if (cached) return cached;
 
   // Miss → query DB
-  const user = await prisma.user.findUnique({ where: { stackID } });
+  const user = await prisma.user.findUnique({
+    where: { stackID },
+    select: { id: true, stackID: true, email: true, role: true },
+  });
   if (user) {
     await cacheSet(cacheKey, user, { expire: USER_CACHE_TTL });
   }

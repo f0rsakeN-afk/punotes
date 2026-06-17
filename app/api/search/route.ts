@@ -50,7 +50,10 @@ export async function GET(req: NextRequest) {
     // Try query-specific cache first
     const queryCached = await cacheGet<SearchResult[]>(queryCacheKey);
     if (queryCached) {
-      return NextResponse.json({ results: queryCached, total: queryCached.length, cached: true });
+      return NextResponse.json(
+        { results: queryCached, total: queryCached.length, cached: true },
+        { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=120" } }
+      );
     }
 
     // Try full data cache
@@ -87,7 +90,10 @@ export async function GET(req: NextRequest) {
     // Cache this specific query result for 10 minutes
     await cacheSet(queryCacheKey, limitedResults, { expire: 600 });
 
-    return NextResponse.json({ results: limitedResults, total: results.length, cached: false });
+    return NextResponse.json(
+      { results: limitedResults, total: results.length, cached: false },
+      { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=120" } }
+    );
   } catch (error) {
     console.error("Search error:", sanitizeError(error));
     return NextResponse.json({ error: ERROR_MESSAGES.SERVER_ERROR }, { status: 500 });

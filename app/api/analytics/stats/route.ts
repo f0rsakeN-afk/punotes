@@ -13,7 +13,10 @@ export async function GET() {
     if (cached) {
       return NextResponse.json(cached, {
         status: 200,
-        headers: { "X-Cache": "HIT" },
+        headers: {
+          "X-Cache": "HIT",
+          "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",
+        },
       });
     }
 
@@ -135,7 +138,10 @@ export async function GET() {
 
     return NextResponse.json(stats, {
       status: 200,
-      headers: { "X-Cache": "MISS" },
+      headers: {
+        "X-Cache": "MISS",
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",
+      },
     });
   } catch (error) {
     console.error("Analytics stats error:", error);

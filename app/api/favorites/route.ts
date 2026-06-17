@@ -38,12 +38,16 @@ export async function GET() {
     if (cached) {
       return NextResponse.json(cached, {
         status: 200,
-        headers: { "X-Cache": "HIT" },
+        headers: {
+          "X-Cache": "HIT",
+          "Cache-Control": "private, max-age=60, stale-while-revalidate=120",
+        },
       });
     }
 
     const favorites = await prisma.favorite.findMany({
       where: { userId: user.id },
+      select: { id: true, type: true, itemId: true, createdAt: true },
       orderBy: { createdAt: "desc" },
     });
 
@@ -52,7 +56,10 @@ export async function GET() {
 
     return NextResponse.json(favorites, {
       status: 200,
-      headers: { "X-Cache": "MISS" },
+      headers: {
+        "X-Cache": "MISS",
+        "Cache-Control": "private, max-age=60, stale-while-revalidate=120",
+      },
     });
   } catch (error) {
     console.error("Error fetching favorites:", error);
@@ -114,17 +121,17 @@ export async function POST(req: NextRequest) {
 
     // Validate item exists in the corresponding table
     if (type === "NOTES") {
-      const note = await prisma.notes.findUnique({ where: { id: itemId } });
+      const note = await prisma.notes.findUnique({ where: { id: itemId }, select: { id: true } });
       if (!note) {
         return NextResponse.json({ error: "Note not found" }, { status: 404 });
       }
     } else if (type === "SYLLABUS") {
-      const syllabus = await prisma.syllabus.findUnique({ where: { id: itemId } });
+      const syllabus = await prisma.syllabus.findUnique({ where: { id: itemId }, select: { id: true } });
       if (!syllabus) {
         return NextResponse.json({ error: "Syllabus not found" }, { status: 404 });
       }
     } else if (type === "PYQ") {
-      const pyq = await prisma.pYQ.findUnique({ where: { id: itemId } });
+      const pyq = await prisma.pYQ.findUnique({ where: { id: itemId }, select: { id: true } });
       if (!pyq) {
         return NextResponse.json({ error: "PYQ not found" }, { status: 404 });
       }
@@ -157,6 +164,15 @@ export async function DELETE(req: NextRequest) {
     // Body size validation
     const sizeError = validateBodySize(req);
     if (sizeError) return sizeError;
+
+    // Rate limit: 30 requests per minute
+    const rateLimit = await rateLimiters.standard(req);
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
+      );
+    }
 
     const user = await stackServerApp.getUser();
 

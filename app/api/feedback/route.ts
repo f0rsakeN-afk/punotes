@@ -74,14 +74,12 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const user = await stackServerApp.getUser();
     if (!user) {
       return NextResponse.json(
-        {
-          message: ERROR_MESSAGES.AUTH_REQUIRED,
-        },
+        { message: ERROR_MESSAGES.AUTH_REQUIRED },
         { status: 401 },
       );
     }
@@ -95,13 +93,26 @@ export async function GET() {
       );
     }
 
+    // Rate limit: 30 requests per minute
+    const rateLimit = await rateLimiters.standard(req as NextRequest);
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
+      );
+    }
+
     // Try cache first
     const cached = await cacheGet<unknown>(FEEDBACK_CACHE_KEY);
     if (cached) {
-      return NextResponse.json({ data: cached }, { status: 200 });
+      return NextResponse.json(
+        { data: cached },
+        { status: 200, headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=120" } }
+      );
     }
 
     const feedbackData = await prisma.feedback.findMany({
+      select: { id: true, email: true, name: true, message: true, createdAt: true },
       orderBy: { createdAt: "desc" },
     });
 
@@ -109,10 +120,8 @@ export async function GET() {
     await cacheSet(FEEDBACK_CACHE_KEY, feedbackData, { expire: FEEDBACK_CACHE_TTL });
 
     return NextResponse.json(
-      {
-        data: feedbackData,
-      },
-      { status: 200 },
+      { data: feedbackData },
+      { status: 200, headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=120" } }
     );
   } catch (error) {
     console.error("Feedback fetch error:", sanitizeError(error));
