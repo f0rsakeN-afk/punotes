@@ -52,10 +52,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
-      url: `${BASE_URL}/changelog`,
+      url: `${BASE_URL}/contribute`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.3,
+      changeFrequency: "weekly",
+      priority: 0.6,
     },
     {
       url: `${BASE_URL}/privacy`,

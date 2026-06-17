@@ -49,12 +49,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="flex flex-col">
-      {/* Hero */}
-      <section className="relative flex-1 flex items-center justify-center py-16 sm:py-24">
-        <HomeHero />
-      </section>
-
-      {/* Features */}
+      <HomeHero />
       <Features />
     </div>
   );

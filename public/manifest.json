@@ -1,21 +1,45 @@
 {
-    "name": "PuNotes",
+    "name": "PuNotes - Free Notes for PU Students",
     "short_name": "PuNotes",
-    "description": "Premium Note Sharing Platform",
+    "description": "Access free notes, syllabus, and past year questions for Purbanchal University. No fees, no hassle.",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000",
+    "display_override": ["standalone", "minimal-ui"],
+    "background_color": "#000000",
+    "theme_color": "#DEDBC8",
+    "orientation": "portrait-primary",
+    "categories": ["education", "utilities"],
     "icons": [
         {
             "src": "/icons/icon-192x192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/icons/icon-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Browse Notes",
+            "url": "/pdfs",
+            "description": "Access all available notes"
+        },
+        {
+            "name": "Syllabus",
+            "url": "/syllabus",
+            "description": "View course syllabi"
+        },
+        {
+            "name": "Past Questions",
+            "url": "/pyqs",
+            "description": "Previous year questions"
         }
     ]
 }

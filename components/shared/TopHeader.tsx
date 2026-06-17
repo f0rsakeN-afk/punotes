@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useUser } from "@stackframe/stack";
-import { Menu, LogOut, MessageSquare, LogIn, FileText, Shield, Star } from "lucide-react";
+import { Menu, LogOut, MessageSquare, LogIn, FileText, Shield, Star, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,11 +19,14 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import ThemeToggle from "./ThemeToggler";
 import { cn } from "@/lib/utils";
+import { SearchDialog } from "@/components/common/SearchDialog";
+
 const navItems = [
   { name: "PDFs", route: "/pdfs" },
   { name: "Syllabus", route: "/syllabus" },
   { name: "Past Questions", route: "/pyqs" },
-  { name: "Share", route: "/share" },
+  { name: "Share Drive", route: "/share" },
+  { name: "Contribute", route: "/contribute" },
   { name: "About", route: "/about" },
 ];
 
@@ -104,6 +107,21 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
 
           {/* Right actions */}
           <div className="flex items-center gap-1.5">
+            {/* Global search */}
+            <SearchDialog>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-8 h-8 text-muted-foreground hover:text-foreground relative"
+                title="Search (Cmd+K)"
+              >
+                <Search className="w-4 h-4" />
+                <kbd className="absolute -bottom-0.5 right-0.5 text-[8px] font-mono text-muted-foreground/60 hidden sm:inline">
+                  ⌘K
+                </kbd>
+              </Button>
+            </SearchDialog>
+
             <ThemeToggle />
 
             {/* Feedback shortcut — desktop only */}

@@ -1,16 +1,26 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import limiter from "@/lib/rateLimit";
+import { rateLimiters } from "@/lib/rateLimit";
+import { validateCsrf } from "@/lib/csrf";
+import { validateBodySize } from "@/lib/requestLimits";
+import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limit: 30 requests per minute per IP (more lenient since it's a webhook)
-    try {
-      limiter.checkNext(request, 30);
-    } catch {
+    // CSRF validation - webhooks may have different origins
+    const csrfError = validateCsrf(request);
+    if (csrfError) return csrfError;
+
+    // Body size validation
+    const sizeError = validateBodySize(request);
+    if (sizeError) return sizeError;
+
+    // Rate limit: 100 requests per minute (webhook endpoint)
+    const rateLimit = await rateLimiters.webhook(request);
+    if (!rateLimit.success) {
       return NextResponse.json(
-        { error: "Too many requests. Please try again later." },
-        { status: 429 }
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
       );
     }
 
@@ -39,10 +49,10 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
+    console.error("Revalidate error:", sanitizeError(error));
     return NextResponse.json(
       {
-        error:
-          error instanceof Error ? error.message : "Failed to revalidate",
+        error: ERROR_MESSAGES.SERVER_ERROR,
       },
       { status: 500 }
     );

@@ -3,6 +3,10 @@ import prisma from "@/lib/prisma";
 import { stackServerApp } from "@/stack/server";
 import { getCachedUser } from "@/lib/cache";
 import { z } from "zod";
+import { rateLimiters } from "@/lib/rateLimit";
+import { validateCsrf } from "@/lib/csrf";
+import { validateBodySize } from "@/lib/requestLimits";
+import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const reviewSchema = z.object({
   status: z.enum(["APPROVED", "REJECTED"]),
@@ -34,22 +38,39 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(links);
   } catch (error) {
-    console.error("Error fetching admin public links:", error);
-    return NextResponse.json({ error: "Failed to fetch links" }, { status: 500 });
+    console.error("Error fetching admin public links:", sanitizeError(error));
+    return NextResponse.json({ error: ERROR_MESSAGES.SERVER_ERROR }, { status: 500 });
   }
 }
 
 export async function PATCH(req: NextRequest) {
   try {
+    // CSRF validation
+    const csrfError = validateCsrf(req);
+    if (csrfError) return csrfError;
+
+    // Body size validation
+    const sizeError = validateBodySize(req);
+    if (sizeError) return sizeError;
+
+    // Rate limit: 30 requests per minute
+    const rateLimit = await rateLimiters.standard(req);
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
+      );
+    }
+
     const user = await stackServerApp.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: ERROR_MESSAGES.AUTH_REQUIRED }, { status: 401 });
     }
 
     const userData = await getCachedUser(user.id);
     if (!userData || userData.role !== "ADMIN") {
-      return NextResponse.json({ error: "Admin access required" }, { status: 403 });
+      return NextResponse.json({ error: ERROR_MESSAGES.FORBIDDEN }, { status: 403 });
     }
 
     const body = await req.json();
@@ -78,7 +99,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ message: `Link ${status.toLowerCase()} successfully`, data: link });
   } catch (error) {
-    console.error("Error updating public link:", error);
-    return NextResponse.json({ error: "Failed to update link" }, { status: 500 });
+    console.error("Error updating public link:", sanitizeError(error));
+    return NextResponse.json({ error: ERROR_MESSAGES.SERVER_ERROR }, { status: 500 });
   }
 }

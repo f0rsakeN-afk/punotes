@@ -11,7 +11,6 @@ export default function robots(): MetadataRoute.Robots {
           "/handler/",
           "/admin/",
           "/submissions",
-          "/upload",
         ],
       },
       {
@@ -22,7 +21,6 @@ export default function robots(): MetadataRoute.Robots {
           "/handler/",
           "/admin/",
           "/submissions",
-          "/upload",
         ],
       },
     ],

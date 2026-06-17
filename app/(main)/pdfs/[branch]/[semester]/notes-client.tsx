@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { FileText, FileSearch, Link2, Check, Star, Share2 } from "lucide-react";
+import { FileText, FileSearch, Link2, Check, Star, Share2, Filter, X, QrCode } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@stackframe/stack";
 import { useFavorites } from "@/hooks/useFavorites";
 import { toast } from "react-hot-toast";
+import { cn } from "@/lib/utils";
+import { ShareQRDialog } from "@/components/common/ShareQRDialog";
 
 const PDFViewerDialog = dynamic(
   () => import("@/components/common/PDFViewerDialog").then((m) => m.PDFViewerDialog),
@@ -55,24 +57,23 @@ function CopyLinkButton({ url }: { url: string }) {
 }
 
 function ShareButton({ url, title }: { url: string; title: string }) {
-  const handleShare = () => {
-    const shareUrl = encodeURIComponent(url);
-    const text = encodeURIComponent(`Check out this note: ${title} - ${shareUrl}`);
-    window.open(`https://wa.me/?text=${text}`, "_blank");
-  };
+  const [qrOpen, setQrOpen] = useState(false);
 
   return (
-    <button
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        handleShare();
-      }}
-      className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-green-600 hover:border-green-600"
-      title="Share on WhatsApp"
-    >
-      <Share2 className="w-3 h-3" />
-    </button>
+    <>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setQrOpen(true);
+        }}
+        className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+        title="Share"
+      >
+        <Share2 className="w-3 h-3" />
+      </button>
+      <ShareQRDialog url={url} title={title} open={qrOpen} onOpenChange={setQrOpen} />
+    </>
   );
 }
 
@@ -144,12 +145,25 @@ export function SearchNotesClient({
   isLoading?: boolean;
 }) {
   const [query, setQuery] = useState("");
+  const [activeSubject, setActiveSubject] = useState<string | null>(null);
   const [authGateOpen, setAuthGateOpen] = useState(false);
   const user = useUser();
 
-  const filtered = initialData.filter((n) =>
-    `${n.name} ${n.subject}`.toLowerCase().includes(query.toLowerCase())
-  );
+  // Extract unique subjects
+  const subjects = useMemo(() => {
+    const unique = Array.from(new Set(initialData.map((n) => n.subject))).sort();
+    return unique;
+  }, [initialData]);
+
+  // Filter by query and subject
+  const filtered = useMemo(() => {
+    return initialData.filter((n) => {
+      const matchesQuery =
+        !query || `${n.name} ${n.subject}`.toLowerCase().includes(query.toLowerCase());
+      const matchesSubject = !activeSubject || n.subject === activeSubject;
+      return matchesQuery && matchesSubject;
+    });
+  }, [initialData, query, activeSubject]);
 
   const handleGatedAction = (e: React.MouseEvent) => {
     if (!user) {
@@ -163,14 +177,63 @@ export function SearchNotesClient({
     <>
       <AuthGateDialog open={authGateOpen} onOpenChange={setAuthGateOpen} />
 
-      <div className="mb-7">
+      {/* Search and filter bar */}
+      <div className="flex flex-col gap-3 mb-6">
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by name or subject…"
-          className="max-w-sm h-10"
+          className="h-10 max-w-sm"
         />
+
+        {/* Subject filter chips */}
+        {subjects.length > 0 && (
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+            <button
+              onClick={() => setActiveSubject(null)}
+              className={cn(
+                "inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-xs font-medium border transition-all duration-150 shrink-0",
+                !activeSubject
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-transparent text-muted-foreground border-border hover:text-foreground hover:border-foreground/40"
+              )}
+            >
+              <Filter className="w-3 h-3" />
+              All
+            </button>
+            {subjects.map((subject) => (
+              <button
+                key={subject}
+                onClick={() => setActiveSubject(activeSubject === subject ? null : subject)}
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-xs font-medium border transition-all duration-150 shrink-0",
+                  activeSubject === subject
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-transparent text-muted-foreground border-border hover:text-foreground hover:border-foreground/40"
+                )}
+              >
+                {subject}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* Active filter indicator */}
+      {activeSubject && (
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-xs text-muted-foreground">Filtered by:</span>
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
+            {activeSubject}
+            <button onClick={() => setActiveSubject(null)} className="hover:text-primary/70">
+              <X className="w-3 h-3" />
+            </button>
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {filtered.length} result{filtered.length !== 1 ? "s" : ""}
+          </span>
+        </div>
+      )}
 
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

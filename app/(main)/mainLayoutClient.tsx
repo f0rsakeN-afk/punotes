@@ -5,6 +5,7 @@ import { ScrollProgress } from "@/components/ui/scroll-progress";
 import Footer from "@/components/shared/Footer";
 import { MaintenanceBanner } from "@/components/shared/MaintenanceBanner";
 import { KeyboardShortcuts } from "@/components/shared/KeyboardShortcuts";
+import { InstallPrompt } from "@/components/common/InstallPrompt";
 
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
@@ -62,6 +63,7 @@ export default function MainLayoutClient({
           {children}
         </main>
         <Footer />
+        <InstallPrompt />
       </div>
     </QueryClientProvider>
   );

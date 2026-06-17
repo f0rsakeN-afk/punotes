@@ -194,8 +194,37 @@ model Favorite {
   itemId    String   // ID of the Notes/PYQ/Syllabus
   createdAt DateTime @default(now())
 
+  collectionItems CollectionItem[]
+
   @@unique([userId, type, itemId])
   @@index([userId])
+}
+
+model Collection {
+  id          String   @id @default(cuid())
+  userId      String   // Stack Auth ID
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  items CollectionItem[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model CollectionItem {
+  id           String   @id @default(cuid())
+  collectionId String
+  favoriteId   String
+  addedAt      DateTime @default(now())
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  favorite   Favorite  @relation(fields: [favoriteId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, favoriteId])
+  @@index([collectionId])
 }
 
 enum FavoriteType {

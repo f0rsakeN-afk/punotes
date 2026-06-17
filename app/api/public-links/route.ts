@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { stackServerApp } from "@/stack/server";
 import { z } from "zod";
+import { rateLimiters } from "@/lib/rateLimit";
+import { validateCsrf } from "@/lib/csrf";
+import { validateBodySize } from "@/lib/requestLimits";
+import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const publicLinkSchema = z.object({
   url: z.string().url("Invalid URL"),
@@ -18,7 +22,7 @@ export async function GET(req: NextRequest) {
 
     if (!user) {
       return NextResponse.json(
-        { error: "Authentication required" },
+        { error: ERROR_MESSAGES.AUTH_REQUIRED },
         { status: 401 }
       );
     }
@@ -33,9 +37,9 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(links);
   } catch (error) {
-    console.error("Error fetching public links:", error);
+    console.error("Error fetching public links:", sanitizeError(error));
     return NextResponse.json(
-      { error: "Failed to fetch links" },
+      { error: ERROR_MESSAGES.SERVER_ERROR },
       { status: 500 }
     );
   }
@@ -43,6 +47,23 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    // CSRF validation
+    const csrfError = validateCsrf(req);
+    if (csrfError) return csrfError;
+
+    // Body size validation
+    const sizeError = validateBodySize(req);
+    if (sizeError) return sizeError;
+
+    // Rate limit: 10 submissions per minute
+    const rateLimit = await rateLimiters.strict(req);
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
+      );
+    }
+
     const user = await stackServerApp.getUser();
 
     const body = await req.json();
@@ -84,9 +105,9 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error creating public link:", error);
+    console.error("Error creating public link:", sanitizeError(error));
     return NextResponse.json(
-      { error: "Failed to submit link" },
+      { error: ERROR_MESSAGES.SERVER_ERROR },
       { status: 500 }
     );
   }

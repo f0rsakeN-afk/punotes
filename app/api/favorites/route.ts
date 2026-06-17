@@ -4,6 +4,10 @@ import { stackServerApp } from "@/stack/server";
 import { z } from "zod";
 import { cacheGet, cacheSet, cacheDelete } from "@/lib/cache";
 import { treeifyError } from "zod";
+import { rateLimiters } from "@/lib/rateLimit";
+import { validateCsrf } from "@/lib/csrf";
+import { validateBodySize } from "@/lib/requestLimits";
+import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 interface Favorite {
   id: string;
@@ -58,10 +62,27 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    // CSRF validation
+    const csrfError = validateCsrf(req);
+    if (csrfError) return csrfError;
+
+    // Body size validation
+    const sizeError = validateBodySize(req);
+    if (sizeError) return sizeError;
+
+    // Rate limit: 30 requests per minute
+    const rateLimit = await rateLimiters.standard(req);
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
+      );
+    }
+
     const user = await stackServerApp.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      return NextResponse.json({ error: ERROR_MESSAGES.AUTH_REQUIRED }, { status: 401 });
     }
 
     const body = await req.json();
@@ -122,17 +143,25 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "Added to favorites", favorited: true, data: favorite }, { status: 201 });
   } catch (error) {
-    console.error("Error adding favorite:", error);
-    return NextResponse.json({ error: "Failed to add favorite" }, { status: 500 });
+    console.error("Error adding favorite:", sanitizeError(error));
+    return NextResponse.json({ error: ERROR_MESSAGES.SERVER_ERROR }, { status: 500 });
   }
 }
 
 export async function DELETE(req: NextRequest) {
   try {
+    // CSRF validation
+    const csrfError = validateCsrf(req);
+    if (csrfError) return csrfError;
+
+    // Body size validation
+    const sizeError = validateBodySize(req);
+    if (sizeError) return sizeError;
+
     const user = await stackServerApp.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      return NextResponse.json({ error: ERROR_MESSAGES.AUTH_REQUIRED }, { status: 401 });
     }
 
     const { searchParams } = new URL(req.url);
@@ -167,7 +196,7 @@ export async function DELETE(req: NextRequest) {
     if (error instanceof Error && error.message.includes("Record to delete does not exist")) {
       return NextResponse.json({ message: "Already removed from favorites", favorited: false });
     }
-    console.error("Error removing favorite:", error);
-    return NextResponse.json({ error: "Failed to remove favorite" }, { status: 500 });
+    console.error("Error removing favorite:", sanitizeError(error));
+    return NextResponse.json({ error: ERROR_MESSAGES.SERVER_ERROR }, { status: 500 });
   }
 }

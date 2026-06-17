@@ -55,8 +55,8 @@ const sidebarData = [
     icon: <FileQuestionMark size={6} />,
   },
   {
-    name: "Upload",
-    route: "/upload",
+    name: "Contribute",
+    route: "/contribute",
     icon: <CloudUpload size={6} />,
   },
   {

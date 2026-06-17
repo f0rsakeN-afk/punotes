@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { toOrdinalWord } from "@/utils/toOrdinalWord";
 import { useFavorites } from "@/hooks/useFavorites";
 import { toast } from "react-hot-toast";
+import { ShareQRDialog } from "@/components/common/ShareQRDialog";
 
 const PDFViewerDialog = dynamic(
   () => import("@/components/common/PDFViewerDialog").then((m) => m.PDFViewerDialog),
@@ -49,24 +50,23 @@ function CopyLinkButton({ url }: { url: string }) {
 }
 
 function ShareButton({ url, title }: { url: string; title: string }) {
-  const handleShare = () => {
-    const shareUrl = encodeURIComponent(url);
-    const text = encodeURIComponent(`Check out this PYQ: ${title} - ${shareUrl}`);
-    window.open(`https://wa.me/?text=${text}`, "_blank");
-  };
+  const [qrOpen, setQrOpen] = useState(false);
 
   return (
-    <button
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        handleShare();
-      }}
-      className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors text-green-600 hover:border-green-600"
-      title="Share on WhatsApp"
-    >
-      <Share2 className="w-3 h-3" />
-    </button>
+    <>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setQrOpen(true);
+        }}
+        className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+        title="Share"
+      >
+        <Share2 className="w-3 h-3" />
+      </button>
+      <ShareQRDialog url={url} title={title} open={qrOpen} onOpenChange={setQrOpen} />
+    </>
   );
 }
 

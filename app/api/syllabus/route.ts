@@ -2,10 +2,12 @@ import prisma from "@/lib/prisma";
 import { syllabusSchema } from "@/schema/upload";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
-import { cacheGet, cacheSet, cacheDelete, getCachedUser } from "@/lib/cache";
-import limiter from "@/lib/rateLimit";
-
+import { cacheGet, cacheSet, cacheDelete, cacheDeletePattern, getCachedUser } from "@/lib/cache";
+import { rateLimiters } from "@/lib/rateLimit";
 import { treeifyError } from "zod";
+import { validateCsrf } from "@/lib/csrf";
+import { validateBodySize } from "@/lib/requestLimits";
+import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const CACHE_KEY = "syllabus:all";
 const CACHE_TTL = 86400; // 1 day
@@ -33,11 +35,9 @@ export async function GET() {
       headers: { "X-Cache": "MISS", "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
     });
   } catch (error) {
-    // console.log(error);
     return NextResponse.json(
       {
-        error:
-          error instanceof Error ? error.message : "Failed to fetch syllabus",
+        error: ERROR_MESSAGES.SERVER_ERROR,
       },
       { status: 500 },
     );
@@ -46,13 +46,20 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    // Rate limit: 10 requests per minute per IP
-    try {
-      limiter.checkNext(req, 10);
-    } catch {
+    // CSRF validation
+    const csrfError = validateCsrf(req);
+    if (csrfError) return csrfError;
+
+    // Body size validation
+    const sizeError = validateBodySize(req);
+    if (sizeError) return sizeError;
+
+    // Rate limit: 10 requests per minute
+    const rateLimit = await rateLimiters.strict(req);
+    if (!rateLimit.success) {
       return NextResponse.json(
-        { error: "Too many requests. Please try again later." },
-        { status: 429 }
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
       );
     }
 
@@ -63,7 +70,8 @@ export async function POST(req: NextRequest) {
     if (!parsed.success) {
       return NextResponse.json(
         {
-          error: treeifyError(parsed.error),
+          error: ERROR_MESSAGES.VALIDATION_ERROR,
+          details: treeifyError(parsed.error),
         },
         { status: 400 },
       );
@@ -74,7 +82,7 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          message: "You are not authorized. Please signin to get access.",
+          message: ERROR_MESSAGES.AUTH_REQUIRED,
         },
         { status: 401 },
       );
@@ -84,7 +92,7 @@ export async function POST(req: NextRequest) {
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(
-        { message: "Only admins can publish notes." },
+        { message: ERROR_MESSAGES.FORBIDDEN },
         { status: 403 },
       );
     }
@@ -97,6 +105,10 @@ export async function POST(req: NextRequest) {
     // Invalidate about page stats cache
     await cacheDelete("stats:about");
 
+    // Invalidate search caches
+    await cacheDelete("search:all");
+    await cacheDeletePattern("search:query:*");
+
     return NextResponse.json(
       {
         message: "Syllabus added successfully.",
@@ -105,10 +117,10 @@ export async function POST(req: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Syllabus upload error:", sanitizeError(error));
     return NextResponse.json(
       {
-        error:
-          error instanceof Error ? error.message : "Internal server error.",
+        error: ERROR_MESSAGES.SERVER_ERROR,
       },
       { status: 500 },
     );

@@ -3,21 +3,31 @@ import { feedbackSchema } from "@/schema/feedbackSchema";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
 import { treeifyError } from "zod";
-import limiter from "@/lib/rateLimit";
+import { rateLimiters } from "@/lib/rateLimit";
 import { getCachedUser, cacheGet, cacheSet, cacheDelete } from "@/lib/cache";
+import { validateCsrf } from "@/lib/csrf";
+import { validateBodySize } from "@/lib/requestLimits";
+import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const FEEDBACK_CACHE_KEY = "feedback:all";
 const FEEDBACK_CACHE_TTL = 3600; // 1 hour
 
 export async function POST(req: NextRequest) {
   try {
-    // Rate limit: 10 requests per minute per IP
-    try {
-      limiter.checkNext(req, 10);
-    } catch {
+    // CSRF validation
+    const csrfError = validateCsrf(req);
+    if (csrfError) return csrfError;
+
+    // Body size validation
+    const sizeError = validateBodySize(req);
+    if (sizeError) return sizeError;
+
+    // Rate limit: 10 requests per minute
+    const rateLimit = await rateLimiters.strict(req);
+    if (!rateLimit.success) {
       return NextResponse.json(
-        { error: "Too many requests. Please try again later." },
-        { status: 429 }
+        { error: ERROR_MESSAGES.RATE_LIMITED },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(rateLimit.remaining), "X-RateLimit-Reset": String(rateLimit.reset) } }
       );
     }
 
@@ -26,7 +36,7 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          message: "You are not authorized. Please signin to get access.",
+          message: ERROR_MESSAGES.AUTH_REQUIRED,
         },
         { status: 401 },
       );
@@ -54,10 +64,10 @@ export async function POST(req: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
-    // console.error(err);
+    console.error("Feedback error:", sanitizeError(error));
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : "Internal server error",
+        error: ERROR_MESSAGES.SERVER_ERROR,
       },
       { status: 500 },
     );
@@ -70,7 +80,7 @@ export async function GET() {
     if (!user) {
       return NextResponse.json(
         {
-          message: "You are not authorized. Please signin to get access.",
+          message: ERROR_MESSAGES.AUTH_REQUIRED,
         },
         { status: 401 },
       );
@@ -80,7 +90,7 @@ export async function GET() {
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(
-        { message: "Only admins can access all feedbacks." },
+        { message: ERROR_MESSAGES.FORBIDDEN },
         { status: 403 },
       );
     }
@@ -105,12 +115,10 @@ export async function GET() {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Feedback fetch error:", sanitizeError(error));
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to fetch user feedbacks.",
+        error: ERROR_MESSAGES.SERVER_ERROR,
       },
       { status: 500 },
     );

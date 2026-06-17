@@ -2,7 +2,6 @@
 
 import { ArrowUpRight, FileSearch, BookMarked, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
@@ -11,13 +10,6 @@ const quickLinks = [
   { icon: BookMarked, label: "Notes", href: "/pdfs", desc: "8 semesters" },
   { icon: ScrollText, label: "Syllabus", href: "/syllabus", desc: "All branches" },
   { icon: FileSearch, label: "Past Questions", href: "/pyqs", desc: "PYQs" },
-];
-
-const floatingZs = [
-  { className: "z-1", top: "10%", left: "5%" },
-  { className: "z-2", top: "20%", right: "8%" },
-  { className: "z-3", top: "60%", left: "3%" },
-  { className: "z-4", top: "70%", right: "5%" },
 ];
 
 const WELCOME_KEY = "punotes_welcome_shown";
@@ -40,10 +32,7 @@ export default function HomeHero() {
               <p className="text-xs text-muted-foreground">Have notes to share? Help other students!</p>
             </div>
           </div>,
-          {
-            duration: 8000,
-            position: "bottom-right",
-          }
+          { duration: 8000, position: "bottom-right" }
         );
         localStorage.setItem(WELCOME_KEY, "true");
       }, 3000);
@@ -52,54 +41,6 @@ export default function HomeHero() {
 
   return (
     <div className="relative z-10">
-      {/* Floating Z decorations */}
-      <style>{`
-        @keyframes swayUpToRight {
-          0% {
-            transform: translate(0, 0) rotate(0deg);
-            opacity: 0;
-          }
-          10% {
-            opacity: 0.15;
-          }
-          80% {
-            opacity: 0.08;
-          }
-          100% {
-            transform: translate(60px, -80px) rotate(25deg);
-            opacity: 0;
-          }
-        }
-        .z-float {
-          position: absolute;
-          font-size: 24px;
-          font-weight: 700;
-          color: var(--primary);
-          opacity: 0;
-          pointer-events: none;
-          user-select: none;
-        }
-        .z-float-1 { animation: swayUpToRight 3s ease-out infinite; }
-        .z-float-2 { animation: swayUpToRight 3s ease-out 0.6s infinite; }
-        .z-float-3 { animation: swayUpToRight 3s ease-out 1.2s infinite; }
-        .z-float-4 { animation: swayUpToRight 3s ease-out 1.8s infinite; }
-      `}</style>
-      <div className="absolute inset-0 overflow-hidden pointer-events-none pt-16">
-        {floatingZs.map((z, i) => (
-          <span
-            key={i}
-            className={`z-float z-float-${i + 1}`}
-            style={{
-              top: z.top,
-              left: z.left,
-              right: z.right,
-            }}
-          >
-            Z
-          </span>
-        ))}
-      </div>
-
       {/* Hero Section */}
       <section className="text-center max-w-3xl mx-auto px-2 sm:px-4 py-12 sm:py-16">
         {/* Badge */}
