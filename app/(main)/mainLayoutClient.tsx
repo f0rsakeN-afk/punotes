@@ -11,8 +11,21 @@ import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import axios from "axios";
+
+function TrackPageView() {
+  useEffect(() => {
+    // Fire and forget - don't block UI
+    axios.post("/api/analytics/track", {
+      path: window.location.pathname,
+      referrer: document.referrer,
+    }).catch(() => {});
+  }, []);
+
+  return null;
+}
 
 export default function MainLayoutClient({
   children,
@@ -55,6 +68,7 @@ export default function MainLayoutClient({
       )}
       <ScrollProgress />
       <KeyboardShortcuts />
+      <TrackPageView />
       <div className="flex flex-col min-h-screen">
         <MaintenanceBanner />
         <TopHeader isAdmin={isAdmin} />
