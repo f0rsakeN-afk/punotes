@@ -80,8 +80,8 @@ export const metadata: Metadata = {
     creator: "@punotes",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/logo.webp",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
     apple: "/icons/icon-512x512.png",
   },
   robots: {
