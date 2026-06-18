@@ -12,6 +12,7 @@ const publicLinkSchema = z.object({
   branch: z.string().min(1, "Branch is required"),
   semester: z.string().min(1, "Semester is required"),
   type: z.enum(["NOTES", "SYLLABUS", "PYQ"]),
+  subject: z.string().optional(),
   title: z.string().min(1, "Title is required").max(200),
   description: z.string().max(500).optional(),
 });
@@ -86,15 +87,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { url, branch, semester, type, title, description } = result.data;
-
-    // Validate Google Drive URL
-    if (!url.includes("drive.google.com")) {
-      return NextResponse.json(
-        { error: "Only Google Drive links are accepted" },
-        { status: 400 }
-      );
-    }
+    const { url, branch, semester, type, subject, title, description } = result.data;
 
     const link = await prisma.publicLink.create({
       data: {
@@ -102,6 +95,7 @@ export async function POST(req: NextRequest) {
         branch,
         semester,
         type,
+        subject,
         title,
         description,
         submittedBy: user?.id || null,

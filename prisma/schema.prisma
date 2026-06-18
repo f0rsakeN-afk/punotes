@@ -87,6 +87,7 @@ model PublicLink {
   branch      String
   semester    String
   type        PublicLinkType  @default(NOTES)
+  subject     String?
   status      LinkStatus      @default(PENDING)
   submittedBy  String?          // Stack ID of submitter
   submitterEmail String?
@@ -100,6 +101,7 @@ model PublicLink {
   @@index([branch])
   @@index([semester])
   @@index([submittedBy])
+  @@index([subject])
 }
 
 enum PublicLinkType {

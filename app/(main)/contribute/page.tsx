@@ -9,6 +9,7 @@ import {
   CheckCircle,
   Clock,
   Upload,
+  AlertTriangle,
 } from "lucide-react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -101,9 +102,19 @@ export default async function Page() {
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                      <span>Maximum file size: <span className="font-semibold">100 MB</span></span>
+                      <span>Maximum file size: <span className="font-semibold">25 MB</span> for direct upload, <span className="font-semibold">100 MB</span> via URL</span>
                     </li>
                   </ul>
+                </AlertDescription>
+              </Alert>
+
+              <Alert className="border-l-4 border-l-amber-500 bg-amber-50 dark:bg-amber-950/20">
+                <AlertTriangle className="h-5 w-5 text-amber-600" />
+                <AlertTitle className="ml-2 font-semibold text-amber-800 dark:text-amber-200">
+                  Limited Storage Space
+                </AlertTitle>
+                <AlertDescription className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                  We have limited storage space. Please upload only necessary files, avoid duplicates, and compress images before uploading. Help us keep the platform sustainable for everyone.
                 </AlertDescription>
               </Alert>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { SyllabusInput, syllabusSchema, BranchEnum } from "@/schema/upload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,6 +24,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useUploadSyllabus } from "@/services/syllabus";
 import { CheckCircle2, Loader } from "lucide-react";
+import FileDropZone from "./FileDropZone";
+import { toast } from "react-hot-toast";
 
 const semesterData = [
   { name: "1st semester", value: 1 },
@@ -37,6 +40,7 @@ const semesterData = [
 
 export default function UploadSyllabus() {
   const mutation = useUploadSyllabus();
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
   const form = useForm<SyllabusInput>({
     resolver: zodResolver(syllabusSchema),
@@ -49,10 +53,10 @@ export default function UploadSyllabus() {
   });
 
   const onSubmit = (data: SyllabusInput) => {
-    // console.log("FORM SUBMIT:", data);
     mutation.mutate(data, {
       onSuccess: () => {
         form.reset();
+        setUploadedUrl(null);
       },
     });
   };
@@ -145,15 +149,32 @@ export default function UploadSyllabus() {
             name="url"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>File URL</FormLabel>
-                <FormControl>
-                  <Input
-                    type="url"
-                    className="h-12"
-                    placeholder="https://example.com/syllabus.pdf"
-                    {...field}
+                <FormLabel>File</FormLabel>
+                {!uploadedUrl ? (
+                  <FileDropZone
+                    onUploadComplete={(url) => {
+                      setUploadedUrl(url);
+                      field.onChange(url);
+                      toast.success("File uploaded! You can now submit.");
+                    }}
                   />
-                </FormControl>
+                ) : (
+                  <div className="flex items-center gap-2 p-3 border rounded-lg bg-muted/50">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span className="text-sm truncate flex-1">{uploadedUrl.split("/").pop()}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setUploadedUrl(null);
+                        field.onChange("");
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                )}
                 <FormMessage />
               </FormItem>
             )}

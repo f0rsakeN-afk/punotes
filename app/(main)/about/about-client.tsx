@@ -35,6 +35,30 @@ const faqs = [
     q: "Who manages the platform?",
     a: "The platform is maintained by engineering students passionate about open-source technology and accessible education.",
   },
+  {
+    q: "What file formats are accepted for uploads?",
+    a: "We accept PDF and DOCX files only. Please convert your files to PDF or DOCX format before uploading. Images should be converted to PDF first.",
+  },
+  {
+    q: "What is the maximum file size for uploads?",
+    a: "For direct file uploads, the maximum size is 25MB. For Google Drive links, you can share files up to 100MB. Please compress large files or use Google Drive for bigger content.",
+  },
+  {
+    q: "Why is there a storage limit warning?",
+    a: "We have limited storage space on our servers. Please only upload necessary files, avoid duplicates, and compress images before uploading. Every byte saved helps keep the platform sustainable.",
+  },
+  {
+    q: "How long does it take for my submission to be approved?",
+    a: "Submissions typically take 24-48 hours for review. Please be patient — our admin team reviews all contributions to ensure quality.",
+  },
+  {
+    q: "Can I delete or edit my submissions?",
+    a: "Currently, you cannot edit submissions once approved. If you need to remove duplicate or incorrect content, please contact an admin through the feedback page.",
+  },
+  {
+    q: "My file won't upload. What should I do?",
+    a: "First, ensure your file is under 25MB and in PDF or DOCX format. If you're still having issues, try using a Google Drive link instead. Clear your browser cache and try again.",
+  },
 ];
 
 function FileText(props: React.SVGProps<SVGSVGElement> & { className?: string }) {

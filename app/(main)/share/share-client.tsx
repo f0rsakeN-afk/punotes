@@ -13,11 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useUser } from "@stackframe/stack";
-import { Link2, FileText, BookOpen, ScrollText, CheckCircle, Loader2, Users, FileUp, BookMarked, HelpCircle } from "lucide-react";
+import { Link2, FileText, BookOpen, ScrollText, CheckCircle, Loader2, Users, FileUp, BookMarked, HelpCircle, Upload, AlertTriangle } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import confetti from "canvas-confetti";
+import FileDropZone from "@/components/upload/FileDropZone";
 
 interface ShareClientProps {
   branches: string[];
@@ -34,11 +36,13 @@ export default function ShareClient({ branches }: ShareClientProps) {
   const user = useUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [stats, setStats] = useState<Stats | null>(null);
+  const [uploadMethod, setUploadMethod] = useState<"link" | "upload">("link");
   const [form, setForm] = useState({
     url: "",
     branch: "",
     semester: "",
     type: "NOTES" as "NOTES" | "SYLLABUS" | "PYQ",
+    subject: "",
     title: "",
     description: "",
   });
@@ -49,6 +53,11 @@ export default function ShareClient({ branches }: ShareClientProps) {
     }).catch(() => {});
   }, []);
 
+  // Clear URL when switching upload methods
+  useEffect(() => {
+    setForm((prev) => ({ ...prev, url: "" }));
+  }, [uploadMethod]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -57,7 +66,7 @@ export default function ShareClient({ branches }: ShareClientProps) {
       return;
     }
 
-    if (!form.url.includes("drive.google.com")) {
+    if (uploadMethod === "link" && !form.url.includes("drive.google.com")) {
       toast.error("Only Google Drive links are accepted");
       return;
     }
@@ -69,6 +78,7 @@ export default function ShareClient({ branches }: ShareClientProps) {
         branch: form.branch,
         semester: form.semester,
         type: form.type,
+        subject: form.subject || undefined,
         title: form.title,
         description: form.description || undefined,
       });
@@ -84,6 +94,7 @@ export default function ShareClient({ branches }: ShareClientProps) {
         branch: "",
         semester: "",
         type: "NOTES",
+        subject: "",
         title: "",
         description: "",
       });
@@ -174,22 +185,47 @@ export default function ShareClient({ branches }: ShareClientProps) {
           <Card>
             <CardContent className="p-6 sm:p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Google Drive Link */}
-                <div className="space-y-2">
-                  <Label htmlFor="url">
-                    Google Drive Link <span className="text-destructive">*</span>
-                  </Label>
-                  <Input
-                    id="url"
-                    placeholder="https://drive.google.com/..."
-                    value={form.url}
-                    onChange={(e) => setForm({ ...form, url: e.target.value })}
-                    className="h-11"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Make sure the link is publicly accessible (anyone with the link can view)
-                  </p>
-                </div>
+                {/* Upload Method Toggle */}
+                <Tabs value={uploadMethod} onValueChange={(v) => setUploadMethod(v as "link" | "upload")}>
+                  <TabsList className="w-full">
+                    <TabsTrigger value="link" className="flex-1 gap-2">
+                      <Link2 className="w-4 h-4" />
+                      Google Drive Link
+                    </TabsTrigger>
+                    <TabsTrigger value="upload" className="flex-1 gap-2">
+                      <Upload className="w-4 h-4" />
+                      Upload File
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="link" className="mt-4 space-y-2">
+                    <Label htmlFor="url">
+                      Google Drive Link <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="url"
+                      placeholder="https://drive.google.com/..."
+                      value={form.url}
+                      onChange={(e) => setForm({ ...form, url: e.target.value })}
+                      className="h-11"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Make sure the link is publicly accessible (anyone with the link can view)
+                    </p>
+                  </TabsContent>
+
+                  <TabsContent value="upload" className="mt-4 space-y-2">
+                    <Label>
+                      File <span className="text-destructive">*</span>
+                    </Label>
+                    <FileDropZone
+                      onUploadComplete={(url) => setForm({ ...form, url })}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Max file size: 25MB. Accepted formats: PDF, DOCX
+                    </p>
+                  </TabsContent>
+                </Tabs>
 
                 {/* Title */}
                 <div className="space-y-2">
@@ -236,6 +272,18 @@ export default function ShareClient({ branches }: ShareClientProps) {
                       </SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                {/* Subject */}
+                <div className="space-y-2">
+                  <Label htmlFor="subject">Subject</Label>
+                  <Input
+                    id="subject"
+                    placeholder="e.g., Mathematics, Physics"
+                    value={form.subject}
+                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                    className="h-11"
+                  />
                 </div>
 
                 {/* Branch and Semester */}
@@ -306,7 +354,7 @@ export default function ShareClient({ branches }: ShareClientProps) {
                     </>
                   ) : (
                     <>
-                      Submit Link
+                      Submit
                       <CheckCircle className="w-4 h-4 ml-2" />
                     </>
                   )}
@@ -333,6 +381,17 @@ export default function ShareClient({ branches }: ShareClientProps) {
               <CardTitle className="text-lg">Guidelines</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
+              <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="font-medium text-amber-800 dark:text-amber-200 mb-1">Limited Storage</h4>
+                    <p className="text-amber-700 dark:text-amber-300 text-xs">
+                      We have limited storage space. Please only upload necessary files. Avoid duplicates or low-quality scans. Compress images before uploading.
+                    </p>
+                  </div>
+                </div>
+              </div>
               <div>
                 <h4 className="font-medium mb-1">Use Your Own Google Drive</h4>
                 <p className="text-muted-foreground">
@@ -342,10 +401,10 @@ export default function ShareClient({ branches }: ShareClientProps) {
               <div>
                 <h4 className="font-medium mb-1">Link Requirements</h4>
                 <ul className="text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Must be a Google Drive link you own</li>
-                  <li>File must be publicly viewable (anyone with link can view)</li>
+                  <li>Must be a Google Drive link you own, OR upload a file directly</li>
+                  <li>Google Drive: file must be publicly viewable (anyone with link can view)</li>
                   <li>Accepted formats: PDF, DOCX</li>
-                  <li>Maximum file size: 100 MB</li>
+                  <li>Maximum file size: 25MB for direct upload, 100MB for Google Drive</li>
                 </ul>
               </div>
               <div>

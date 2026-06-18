@@ -121,9 +121,9 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 gap-0 max-w-lg overflow-hidden">
+        <DialogContent className="p-0 gap-0 max-w-lg overflow-hidden bg-background dark:bg-black/90 backdrop-blur-xl">
           {/* Search input */}
-          <div className="flex items-center gap-3 px-4 border-b border-border/60">
+          <div className="flex items-center gap-3 px-4 border-b border-border/60 dark:border-border/40">
             {loading ? (
               <Loader2 className="w-4 h-4 text-muted-foreground animate-spin shrink-0" />
             ) : (
@@ -135,7 +135,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search notes, syllabus, PYQs..."
-              className="border-0 shadow-none h-12 text-base focus-visible:ring-0 px-0"
+              className="border-0 shadow-none h-12 text-base focus-visible:ring-0 px-2 bg-transparent dark:text-foreground placeholder:text-muted-foreground flex-1"
             />
             {query && (
               <button
@@ -180,23 +180,29 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
                       }}
                       className={cn(
                         "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors",
-                        i === selectedIndex ? "bg-muted" : "hover:bg-muted/60"
+                        i === selectedIndex ? "bg-primary/15 dark:bg-primary/20" : "hover:bg-muted/60 dark:hover:bg-muted/40"
                       )}
                     >
-                      <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary shrink-0">
                         <Icon className="w-4 h-4" strokeWidth={1.75} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{result.title}</p>
+                        <p className={cn(
+                          "text-sm font-medium truncate",
+                          i === selectedIndex && "text-foreground"
+                        )}>{result.title}</p>
                         <p className="text-xs text-muted-foreground">
                           {result.branch} &middot; Sem {result.semester}
                           {result.subject && ` · ${result.subject}`}
                         </p>
                       </div>
-                      <span className="shrink-0 text-xs font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                      <span className="shrink-0 text-xs font-medium px-1.5 py-0.5 rounded bg-primary/10 dark:bg-primary/25 text-primary">
                         {typeLabel[result.type]}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                      <ArrowRight className={cn(
+                        "w-3.5 h-3.5 shrink-0 transition-colors",
+                        i === selectedIndex ? "text-primary" : "text-muted-foreground"
+                      )} />
                     </button>
                   );
                 })}
@@ -205,17 +211,17 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Footer hint */}
-          <div className="px-4 py-2.5 border-t border-border/60 flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="px-4 py-2.5 border-t border-border/60 dark:border-border/40 flex items-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted text-[10px] font-mono">↑↓</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-muted dark:bg-muted/80 text-[10px] font-mono">↑↓</kbd>
               Navigate
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted text-[10px] font-mono">↵</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-muted dark:bg-muted/80 text-[10px] font-mono">↵</kbd>
               Open
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted text-[10px] font-mono">Esc</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-muted dark:bg-muted/80 text-[10px] font-mono">Esc</kbd>
               Close
             </span>
           </div>
