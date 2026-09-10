@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import { syllabusSchema } from "@/schema/upload";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { cacheGet, cacheSet, cacheDelete, cacheDeletePattern, getCachedUser } from "@/lib/cache";
+import { cacheGet, cacheSet, cacheDelete, cacheDeletePattern } from "@/lib/cache";
 import { rateLimiters } from "@/lib/rateLimit";
 import { treeifyError } from "zod";
 import { validateCsrf } from "@/lib/csrf";
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await stackServerApp.getUser();
+    const user = await getStackUser();
 
     if (!user) {
       return NextResponse.json(
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const data = await getCachedUser(user.id);
+    const data = await getCurrentUser();
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(

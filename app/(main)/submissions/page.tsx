@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import SubmissionsClient from "./submissions-client";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SubmissionsPage() {
-  const user = await stackServerApp.getUser();
+  const user = await getStackUser();
 
   if (!user) {
     redirect("/handler/signin");

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import { cacheGet, cacheSet } from "@/lib/cache";
+import { PageHeader } from "@/components/shared/PageHeader";
 import { SearchPYQClient as PyqsClient } from "./pyqs-client";
 
 export const metadata: Metadata = {
@@ -69,17 +70,15 @@ export default async function PyqsPage() {
   const pyqsData = Array.isArray(data) ? data : [];
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">
-          Past Questions
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Previous year question papers for all branches and semesters
-        </p>
+        <PageHeader
+          title="Past Questions"
+          description="Previous year question papers for all branches and semesters"
+        />
       </div>
 
       <PyqsClient initialData={pyqsData} />
-    </div>
+    </>
   );
 }

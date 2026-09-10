@@ -1,20 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackClientApp } from "@/stack/client";
-import { Inter, Outfit } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { cn } from "@/lib/utils";
 
 const outfit = Outfit({subsets:['latin'],variable:'--font-sans'});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-  fallback: ["system-ui", "sans-serif"],
-  preload: true,
-});
 
 export const viewport: Viewport = {
   themeColor: "#DEDBC8",
@@ -47,8 +39,8 @@ export const metadata: Metadata = {
     "PU PDF Downloads",
     "Purbanchal University Engineering Syllabus",
   ],
-  authors: [{ name: "PuNotes Team" }],
-  creator: "PuNotes",
+  authors: [{ name: "Naresh Rajbanshi", url: "https://nareshrajbanshi.com.np" }],
+  creator: "Naresh Rajbanshi",
   publisher: "PuNotes",
   alternates: {
     canonical: "/",
@@ -109,9 +101,19 @@ export default function RootLayout({
     "url": "https://punotes.vercel.app",
     "logo": "https://punotes.vercel.app/logo.webp",
     "description": "Free academic resources for Purbanchal University students - notes, syllabus, and past year questions.",
+    "founder": {
+      "@type": "Person",
+      "name": "Naresh Rajbanshi",
+      "alternateName": "f0rsaken-afk",
+      "url": "https://nareshrajbanshi.com.np",
+      "sameAs": [
+        "https://github.com/f0rsaken-afk",
+        "https://nareshrajbanshi.com.np",
+      ],
+    },
     "sameAs": [
-      "https://twitter.com/punotes",
-      "https://github.com/f0rsaken-afk",
+      "https://github.com/f0rsakeN-afk/punotes",
+      "https://nareshrajbanshi.com.np",
     ],
   };
 
@@ -143,10 +145,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={cn("font-sans", outfit.variable)}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://drive.google.com" />
         <link rel="apple-touch-icon" href="/icons/icon-512x512.png" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="PuNotes" />
@@ -159,7 +160,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} antialiased`}>
+      <body className="antialiased">
         <StackProvider app={stackClientApp}>
           <StackTheme>
             <ThemeProvider

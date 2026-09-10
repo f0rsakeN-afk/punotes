@@ -21,6 +21,7 @@ import axios from "axios";
 import { format, subDays } from "date-fns";
 import { Download } from "lucide-react";
 import { ChartsWrapper, ChartLoading } from "./ChartsWrapper";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 type Period = "daily" | "weekly" | "monthly";
 
@@ -106,14 +107,12 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4 space-y-8">
+    <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Usage Reports</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Track platform activity and engagement metrics
-        </p>
-      </div>
+      <PageHeader
+        title="Usage Reports"
+        description="Track platform activity and engagement metrics"
+      />
 
       {/* Report Configuration */}
       <Card>
@@ -124,9 +123,9 @@ export default function ReportsPage() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Period</label>
+              <label htmlFor="report-period" className="text-sm font-medium">Period</label>
               <Select value={period} onValueChange={(v) => setPeriod(v as Period)}>
-                <SelectTrigger>
+                <SelectTrigger id="report-period">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -138,8 +137,9 @@ export default function ReportsPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Start Date</label>
+              <label htmlFor="report-start" className="text-sm font-medium">Start Date</label>
               <Input
+                id="report-start"
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
@@ -147,8 +147,9 @@ export default function ReportsPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">End Date</label>
+              <label htmlFor="report-end" className="text-sm font-medium">End Date</label>
               <Input
+                id="report-end"
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}

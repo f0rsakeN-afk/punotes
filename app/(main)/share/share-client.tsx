@@ -15,11 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { PageHeader } from "@/components/shared/PageHeader";
 import { useUser } from "@stackframe/stack";
 import { Link2, FileText, BookOpen, ScrollText, CheckCircle, Loader2, Users, FileUp, BookMarked, HelpCircle, Upload, AlertTriangle } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import confetti from "canvas-confetti";
 import FileDropZone from "@/components/upload/FileDropZone";
 
 interface ShareClientProps {
@@ -85,6 +86,8 @@ export default function ShareClient({ branches }: ShareClientProps) {
         description: form.description || undefined,
       });
       toast.success("Link submitted! It will be reviewed by an admin.");
+      // Loaded on demand — keeps canvas-confetti out of the initial page bundle.
+      const { default: confetti } = await import("canvas-confetti");
       confetti({
         particleCount: 100,
         spread: 70,
@@ -111,16 +114,15 @@ export default function ShareClient({ branches }: ShareClientProps) {
   return (
     <>
       {/* Header */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
           <Link2 className="w-8 h-8 text-primary" />
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-          Share Resources
-        </h1>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Help the PU community by sharing study materials. Submit a Google Drive link and our admins will review it.
-        </p>
+        <PageHeader
+          center
+          title="Share Resources"
+          description="Help the PU community by sharing study materials. Submit a Google Drive link and our admins will review it."
+        />
       </div>
 
       {/* Stats Section */}
@@ -245,12 +247,12 @@ export default function ShareClient({ branches }: ShareClientProps) {
 
                 {/* Type */}
                 <div className="space-y-2">
-                  <Label>Type <span className="text-destructive">*</span></Label>
+                  <Label htmlFor="share-type">Type <span className="text-destructive">*</span></Label>
                   <Select
                     value={form.type}
                     onValueChange={(v) => setForm({ ...form, type: v as typeof form.type })}
                   >
-                    <SelectTrigger className="h-11">
+                    <SelectTrigger id="share-type" className="h-11">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -291,14 +293,14 @@ export default function ShareClient({ branches }: ShareClientProps) {
                 {/* Branch and Semester */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>
+                    <Label htmlFor="share-branch">
                       Branch <span className="text-destructive">*</span>
                     </Label>
                     <Select
                       value={form.branch}
                       onValueChange={(v) => setForm({ ...form, branch: v })}
                     >
-                      <SelectTrigger className="h-11">
+                      <SelectTrigger id="share-branch" className="h-11">
                         <SelectValue placeholder="Select branch" />
                       </SelectTrigger>
                       <SelectContent>
@@ -311,14 +313,14 @@ export default function ShareClient({ branches }: ShareClientProps) {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>
+                    <Label htmlFor="share-semester">
                       Semester <span className="text-destructive">*</span>
                     </Label>
                     <Select
                       value={form.semester}
                       onValueChange={(v) => setForm({ ...form, semester: v })}
                     >
-                      <SelectTrigger className="h-11">
+                      <SelectTrigger id="share-semester" className="h-11">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent>
@@ -383,25 +385,21 @@ export default function ShareClient({ branches }: ShareClientProps) {
               <CardTitle className="text-lg">Guidelines</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
-              <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-                <div className="flex items-start gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
-                  <div>
-                    <h4 className="font-medium text-amber-800 dark:text-amber-200 mb-1">Limited Storage</h4>
-                    <p className="text-amber-700 dark:text-amber-300 text-xs">
-                      We have limited storage space. Please only upload necessary files. Avoid duplicates or low-quality scans. Compress images before uploading.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <Alert variant="warning">
+                <AlertTriangle className="w-4 h-4" />
+                <AlertTitle>Limited Storage</AlertTitle>
+                <AlertDescription className="text-xs">
+                  We have limited storage space. Please only upload necessary files. Avoid duplicates or low-quality scans. Compress images before uploading.
+                </AlertDescription>
+              </Alert>
               <div>
-                <h4 className="font-medium mb-1">Use Your Own Google Drive</h4>
+                <h2 className="text-sm font-medium mb-1">Use Your Own Google Drive</h2>
                 <p className="text-muted-foreground">
                   Upload your study materials to your own Google Drive and paste the share link here. Make sure the file is publicly accessible.
                 </p>
               </div>
               <div>
-                <h4 className="font-medium mb-1">Link Requirements</h4>
+                <h2 className="text-sm font-medium mb-1">Link Requirements</h2>
                 <ul className="text-muted-foreground space-y-1 list-disc list-inside">
                   <li>Must be a Google Drive link you own, OR upload a file directly</li>
                   <li>Google Drive: file must be publicly viewable (anyone with link can view)</li>
@@ -410,7 +408,7 @@ export default function ShareClient({ branches }: ShareClientProps) {
                 </ul>
               </div>
               <div>
-                <h4 className="font-medium mb-1">What Happens Next?</h4>
+                <h2 className="text-sm font-medium mb-1">What Happens Next?</h2>
                 <p className="text-muted-foreground">
                   Admins will review your submission. Approved links are added to the resource library for everyone.
                 </p>

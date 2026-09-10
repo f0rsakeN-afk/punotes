@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/shared/PageHeader";
 import {
   DndContext,
   DragEndEvent,
@@ -228,10 +229,17 @@ function SkeletonCard() {
   );
 }
 
-export default function FavoritesClient() {
-  const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const [collections, setCollections] = useState<Collection[]>([]);
+export default function FavoritesClient({
+  initialFavorites,
+  initialCollections,
+}: {
+  initialFavorites?: Favorite[];
+  initialCollections?: Collection[];
+}) {
+  const hasInitialData = initialFavorites !== undefined && initialCollections !== undefined;
+  const [loading, setLoading] = useState(!hasInitialData);
+  const [favorites, setFavorites] = useState<Favorite[]>(initialFavorites ?? []);
+  const [collections, setCollections] = useState<Collection[]>(initialCollections ?? []);
   const [activeTab, setActiveTab] = useState<"FAVORITES" | "COLLECTIONS">("FAVORITES");
   const [favoriteTab, setFavoriteTab] = useState<"ALL" | "NOTES" | "SYLLABUS" | "PYQ">("ALL");
   const [showCreateCollection, setShowCreateCollection] = useState(false);
@@ -266,8 +274,11 @@ export default function FavoritesClient() {
   };
 
   useEffect(() => {
+    // Server already provided initial data — skip the client fetch.
+    if (hasInitialData) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createCollection = async () => {
@@ -408,16 +419,18 @@ export default function FavoritesClient() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+      <>
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-              <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
+              <Star className="w-5 h-5 text-amber-500 fill-amber-500 dark:text-amber-400 dark:fill-amber-400" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">My Library</h1>
-              <p className="text-muted-foreground text-sm">Drag items to collections to organize</p>
+              <PageHeader
+                title="My Library"
+                description="Drag items to collections to organize"
+              />
             </div>
           </div>
 
@@ -500,6 +513,7 @@ export default function FavoritesClient() {
                   <h3 className="font-semibold">Create Collection</h3>
                   <button
                     onClick={() => setShowCreateCollection(false)}
+                    aria-label="Close new collection dialog"
                     className="text-muted-foreground hover:text-foreground"
                   >
                     <X className="w-4 h-4" />
@@ -510,10 +524,11 @@ export default function FavoritesClient() {
                     value={newCollectionName}
                     onChange={(e) => setNewCollectionName(e.target.value)}
                     placeholder="e.g. Exam Prep, Semester 5..."
+                    aria-label="New collection name"
                     className="flex-1"
                     onKeyDown={(e) => e.key === "Enter" && createCollection()}
                   />
-                  <Button onClick={createCollection} disabled={creating || !newCollectionName.trim()}>
+                  <Button onClick={createCollection} disabled={creating || !newCollectionName.trim()} aria-label="Create collection">
                     <Check className="w-4 h-4" />
                   </Button>
                 </div>
@@ -689,7 +704,7 @@ export default function FavoritesClient() {
             )}
           </>
         )}
-      </div>
+      </>
 
       <DragOverlay>
         {activeDragId && (

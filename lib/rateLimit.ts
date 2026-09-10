@@ -25,8 +25,8 @@ export async function slidingWindowRateLimit(
   const windowStart = now - config.windowMs;
 
   try {
-    // Remove old entries outside the window
-    await redis.zRemRangeByScore(key, windowStart.toString(), "+inf");
+    // Remove entries older than the window (scores are timestamps)
+    await redis.zRemRangeByScore(key, "-inf", windowStart);
 
     // Count current requests in window
     const currentCount = await redis.zCard(key);

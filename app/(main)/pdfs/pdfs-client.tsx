@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Cpu, Building2, Network, Zap, Layers, Laptop, Database, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 const branches = [
   "Computer Engineering",
@@ -67,15 +68,13 @@ export default function BranchesPage() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-2">
-          Explore Branches
-        </h1>
-        <p className="text-muted-foreground">
-          Choose your department to access notes, syllabus, and past papers.
-        </p>
+      <div className="mb-8">
+        <PageHeader
+          title="Explore Branches"
+          description="Choose your department to access notes, syllabus, and past papers."
+        />
       </div>
 
       {/* Controls */}
@@ -102,6 +101,7 @@ export default function BranchesPage() {
         {/* Search */}
         <Input
           placeholder="Search branches…"
+          aria-label="Search branches"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="h-9 sm:max-w-52"
@@ -154,6 +154,6 @@ export default function BranchesPage() {
           })}
         </div>
       )}
-    </div>
+    </>
   );
 }

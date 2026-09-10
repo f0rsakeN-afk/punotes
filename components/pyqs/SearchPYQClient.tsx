@@ -39,6 +39,7 @@ export function SearchPYQClient({ initialData }: { initialData: PYQData[] }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by year, semester, branch…"
+          aria-label="Search past questions by year, semester or branch"
           className="max-w-sm h-10"
         />
       </div>

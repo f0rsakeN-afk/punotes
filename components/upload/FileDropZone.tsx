@@ -127,6 +127,7 @@ export default function FileDropZone({ onUploadComplete, className }: FileDropZo
         >
           <input
             type="file"
+            aria-label="Choose a PDF or DOCX file to upload"
             accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             onChange={handleInputChange}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -159,6 +160,7 @@ export default function FileDropZone({ onUploadComplete, className }: FileDropZo
               size="icon-xs"
               onClick={handleClear}
               disabled={mutation.isPending}
+              aria-label="Remove selected file"
               className="shrink-0"
             >
               <X className="w-4 h-4" />
@@ -181,7 +183,7 @@ export default function FileDropZone({ onUploadComplete, className }: FileDropZo
           )}
 
           {mutation.isSuccess && (
-            <div className="flex items-center gap-1 text-sm text-emerald-600">
+            <div className="flex items-center gap-1 text-sm text-green-600 dark:text-green-400">
               <CheckCircle2 className="w-4 h-4" />
               Uploaded successfully
             </div>

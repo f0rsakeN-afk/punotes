@@ -37,6 +37,7 @@ export function SearchSyllabusClient({ initialData }: { initialData: SyllabusDat
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by semester or branch…"
+          aria-label="Search syllabus by semester or branch"
           className="max-w-sm h-10"
         />
       </div>

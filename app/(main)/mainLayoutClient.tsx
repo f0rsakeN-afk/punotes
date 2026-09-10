@@ -30,9 +30,15 @@ function TrackPageView() {
 export default function MainLayoutClient({
   children,
   isAdmin,
+  initialUser,
 }: {
   children: React.ReactNode;
   isAdmin?: boolean;
+  initialUser?: {
+    displayName: string | null;
+    primaryEmail: string | null;
+    profileImageUrl: string | null;
+  } | null;
 }) {
   const [queryClient] = useState(() => {
     const qc = new QueryClient({
@@ -69,10 +75,16 @@ export default function MainLayoutClient({
       <ScrollProgress />
       <KeyboardShortcuts />
       <TrackPageView />
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
+      >
+        Skip to content
+      </a>
       <div className="flex flex-col min-h-screen">
         <MaintenanceBanner />
-        <TopHeader isAdmin={isAdmin} />
-        <main className="flex-1 w-full max-w-6xl mx-auto px-2 sm:px-4 py-6">
+        <TopHeader isAdmin={isAdmin} initialUser={initialUser} />
+        <main id="main-content" className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Toaster position="top-right" />
           {children}
         </main>

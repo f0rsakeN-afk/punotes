@@ -40,25 +40,25 @@ export function ShareQRDialog({ url, title, open, onOpenChange }: ShareQRDialogP
     {
       name: "WhatsApp",
       icon: MessageCircle,
-      color: "text-green-600 hover:bg-green-50",
+      color: "text-green-600 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-950/30",
       href: `https://wa.me/?text=${encodedTitle}%0A%0A${encodedUrl}`,
     },
     {
       name: "Facebook",
       icon: FacebookIcon as ComponentType<{ className?: string }>,
-      color: "text-blue-600 hover:bg-blue-50",
+      color: "text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/30",
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     },
     {
       name: "Twitter",
       icon: TwitterIcon as ComponentType<{ className?: string }>,
-      color: "text-sky-500 hover:bg-sky-50",
+      color: "text-sky-500 hover:bg-sky-50 dark:text-sky-400 dark:hover:bg-sky-950/30",
       href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
     },
     {
       name: "Email",
       icon: Mail,
-      color: "text-gray-600 hover:bg-gray-50",
+      color: "text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800",
       href: `mailto:?subject=${encodedTitle}&body=${encodedUrl}`,
     },
   ];

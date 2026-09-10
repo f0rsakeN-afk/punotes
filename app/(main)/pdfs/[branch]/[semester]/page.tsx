@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import { cacheGet, cacheSet, buildCacheKey } from "@/lib/cache";
+import { PageHeader } from "@/components/shared/PageHeader";
 import { SearchNotesClient as NotesClient } from "./notes-client";
 
 const branches = [
@@ -98,20 +99,22 @@ export default async function NotesPage({
   const notesData = Array.isArray(data) ? data : [];
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       <div className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
           {decodedBranch} · Semester {semester}
         </p>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-          Notes
-        </h1>
-        {notesData.length > 0 && (
-          <p className="text-sm text-muted-foreground mt-1">{notesData.length} file{notesData.length !== 1 ? "s" : ""}</p>
-        )}
+        <PageHeader
+          title="Notes"
+          description={
+            notesData.length > 0
+              ? `${notesData.length} file${notesData.length !== 1 ? "s" : ""}`
+              : undefined
+          }
+        />
       </div>
 
       <NotesClient initialData={notesData} />
-    </div>
+    </>
   );
 }

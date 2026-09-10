@@ -34,15 +34,24 @@ function useHomeStats() {
 function HeroSection() {
   return (
     <section className="relative overflow-hidden">
-      <div className="relative max-w-3xl mx-auto px-4 py-16 sm:py-20 text-center">
+      {/* Ambient premium backdrop: ember glow + fading grid */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/2 top-[-220px] h-[480px] w-[820px] max-w-none -translate-x-1/2 rounded-full bg-primary/[0.13] blur-3xl dark:bg-primary/[0.16]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:44px_44px] opacity-40 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+      </div>
+      <div className="relative max-w-3xl mx-auto py-16 sm:py-24 text-center">
         {/* Status badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted text-muted-foreground text-xs font-medium mb-8">
-          <Star className="w-3 h-3 fill-primary text-primary" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background/80 backdrop-blur border border-primary/25 text-muted-foreground text-xs font-medium mb-8 shadow-sm">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+          </span>
           Community Driven · 100% Free
         </div>
 
         {/* Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4 leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-4 leading-[1.05]">
           Your study companion for{" "}
           <span className="text-primary">Purbanchal University</span>
         </h1>
@@ -55,13 +64,13 @@ function HeroSection() {
         {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
           <Link href="/pdfs">
-            <Button size="lg" className="w-full sm:w-auto gap-2">
+            <Button size="lg" className="w-full sm:w-auto gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-px transition-all">
               Browse Notes
               <ArrowUpRight className="w-4 h-4" />
             </Button>
           </Link>
           <Link href="/share">
-            <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2">
+            <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 bg-background/80 backdrop-blur hover:-translate-y-px transition-all">
               <Upload className="w-4 h-4" />
               Contribute
             </Button>
@@ -77,7 +86,7 @@ function HeroSection() {
             { label: "PYQs", href: "/pyqs" },
           ].map((link) => (
             <Link key={link.href} href={link.href}>
-              <Button variant="link" size="sm" className="h-auto p-0 text-primary text-sm gap-1">
+              <Button variant="link" size="sm" className="h-auto p-0 text-sm gap-1 text-foreground hover:text-primary">
                 {link.label}
                 <ArrowUpRight className="w-3 h-3" />
               </Button>
@@ -98,7 +107,7 @@ function QuickAccessSection() {
 
   return (
     <section className="py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {links.map((link) => (
             <Link key={link.href} href={link.href}>
@@ -136,7 +145,7 @@ function StatsSection() {
   if (isLoading) {
     return (
       <section className="py-8">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-3 gap-3">
             {[1, 2, 3].map((i) => (
               <Skeleton key={i} className="h-20 rounded-lg" />
@@ -149,7 +158,7 @@ function StatsSection() {
 
   return (
     <section className="py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-3 gap-3">
           {stats.map((stat) => (
             <Card key={stat.label} className="bg-card">
@@ -168,7 +177,7 @@ function StatsSection() {
 function ContributeSection() {
   return (
     <section className="py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
         <Card className="bg-muted/50 border-none">
           <CardContent className="p-6 flex flex-col sm:flex-row items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
@@ -198,7 +207,7 @@ function RecentNotesSection() {
   if (isLoading) {
     return (
       <section className="py-8">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto">
           <Skeleton className="h-6 w-32 mb-4" />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[1, 2, 3].map((i) => (
@@ -218,7 +227,7 @@ function RecentNotesSection() {
 
   return (
     <section className="py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Browse Resources</h2>
         </div>
@@ -253,7 +262,7 @@ function FeaturesSection() {
 
   return (
     <section className="py-10 border-t">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
         <h2 className="text-lg font-semibold mb-5 text-center">Why PuNotes</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {features.map((f) => (
@@ -290,7 +299,7 @@ function AnalyticsSection() {
 
   return (
     <section className="py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto">
         <Card className="bg-muted/30">
           <CardContent className="p-5">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">

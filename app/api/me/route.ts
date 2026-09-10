@@ -1,6 +1,5 @@
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getCachedUser } from "@/lib/cache";
 import { rateLimiters } from "@/lib/rateLimit";
 import { ERROR_MESSAGES } from "@/lib/sanitizeError";
 
@@ -14,7 +13,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const user = await stackServerApp.getUser();
+    const user = await getStackUser();
 
     if (!user) {
       return NextResponse.json(
@@ -23,7 +22,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const data = await getCachedUser(user.id);
+    const data = await getCurrentUser();
 
     return NextResponse.json(
       { data },

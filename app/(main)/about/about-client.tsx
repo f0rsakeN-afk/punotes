@@ -137,13 +137,17 @@ export default function AboutPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="py-12 px-2 sm:px-4">
-        <div className="max-w-6xl mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <section className="relative overflow-hidden py-10">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-[-220px] h-[420px] w-[720px] max-w-none -translate-x-1/2 rounded-full bg-primary/[0.12] blur-3xl dark:bg-primary/[0.15]" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        </div>
+        <div className="relative max-w-6xl mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-6">
             <Heart className="w-3.5 h-3.5" />
             Built with purpose
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
             Empowering Students.
             <br />
             <span className="text-primary">Sharing Knowledge.</span>
@@ -156,7 +160,7 @@ export default function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-12 px-2 sm:px-4 border rounded-sm border-border/50 bg-muted/30">
+      <section className="py-10 border rounded-xl border-border/50 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {isLoading
@@ -173,7 +177,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission */}
-      <section className="py-12 px-2 sm:px-4">
+      <section className="py-10">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -233,7 +237,7 @@ export default function AboutPage() {
       </section>
 
       {/* Creator */}
-      <section className="py-12 px-2 sm:px-4 border-t border-border/50">
+      <section className="py-10 border-t border-border/50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-2">
@@ -253,12 +257,24 @@ export default function AboutPage() {
                   height={80}
                   className="w-20 h-20 rounded-full mb-4 border-2 border-primary/20"
                 />
-                <h3 className="font-semibold text-lg mb-1">f0rsakeN-afk</h3>
+                <h3 className="font-semibold text-lg mb-1">Naresh Rajbanshi</h3>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Computer Engineering · Purbanchal University
+                </p>
                 <p className="text-sm text-muted-foreground mb-4 italic">
                   &ldquo;I&apos;m afraid I&apos;ll disappear long before<br />
                   my heart ever learns to let go.&rdquo;
                 </p>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <a
+                    href="https://nareshrajbanshi.com.np"
+                    target="_blank"
+                    rel="author noopener"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+                  >
+                    <Globe className="w-4 h-4" />
+                    Portfolio
+                  </a>
                   <a
                     href="https://github.com/f0rsaken-afk"
                     target="_blank"
@@ -285,7 +301,7 @@ export default function AboutPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-12 px-2 sm:px-4 border-t border-border/50">
+      <section className="py-10 border-t border-border/50">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-2">

@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     "PU Study Materials",
     "Semester Notes PU",
   ],
-  authors: [{ name: "PuNotes Team" }],
-  creator: "@punotes",
+  authors: [{ name: "Naresh Rajbanshi", url: "https://nareshrajbanshi.com.np" }],
+  creator: "Naresh Rajbanshi",
   alternates: { canonical: "/" },
   openGraph: {
     title: "PuNotes | Free Notes & Resources for PU Students",

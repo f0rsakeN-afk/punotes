@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle, XCircle, ExternalLink, Clock, FileText, BookOpen, ScrollText } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 interface PublicLink {
   id: string;
@@ -60,14 +61,12 @@ export default function PublicLinksClient({
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-          Public Link Submissions
-        </h1>
-        <p className="text-muted-foreground">
-          Review and approve links submitted by users
-        </p>
+        <PageHeader
+          title="Public Link Submissions"
+          description="Review and approve links submitted by users"
+        />
       </div>
 
       <Tabs defaultValue="pending" className="w-full">
@@ -140,7 +139,7 @@ export default function PublicLinksClient({
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                          className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-950/30"
                           onClick={() => handleReview(link.id, "APPROVED")}
                           disabled={processing === link.id}
                         >
@@ -150,7 +149,7 @@ export default function PublicLinksClient({
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/30"
                           onClick={() => handleReview(link.id, "REJECTED")}
                           disabled={processing === link.id}
                         >
@@ -189,8 +188,7 @@ export default function PublicLinksClient({
                             {link.title}
                           </h3>
                           <Badge
-                            variant={link.status === "APPROVED" ? "default" : "destructive"}
-                            className="text-xs"
+                            variant={link.status === "APPROVED" ? "success" : "destructive"}
                           >
                             {link.status}
                           </Badge>
@@ -221,6 +219,6 @@ export default function PublicLinksClient({
           )}
         </TabsContent>
       </Tabs>
-    </div>
+    </>
   );
 }

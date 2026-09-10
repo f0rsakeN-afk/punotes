@@ -200,7 +200,7 @@ export default function UploadNotes() {
                   />
                 ) : (
                   <div className="flex items-center gap-2 p-3 border rounded-lg bg-muted/50">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0" />
                     <span className="text-sm truncate flex-1">{uploadedUrl.split("/").pop()}</span>
                     <Button
                       type="button"

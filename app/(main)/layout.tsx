@@ -1,6 +1,4 @@
-import { stackServerApp } from "@/stack/server";
-import prisma from "@/lib/prisma";
-import { cacheDelete, getCachedUser } from "@/lib/cache";
+import { isAdmin, getStackUser } from "@/lib/auth";
 import MainLayoutClient from "./mainLayoutClient";
 
 export default async function MainLayout({
@@ -8,21 +6,25 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await stackServerApp.getUser();
+  // Cached: 1 Stack verification per request (React cache) + 1 Redis
+  // lookup for role. No DB writes, no cache busting here — user sync
+  // happens lazily on write paths via ensureUserExists().
+  const [admin, stackUser] = await Promise.all([isAdmin(), getStackUser()]);
 
-  if (user?.primaryEmail) {
-    await prisma.user.upsert({
-      where: { stackID: user.id },
-      update: { email: user.primaryEmail },
-      create: { stackID: user.id, email: user.primaryEmail, role: "USER" },
-    });
-    await cacheDelete(`user:${user.id}`).catch(() => {});
-    // Invalidate about page stats cache when user count changes
-    await cacheDelete("stats:about").catch(() => {});
-  }
-
-  const userData = user ? await getCachedUser(user.id) : null;
-  const isAdmin = userData?.role === "ADMIN";
-
-  return <MainLayoutClient isAdmin={isAdmin}>{children}</MainLayoutClient>;
+  return (
+    <MainLayoutClient
+      isAdmin={admin}
+      initialUser={
+        stackUser
+          ? {
+              displayName: stackUser.displayName ?? null,
+              primaryEmail: stackUser.primaryEmail ?? null,
+              profileImageUrl: stackUser.profileImageUrl ?? null,
+            }
+          : null
+      }
+    >
+      {children}
+    </MainLayoutClient>
+  );
 }

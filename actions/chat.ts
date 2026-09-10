@@ -1,15 +1,15 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 
 export async function getMessages(cursor?: string) {
     try {
-        const user = await stackServerApp.getUser();
+        const user = await getStackUser();
 
-        // Update lastSeenAt if user is logged in
+        // Update lastSeenAt in background — never block message reads on a DB write
         if (user) {
-            await prisma.user.update({
+            prisma.user.update({
                 where: { stackID: user.id },
                 data: { lastSeenAt: new Date() },
             }).catch(() => { }); // Ignore if user not found (e.g. first load)
@@ -72,7 +72,7 @@ export async function getMessages(cursor?: string) {
 
 export async function sendMessage(content: string) {
     try {
-        const user = await stackServerApp.getUser();
+        const user = await getStackUser();
         if (!user) {
             return { success: false, error: "Unauthorized" };
         }
@@ -177,14 +177,12 @@ export async function sendMessage(content: string) {
 
 export async function toggleReaction(messageId: string, emoji: string) {
     try {
-        const user = await stackServerApp.getUser();
+        const user = await getStackUser();
         if (!user) {
             return { success: false, error: "Unauthorized" };
         }
 
-        const dbUser = await prisma.user.findUnique({
-            where: { stackID: user.id },
-        });
+        const dbUser = await getCurrentUser();
 
         if (!dbUser) {
             return { success: false, error: "User not found" };
@@ -223,14 +221,12 @@ export async function toggleReaction(messageId: string, emoji: string) {
 
 export async function deleteMessage(messageId: string) {
     try {
-        const user = await stackServerApp.getUser();
+        const user = await getStackUser();
         if (!user) {
             return { success: false, error: "Unauthorized" };
         }
 
-        const dbUser = await prisma.user.findUnique({
-            where: { stackID: user.id },
-        });
+        const dbUser = await getCurrentUser();
 
         if (!dbUser || dbUser.role !== "ADMIN") {
             return { success: false, error: "Unauthorized: Admin only" };

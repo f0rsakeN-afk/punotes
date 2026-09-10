@@ -60,6 +60,7 @@ function CopyLinkButton({ url }: { url: string }) {
       }}
       className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
       title="Copy link"
+      aria-label="Copy link"
     >
       {copied ? <Check className="w-3 h-3" /> : <Link2 className="w-3 h-3" />}
     </button>
@@ -79,6 +80,7 @@ function ShareButton({ url, title }: { url: string; title: string }) {
         }}
         className="inline-flex items-center justify-center gap-1.5 h-8 px-2 text-xs font-medium rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
         title="Share"
+        aria-label="Share"
       >
         <Share2 className="w-3 h-3" />
       </button>
@@ -118,12 +120,13 @@ function FavoriteButton({ itemId, type }: { itemId: string; type: "NOTES" | "SYL
       disabled={loading}
       className={`inline-flex items-center justify-center h-8 px-2 text-xs font-medium rounded-md border transition-colors ${
         favorited
-          ? "border-amber-500 bg-amber-50 text-amber-600 hover:border-amber-600 dark:bg-amber-950/30"
+          ? "border-amber-500 bg-amber-50 text-amber-600 hover:border-amber-600 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800 dark:hover:border-amber-600"
           : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
       }`}
       title={favorited ? "Remove from favorites" : "Add to favorites"}
+      aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
     >
-      <Star className={`w-3 h-3 ${favorited ? "fill-amber-500" : ""}`} />
+      <Star className={`w-3 h-3 ${favorited ? "fill-amber-500 dark:fill-amber-400" : ""}`} />
     </button>
   );
 }
@@ -232,6 +235,7 @@ export function SearchNotesClient({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by name or subject…"
+          aria-label="Search notes by name or subject"
           className="h-10 max-w-sm"
         />
 

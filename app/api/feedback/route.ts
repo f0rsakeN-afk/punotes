@@ -1,10 +1,10 @@
 import prisma from "@/lib/prisma";
 import { feedbackSchema } from "@/schema/feedbackSchema";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { treeifyError } from "zod";
 import { rateLimiters } from "@/lib/rateLimit";
-import { getCachedUser, cacheGet, cacheSet, cacheDelete } from "@/lib/cache";
+import { cacheGet, cacheSet, cacheDelete } from "@/lib/cache";
 import { validateCsrf } from "@/lib/csrf";
 import { validateBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await stackServerApp.getUser();
+    const user = await getStackUser();
 
     if (!user) {
       return NextResponse.json(
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const user = await stackServerApp.getUser();
+    const user = await getStackUser();
     if (!user) {
       return NextResponse.json(
         { message: ERROR_MESSAGES.AUTH_REQUIRED },
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const data = await getCachedUser(user.id);
+    const data = await getCurrentUser();
 
     if (!data || data.role !== "ADMIN") {
       return NextResponse.json(

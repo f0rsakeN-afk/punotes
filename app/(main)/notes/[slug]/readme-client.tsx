@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { PageHeader } from "@/components/shared/PageHeader";
 import remarkGfm from "remark-gfm";
 
 const ReactMarkdown = dynamic(
@@ -35,7 +36,7 @@ export default function ReadmeClient() {
 
   if (isError) {
     return (
-      <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+      <>
         <Card>
           <CardContent className="py-12 text-center">
             <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
@@ -54,13 +55,13 @@ export default function ReadmeClient() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </>
     );
   }
 
   if (!data) {
     return (
-      <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+      <>
         <Card>
           <CardContent className="py-12 text-center">
             <p className="text-lg text-muted-foreground mb-4">Note not found.</p>
@@ -72,12 +73,12 @@ export default function ReadmeClient() {
             </Link>
           </CardContent>
         </Card>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       <Link href="/pdfs">
         <Button variant="ghost" className="mb-6 hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors gap-2">
           <ArrowLeft className="w-4 h-4" />
@@ -91,9 +92,7 @@ export default function ReadmeClient() {
           <Badge variant="outline">Semester {data.semester}</Badge>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-          {data.title}
-        </h1>
+        <PageHeader title={data.title} />
 
         <div className="flex items-center gap-6 text-sm text-muted-foreground border-y py-4 border-border">
           <div className="flex items-center gap-2">
@@ -122,6 +121,6 @@ export default function ReadmeClient() {
           Found an error? Let us know via the feedback page or contribute to the repository.
         </p>
       </div>
-    </div>
+    </>
   );
 }

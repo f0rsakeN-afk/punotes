@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import { cacheGet, cacheSet } from "@/lib/cache";
+import { PageHeader } from "@/components/shared/PageHeader";
 import { SearchSyllabusClient as SyllabusClient } from "./syllabus-client";
 
 export const metadata: Metadata = {
@@ -68,17 +69,15 @@ export default async function SyllabusPage() {
   const syllabusData = Array.isArray(data) ? data : [];
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">
-          Syllabus
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Official syllabus for all branches and semesters
-        </p>
+        <PageHeader
+          title="Syllabus"
+          description="Official syllabus for all branches and semesters"
+        />
       </div>
 
       <SyllabusClient initialData={syllabusData} />
-    </div>
+    </>
   );
 }

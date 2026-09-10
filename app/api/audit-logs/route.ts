@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { getAuditLogs } from "@/lib/audit";
-import { getCachedUser } from "@/lib/cache";
 
 /**
  * GET /api/audit-logs
@@ -16,7 +15,7 @@ import { getCachedUser } from "@/lib/cache";
  */
 export async function GET(request: NextRequest) {
   try {
-    const stackUser = await stackServerApp.getUser();
+    const stackUser = await getStackUser();
 
     if (!stackUser) {
       return NextResponse.json(
@@ -25,8 +24,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get current user and check if admin
-    const currentUser = await getCachedUser(stackUser.id);
+    // Get current user and check if admin (Redis-cached)
+    const currentUser = await getCurrentUser();
 
     if (!currentUser || currentUser.role !== "ADMIN") {
       return NextResponse.json(

@@ -52,18 +52,19 @@ export function MaintenanceBanner() {
 
   return (
     <div className="relative bg-destructive/10 border-b border-destructive/20">
-      <div className="max-w-6xl mx-auto px-4 py-2.5 pr-10 flex items-center justify-center gap-2 text-sm">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 pr-10 flex items-center justify-center gap-2 text-sm">
         <span className="text-destructive font-medium">
           ⚠️ This site is no longer actively maintained.
         </span>
         <span className="text-muted-foreground">
           Want to keep it alive? Help by uploading notes at{" "}
         </span>
-        <Link href="/share" className="text-primary hover:underline font-medium">
+        <Link href="/share" className="text-foreground hover:text-primary underline underline-offset-2 font-medium">
           /share
         </Link>
       </div>
       <button
+        aria-label="Dismiss announcement"
         className="absolute right-2 top-1/2 -translate-y-1/2 p-1 cursor-pointer text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted"
         onClick={() => setBannerOpen(false)}
       >

@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, FileText, BookOpen, ScrollText, Loader2, X, ArrowRight } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useUser } from "@stackframe/stack";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +38,6 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const user = useUser();
 
   // Listen for Cmd+K / Ctrl+K
   useEffect(() => {
@@ -64,9 +62,9 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
     }
   }, [open]);
 
-  // Search when query changes
+  // Search when query changes (public endpoint — works signed out)
   useEffect(() => {
-    if (!query || query.length < 2 || !user) {
+    if (!query || query.length < 2) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setResults([]);
       return;
@@ -87,7 +85,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
     }, 300);
 
     return () => clearTimeout(debounce);
-  }, [query, user]);
+  }, [query]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -133,6 +131,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
             <Input
               ref={inputRef}
               value={query}
+              aria-label="Search notes, syllabus and past questions"
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search notes, syllabus, PYQs..."
@@ -141,6 +140,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
             {query && (
               <button
                 onClick={() => setQuery("")}
+                aria-label="Clear search"
                 className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -150,11 +150,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
 
           {/* Results */}
           <div className="max-h-80 overflow-y-auto p-2">
-            {!user ? (
-              <div className="py-8 text-center text-sm text-muted-foreground">
-                Sign in to search
-              </div>
-            ) : query.length < 2 ? (
+            {query.length < 2 ? (
               <div className="py-8 text-center text-sm text-muted-foreground">
                 Type at least 2 characters to search
               </div>

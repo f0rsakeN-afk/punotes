@@ -56,6 +56,7 @@ export function SearchNotesClient({ initialData }: { initialData: NotesData[] })
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by name or subject…"
+          aria-label="Search notes by name or subject"
           className="max-w-sm h-10"
         />
       </div>

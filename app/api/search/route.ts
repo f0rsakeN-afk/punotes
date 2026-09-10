@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { stackServerApp } from "@/stack/server";
 import { cacheGet, cacheSet, buildCacheKey } from "@/lib/cache";
 import { rateLimiters } from "@/lib/rateLimit";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
@@ -21,7 +20,7 @@ interface SearchResult {
 
 export async function GET(req: NextRequest) {
   try {
-    // Rate limit: 60 requests per minute
+    // Rate limit: 60 requests per minute (abuse protection for a public endpoint)
     const rateLimit = await rateLimiters.lenient(req);
     if (!rateLimit.success) {
       return NextResponse.json(
@@ -30,10 +29,8 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const user = await stackServerApp.getUser();
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.AUTH_REQUIRED }, { status: 401 });
-    }
+    // Public endpoint — results contain only public listing data.
+    // No auth check: every keystroke used to pay a Stack verification roundtrip.
 
     const { searchParams } = new URL(req.url);
     const query = searchParams.get("q")?.toLowerCase().trim() || "";
@@ -50,7 +47,7 @@ export async function GET(req: NextRequest) {
     if (queryCached) {
       return NextResponse.json(
         { results: queryCached, total: queryCached.length, cached: true },
-        { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=120" } }
+        { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } }
       );
     }
 
@@ -90,7 +87,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       { results: limitedResults, total: results.length, cached: false },
-      { headers: { "Cache-Control": "private, max-age=60, stale-while-revalidate=120" } }
+      { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } }
     );
   } catch (error) {
     console.error("Search error:", sanitizeError(error));

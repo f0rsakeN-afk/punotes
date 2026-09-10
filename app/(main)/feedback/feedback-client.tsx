@@ -24,6 +24,7 @@ import {
 import { useUser } from "@stackframe/stack";
 import { useSendFeedback } from "@/services/feedback";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { PageHeader } from "@/components/shared/PageHeader";
 import FeedbackContent from "@/components/me/FeedbackContent";
 import { useGetMe } from "@/services/me";
 
@@ -57,7 +58,7 @@ export default function Feedback() {
       {isAdmin && (
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="fixed bottom-5 right-5 py-5 cursor-pointer rounded-full z-50">
+            <Button aria-label="View submitted feedback" className="fixed bottom-5 right-5 py-5 cursor-pointer rounded-full z-50">
               <ScrollText />
             </Button>
           </DialogTrigger>
@@ -67,16 +68,15 @@ export default function Feedback() {
         </Dialog>
       )}
       {/* Page Heading */}
-      <div className="text-center mb-10 space-y-3">
-        <div className="inline-flex items-center justify-center gap-2 text-3xl sm:text-4xl font-bold text-primary">
-          <MessageCircle className="w-8 h-8" />
-          Share Your Feedback
+      <div className="text-center mb-8 space-y-3">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10">
+          <MessageCircle className="w-8 h-8 text-primary" />
         </div>
-        <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-          We love hearing from you! Whether it&apos;s a suggestion, a feature
-          request, or just some thoughts about your experience, your input
-          helps us improve.
-        </p>
+        <PageHeader
+          center
+          title="Share Your Feedback"
+          description="We love hearing from you! Whether it's a suggestion, a feature request, or just some thoughts about your experience, your input helps us improve."
+        />
       </div>
 
       <Form {...form}>

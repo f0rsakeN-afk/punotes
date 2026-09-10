@@ -48,11 +48,11 @@ interface AuditLogsClientProps {
 }
 
 const actionColors: Record<string, string> = {
-  ROLE_CHANGE: "bg-blue-100 text-blue-800",
-  USER_SUSPEND: "bg-yellow-100 text-yellow-800",
-  USER_UNSUSPEND: "bg-green-100 text-green-800",
-  USER_BAN: "bg-red-100 text-red-800",
-  USER_UNBAN: "bg-green-100 text-green-800",
+  ROLE_CHANGE: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
+  USER_SUSPEND: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
+  USER_UNSUSPEND: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
+  USER_BAN: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300",
+  USER_UNBAN: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
 };
 
 const actionLabels: Record<string, string> = {
@@ -136,8 +136,9 @@ export default function AuditLogsClient({
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Search User ID</label>
+              <label htmlFor="audit-user-search" className="text-sm font-medium">Search User ID</label>
               <Input
+                id="audit-user-search"
                 placeholder="Enter user ID to filter..."
                 value={searchUser}
                 onChange={(e) => {
@@ -160,11 +161,11 @@ export default function AuditLogsClient({
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-muted-foreground">
               Loading audit logs...
             </div>
           ) : logs.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-muted-foreground">
               No audit logs found
             </div>
           ) : (
@@ -172,14 +173,14 @@ export default function AuditLogsClient({
               {logs.map((log) => (
                 <div
                   key={log.id}
-                  className="border rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-900 transition"
+                  className="border rounded-lg p-4 hover:bg-muted/50 transition"
                 >
                   {/* Header */}
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3 flex-1">
                       {/* Admin Avatar */}
                       <Avatar className="h-10 w-10">
-                        <AvatarImage src={log.admin.profileImageUrl || undefined} />
+                        <AvatarImage src={log.admin.profileImageUrl || undefined} alt={log.admin.displayName || log.admin.email} />
                         <AvatarFallback>{log.admin.email[0]}</AvatarFallback>
                       </Avatar>
 
@@ -187,24 +188,24 @@ export default function AuditLogsClient({
                       <div className="flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-medium">{log.admin.displayName || log.admin.email}</span>
-                          <span className="text-gray-600">{actionLabels[log.action]}</span>
+                          <span className="text-muted-foreground">{actionLabels[log.action]}</span>
                           {log.target && (
                             <>
-                              <span className="text-gray-400">→</span>
+                              <span className="text-muted-foreground/60">→</span>
                               <span className="font-medium">
                                 {log.target.displayName || log.target.email}
                               </span>
                             </>
                           )}
                         </div>
-                        <div className="text-sm text-gray-500 mt-1">
+                        <div className="text-sm text-muted-foreground mt-1">
                           {format(new Date(log.createdAt), "PPP p")}
                         </div>
                       </div>
 
                       {/* Action Badge */}
                       <Badge
-                        className={actionColors[log.action] || "bg-gray-100 text-gray-800"}
+                        className={actionColors[log.action] || "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"}
                       >
                         {log.action}
                       </Badge>
@@ -229,7 +230,7 @@ export default function AuditLogsClient({
                   {/* Details */}
                   {expandedId === log.id && log.details && (
                     <div className="mt-4 pt-4 border-t">
-                      <div className="bg-gray-50 rounded p-3 text-sm font-mono text-gray-700 overflow-auto">
+                      <div className="bg-muted rounded p-3 text-sm font-mono overflow-auto">
                         <pre>{JSON.stringify(log.details, null, 2)}</pre>
                       </div>
                     </div>
@@ -242,7 +243,7 @@ export default function AuditLogsClient({
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between mt-6 pt-6 border-t">
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Showing {(page - 1) * limit + 1} to{" "}
                 {Math.min(page * limit, total)} of {total}
               </div>

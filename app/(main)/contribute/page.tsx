@@ -15,42 +15,37 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import UploadSyllabus from "@/components/upload/UploadSyllabus";
 import UploadPYQ from "@/components/upload/UploadPYQ";
 import UploadNotes from "@/components/upload/UploadNotes";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default async function Page() {
-  const user = await stackServerApp.getUser();
+  const user = await getStackUser();
 
   if (!user) {
     redirect("/");
   }
 
-  const userData = await prisma.user.findUnique({
-    where: {
-      stackID: user.id,
-    },
-  });
+  const userData = await getCurrentUser();
 
   if (!userData) {
     redirect("/");
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       {/* Header */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-8">
         <div className="flex items-center justify-center mb-6">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
             <Upload className="w-8 h-8 text-primary" />
           </div>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-          Note Sharing Platform
-        </h1>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Share and access verified academic materials with your university community
-        </p>
+        <PageHeader
+          center
+          title="Note Sharing Platform"
+          description="Share and access verified academic materials with your university community"
+        />
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6">
@@ -58,8 +53,8 @@ export default async function Page() {
         <div className="lg:col-span-3">
           <Card className="h-full">
             <CardContent className="p-6 sm:p-8 space-y-6">
-              <Alert className="border-l-4 border-l-amber-500 bg-amber-50 dark:bg-amber-950/20">
-                <Shield className="h-5 w-5 text-amber-600" />
+              <Alert variant="warning">
+                <Shield className="h-5 w-5" />
                 <AlertTitle className="ml-2 font-semibold">
                   Admin Approval Required
                 </AlertTitle>
@@ -68,7 +63,7 @@ export default async function Page() {
                 </AlertDescription>
               </Alert>
 
-              <Alert className="border-l-4 border-l-primary">
+              <Alert>
                 <HelpCircle className="h-5 w-5" />
                 <AlertTitle className="ml-2 font-semibold">
                   Upload Guidelines
@@ -107,12 +102,12 @@ export default async function Page() {
                 </AlertDescription>
               </Alert>
 
-              <Alert className="border-l-4 border-l-amber-500 bg-amber-50 dark:bg-amber-950/20">
-                <AlertTriangle className="h-5 w-5 text-amber-600" />
-                <AlertTitle className="ml-2 font-semibold text-amber-800 dark:text-amber-200">
+              <Alert variant="warning">
+                <AlertTriangle className="h-5 w-5" />
+                <AlertTitle className="ml-2 font-semibold">
                   Limited Storage Space
                 </AlertTitle>
-                <AlertDescription className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                <AlertDescription className="mt-2 text-sm">
                   We have limited storage space. Please upload only necessary files, avoid duplicates, and compress images before uploading. Help us keep the platform sustainable for everyone.
                 </AlertDescription>
               </Alert>
@@ -167,10 +162,10 @@ export default async function Page() {
                   <UploadPYQ />
                 </DialogContent>
               </Dialog>
-            </CardContent>
-          </Card>
+          </CardContent>
+        </Card>
         </div>
       </div>
-    </div>
+    </>
   );
 }

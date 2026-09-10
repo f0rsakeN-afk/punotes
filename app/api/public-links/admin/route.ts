@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { stackServerApp } from "@/stack/server";
-import { getCachedUser } from "@/lib/cache";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { z } from "zod";
 import { rateLimiters } from "@/lib/rateLimit";
 import { validateCsrf } from "@/lib/csrf";
@@ -24,13 +23,13 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const user = await stackServerApp.getUser();
+    const user = await getStackUser();
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userData = await getCachedUser(user.id);
+    const userData = await getCurrentUser();
     if (!userData || userData.role !== "ADMIN") {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 });
     }
@@ -73,13 +72,13 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const user = await stackServerApp.getUser();
+    const user = await getStackUser();
 
     if (!user) {
       return NextResponse.json({ error: ERROR_MESSAGES.AUTH_REQUIRED }, { status: 401 });
     }
 
-    const userData = await getCachedUser(user.id);
+    const userData = await getCurrentUser();
     if (!userData || userData.role !== "ADMIN") {
       return NextResponse.json({ error: ERROR_MESSAGES.FORBIDDEN }, { status: 403 });
     }

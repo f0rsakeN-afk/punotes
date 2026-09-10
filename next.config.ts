@@ -19,16 +19,38 @@ const withPWA = withPWAInit({
 const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
 
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // Prevent huge client bundles
-      config.optimization.splitChunks = {
-        chunks: "all",
-        maxInitialRequests: 25,
-        minSize: 20000,
-      };
-    }
-    return config;
+  // Long-lived caching for versioned/static public assets.
+  // (_next/static is immutable-cached by the platform automatically.)
+  async headers() {
+    return [
+      {
+        source: "/logo.webp",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/icons/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/manifest.json",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=3600",
+          },
+        ],
+      },
+    ];
   },
 
   turbopack: {},

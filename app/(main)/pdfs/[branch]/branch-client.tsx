@@ -11,6 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 const subtitles = [
   "Foundation",
@@ -33,7 +34,7 @@ export default function BranchPage() {
   const semesters = Array.from({ length: 8 }, (_, i) => i + 1);
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4">
+    <>
       {/* Breadcrumbs */}
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
@@ -62,16 +63,14 @@ export default function BranchPage() {
       </Breadcrumb>
 
       {/* Header */}
-      <div className="mb-10">
+      <div className="mb-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
           {formatted}
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-2">
-          Select Semester
-        </h1>
-        <p className="text-muted-foreground text-sm">
-          Pick your semester to access notes, past papers, and resources.
-        </p>
+        <PageHeader
+          title="Select Semester"
+          description="Pick your semester to access notes, past papers, and resources."
+        />
       </div>
 
       {/* Semester grid */}
@@ -98,6 +97,6 @@ export default function BranchPage() {
           </Link>
         ))}
       </div>
-    </div>
+    </>
   );
 }

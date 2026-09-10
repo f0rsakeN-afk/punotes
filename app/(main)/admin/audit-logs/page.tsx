@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { PageHeader } from "@/components/shared/PageHeader";
 import AuditLogsClient from "./audit-logs-client";
 
 export const metadata: Metadata = {
@@ -12,17 +13,14 @@ export const metadata: Metadata = {
 export const revalidate = 30; // ISR - revalidate every 30 seconds
 
 export default async function AuditLogsPage() {
-  const stackUser = await stackServerApp.getUser();
+  const stackUser = await getStackUser();
 
   if (!stackUser) {
     redirect("/");
   }
 
-  // Get current user and check if admin
-  const currentUser = await prisma.user.findUnique({
-    where: { stackID: stackUser.id },
-    select: { id: true, role: true },
-  });
+  // Get current user and check if admin (Redis-cached, no extra Stack call)
+  const currentUser = await getCurrentUser();
 
   if (!currentUser || currentUser.role !== "ADMIN") {
     redirect("/");
@@ -62,11 +60,11 @@ export default async function AuditLogsPage() {
   return (
     <>
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">Audit Logs</h1>
-        <p className="text-sm text-muted-foreground">
-          Track all administrative actions and system changes
-        </p>
+      <div className="mb-8">
+        <PageHeader
+          title="Audit Logs"
+          description="Track all administrative actions and system changes"
+        />
       </div>
 
       {/* Audit Logs Client */}

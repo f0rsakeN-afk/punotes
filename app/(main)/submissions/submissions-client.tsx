@@ -4,7 +4,7 @@ import { FileText, BookOpen, ScrollText, Clock, CheckCircle, XCircle, ExternalLi
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 interface Submission {
   id: string;
@@ -33,17 +33,17 @@ const statusConfig = {
   PENDING: {
     label: "Pending Review",
     icon: Clock,
-    className: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
+    variant: "warning" as const,
   },
   APPROVED: {
     label: "Approved",
     icon: CheckCircle,
-    className: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+    variant: "success" as const,
   },
   REJECTED: {
     label: "Rejected",
     icon: XCircle,
-    className: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+    variant: "destructive" as const,
   },
 };
 
@@ -56,12 +56,10 @@ export default function SubmissionsClient({ initialData }: SubmissionsClientProp
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">
-          My Submissions
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Track the status of your shared Google Drive links
-        </p>
+        <PageHeader
+          title="My Submissions"
+          description="Track the status of your shared Google Drive links"
+        />
       </div>
 
       {submissions.length === 0 ? (
@@ -103,7 +101,7 @@ export default function SubmissionsClient({ initialData }: SubmissionsClientProp
                             {submission.branch} · Semester {submission.semester}
                           </p>
                         </div>
-                        <Badge className={cn("shrink-0", status.className)}>
+                        <Badge variant={status.variant} className="shrink-0">
                           <StatusIcon className="w-3 h-3 mr-1" />
                           {status.label}
                         </Badge>

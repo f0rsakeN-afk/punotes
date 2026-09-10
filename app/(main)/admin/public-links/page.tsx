@@ -1,8 +1,7 @@
 import { Metadata } from "next";
-import { stackServerApp } from "@/stack/server";
+import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { getCachedUser } from "@/lib/cache";
 import PublicLinksClient from "./public-links-client";
 
 export const metadata: Metadata = {
@@ -11,13 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default async function PublicLinksPage() {
-  const user = await stackServerApp.getUser();
+  const user = await getStackUser();
 
   if (!user) {
     redirect("/");
   }
 
-  const userData = await getCachedUser(user.id);
+  const userData = await getCurrentUser();
 
   if (!userData || userData.role !== "ADMIN") {
     redirect("/");

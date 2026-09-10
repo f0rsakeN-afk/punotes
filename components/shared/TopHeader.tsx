@@ -36,16 +36,42 @@ const mobileExtraItems = [
   { name: "Feedback", route: "/feedback" },
 ];
 
-export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
+export function TopHeader({
+  isAdmin,
+  initialUser,
+}: {
+  isAdmin?: boolean;
+  initialUser?: {
+    displayName: string | null;
+    primaryEmail: string | null;
+    profileImageUrl: string | null;
+  } | null;
+}) {
   const pathname = usePathname();
   const user = useUser();
+  // Server-rendered identity avoids the signed-out flash while useUser hydrates.
+  const displayUser = user ?? initialUser;
   const [open, setOpen] = React.useState(false);
-  const initials = user?.displayName
-    ? user.displayName.slice(0, 2).toUpperCase()
-    : user?.primaryEmail?.slice(0, 2).toUpperCase() ?? "??";
+  const [scrolled, setScrolled] = React.useState(false);
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  const initials = displayUser?.displayName
+    ? displayUser.displayName.slice(0, 2).toUpperCase()
+    : displayUser?.primaryEmail?.slice(0, 2).toUpperCase() ?? "??";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur-md">
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b backdrop-blur-md transition-all duration-200",
+        scrolled
+          ? "border-border bg-background/95 shadow-[0_1px_12px_-4px_rgb(0_0_0/0.12)]"
+          : "border-border/40 bg-background/90"
+      )}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
 
@@ -71,23 +97,6 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
                 item.route === "/"
                   ? pathname === "/"
                   : pathname.startsWith(item.route);
-              if (item.name === "Share") {
-                return (
-                  <Link key={item.name} href={item.route}>
-                    <Button
-                      size="sm"
-                      className={cn(
-                        "gap-1.5 h-8 px-4 text-xs font-medium",
-                        active
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-primary/10 text-primary hover:bg-primary/20"
-                      )}
-                    >
-                      Contribute
-                    </Button>
-                  </Link>
-                );
-              }
               return (
                 <Link
                   key={item.name}
@@ -112,11 +121,12 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-11 h-11 text-muted-foreground hover:text-foreground relative"
+                aria-label="Search notes, syllabus and past questions"
+                className="w-9 h-9 text-muted-foreground hover:text-foreground relative"
                 title="Search (Cmd+K)"
               >
                 <Search className="w-4 h-4" />
-                <kbd className="absolute -bottom-0.5 right-0 text-[8px] font-mono text-muted-foreground/60 hidden sm:inline">
+                <kbd className="absolute -bottom-0.5 right-0 text-[10px] font-mono text-muted-foreground hidden sm:inline">
                   ⌘K
                 </kbd>
               </Button>
@@ -125,19 +135,19 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
             <ThemeToggle />
 
             {/* Feedback shortcut — desktop only */}
-            <Link href="/feedback" className="hidden lg:block">
-              <Button variant="ghost" size="icon" className="w-11 h-11 text-muted-foreground hover:text-foreground">
+            <Link href="/feedback" className="hidden lg:block" aria-label="Give feedback">
+              <Button variant="ghost" size="icon" aria-label="Give feedback" className="w-9 h-9 text-muted-foreground hover:text-foreground">
                 <MessageSquare className="w-4 h-4" />
               </Button>
             </Link>
 
             {/* User menu */}
-            {user ? (
+            {displayUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="rounded-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background">
-                    <Avatar className="w-11 h-11 border border-border/60 transition-opacity hover:opacity-80">
-                      <AvatarImage src={user.profileImageUrl ?? ""} alt="avatar" />
+                  <button aria-label="Account menu" className="rounded-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background">
+                    <Avatar className="w-9 h-9 border border-border/60 transition-opacity hover:opacity-80">
+                      <AvatarImage src={displayUser.profileImageUrl ?? ""} alt={displayUser.displayName ?? displayUser.primaryEmail ?? "User avatar"} />
                       <AvatarFallback className="bg-muted text-xs font-semibold">
                         {initials}
                       </AvatarFallback>
@@ -147,10 +157,10 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
                 <DropdownMenuContent align="end" className="w-52">
                   <DropdownMenuLabel className="font-normal py-2">
                     <p className="text-sm font-semibold truncate">
-                      {user.displayName ?? "Account"}
+                      {displayUser.displayName ?? "Account"}
                     </p>
                     <p className="text-xs text-muted-foreground truncate mt-0.5">
-                      {user.primaryEmail}
+                      {displayUser.primaryEmail}
                     </p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -192,8 +202,8 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
                   )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
-                    onClick={() => user.signOut()}
+                    className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
+                    onClick={() => user?.signOut()}
                   >
                     <LogOut className="w-4 h-4 mr-2" />
                     Log out
@@ -202,7 +212,7 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
               </DropdownMenu>
             ) : (
               <Link href="/handler/signin">
-                <Button size="sm" className="rounded-full gap-1.5 h-8 px-4 text-xs">
+                <Button size="sm" className="gap-1.5 h-8 px-4 text-xs">
                   <LogIn className="w-3.5 h-3.5" />
                   Sign in
                 </Button>
@@ -213,7 +223,7 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
             <div className="lg:hidden">
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="w-11 h-11">
+                  <Button variant="ghost" size="icon" aria-label="Open menu" className="w-9 h-9">
                     <Menu className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
@@ -258,23 +268,23 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
 
                     {/* Sheet footer */}
                     <div className="mt-auto border-t border-border/50 px-5 py-4">
-                      {user ? (
+                      {displayUser ? (
                         <>
                           <div className="flex items-center gap-3">
-                            <Avatar className="w-11 h-11 border border-border/60">
-                              <AvatarImage src={user.profileImageUrl ?? ""} alt="avatar" />
+                            <Avatar className="w-9 h-9 border border-border/60">
+                      <AvatarImage src={displayUser.profileImageUrl ?? ""} alt={displayUser.displayName ?? displayUser.primaryEmail ?? "User avatar"} />
                               <AvatarFallback className="bg-muted text-xs font-semibold">
                                 {initials}
                               </AvatarFallback>
                             </Avatar>
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium truncate">{user.displayName ?? "Account"}</p>
-                              <p className="text-xs text-muted-foreground truncate">{user.primaryEmail}</p>
+                              <p className="text-sm font-medium truncate">{displayUser.displayName ?? "Account"}</p>
+                              <p className="text-xs text-muted-foreground truncate">{displayUser.primaryEmail}</p>
                             </div>
                           </div>
                           <button
-                            onClick={() => { user.signOut(); setOpen(false); }}
-                            className="mt-3 flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                            onClick={() => { user?.signOut(); setOpen(false); }}
+                            className="mt-3 flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
                           >
                             <LogOut className="w-4 h-4" />
                             Log out
@@ -284,10 +294,11 @@ export function TopHeader({ isAdmin }: { isAdmin?: boolean }) {
                         <Link
                           href="/handler/signin"
                           onClick={() => setOpen(false)}
-                          className="flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium bg-foreground text-background hover:bg-foreground/90 transition-colors justify-center"
                         >
-                          <LogIn className="w-4 h-4" />
-                          Sign in
+                          <Button className="w-full gap-2">
+                            <LogIn className="w-4 h-4" />
+                            Sign in
+                          </Button>
                         </Link>
                       )}
                     </div>

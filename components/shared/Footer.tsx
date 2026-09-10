@@ -41,7 +41,7 @@ const legal = [
 export default function Footer() {
   return (
     <footer className="border-t border-border/40 bg-muted/20 mt-auto">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Brand column */}
@@ -64,6 +64,7 @@ export default function Footer() {
                 href="https://github.com/f0rsakeN-afk/punotes"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="PuNotes on GitHub"
                 className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-background border border-border hover:border-primary/40 hover:text-primary transition-all duration-150"
               >
                 <GithubIcon className="h-4 w-4" />
@@ -73,7 +74,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold text-sm mb-4">Resources</h4>
+            <h2 className="font-semibold text-sm mb-4">Resources</h2>
             <ul className="space-y-2.5">
               {resources.map(({ title, href }) => (
                 <li key={title}>
@@ -90,7 +91,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold text-sm mb-4">Company</h4>
+            <h2 className="font-semibold text-sm mb-4">Company</h2>
             <ul className="space-y-2.5">
               {company.map(({ title, href }) => (
                 <li key={title}>
@@ -107,7 +108,7 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="font-semibold text-sm mb-4">Legal</h4>
+            <h2 className="font-semibold text-sm mb-4">Legal</h2>
             <ul className="space-y-2.5">
               {legal.map(({ title, href }) => (
                 <li key={title}>
@@ -133,7 +134,25 @@ export default function Footer() {
             </span>
           </p>
           <p className="text-xs text-muted-foreground">
-            Open source &middot; MIT License
+            Made by{" "}
+            <a
+              href="https://nareshrajbanshi.com.np"
+              target="_blank"
+              rel="author noopener"
+              className="font-medium text-foreground hover:text-primary transition-colors"
+            >
+              Naresh Rajbanshi
+            </a>{" "}
+            &middot;{" "}
+            <a
+              href="https://github.com/f0rsakeN-afk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              GitHub
+            </a>{" "}
+            &middot; Open source
           </p>
         </div>
       </div>

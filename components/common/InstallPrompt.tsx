@@ -76,6 +76,7 @@ export function InstallPrompt() {
           </div>
           <button
             onClick={handleDismiss}
+            aria-label="Dismiss install prompt"
             className="text-zinc-500 hover:text-white transition-colors p-1 -mt-1 -mr-1"
           >
             <X className="w-4 h-4" />
@@ -85,7 +86,7 @@ export function InstallPrompt() {
           <Button
             onClick={handleInstall}
             size="sm"
-            className="flex-1 h-9 text-xs font-medium bg-primary text-black hover:bg-primary/90"
+            className="flex-1 h-9 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
           >
             Install
           </Button>
