@@ -4,7 +4,7 @@ interface CreateAuditLogParams {
   action: "ROLE_CHANGE" | "USER_SUSPEND" | "USER_UNSUSPEND" | "USER_BAN" | "USER_UNBAN";
   performedBy: string; // Admin user ID
   targetUser?: string | null; // User being affected
-  details?: Record<string, any> | null;
+  details?: Record<string, unknown> | null;
 }
 
 /**
@@ -18,6 +18,7 @@ export async function createAuditLog({
   details = null,
 }: CreateAuditLogParams) {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = {
       action,
       performedBy,
@@ -71,7 +72,7 @@ export async function getAuditLogs({
 } = {}) {
   const skip = (page - 1) * limit;
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
   if (action) where.action = action;
   if (userId) where.targetUser = userId;
   if (performedBy) where.performedBy = performedBy;

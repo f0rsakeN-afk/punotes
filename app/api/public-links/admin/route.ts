@@ -8,6 +8,7 @@ import { validateCsrf } from "@/lib/csrf";
 import { validateBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const reviewSchema = z.object({
   status: z.enum(["APPROVED", "REJECTED"]),
   adminNotes: z.string().max(500).optional(),

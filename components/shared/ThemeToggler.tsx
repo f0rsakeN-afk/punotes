@@ -26,6 +26,7 @@ export default function ThemeToggle() {
   const [mode, setMode] = React.useState<"light" | "dark" | "auto">("auto");
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const saved = localStorage.getItem(STORAGE_KEY) as "light" | "dark" | "auto" | null;
     if (saved) {

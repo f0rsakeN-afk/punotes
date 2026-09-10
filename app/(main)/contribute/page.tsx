@@ -11,7 +11,6 @@ import {
   Upload,
   AlertTriangle,
 } from "lucide-react";
-import Image from "next/image";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import UploadSyllabus from "@/components/upload/UploadSyllabus";
 import UploadPYQ from "@/components/upload/UploadPYQ";

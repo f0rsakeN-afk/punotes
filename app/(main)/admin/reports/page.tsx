@@ -53,10 +53,6 @@ export default function ReportsPage() {
   );
   const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd"));
 
-  useEffect(() => {
-    fetchReport();
-  }, [period, startDate, endDate]);
-
   const fetchReport = async () => {
     try {
       setLoading(true);
@@ -74,6 +70,11 @@ export default function ReportsPage() {
       setLoading(false);
     }
   };
+
+  /* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
+  useEffect(() => {
+    fetchReport();
+  }, [period, startDate, endDate]);
 
   const exportCSV = async () => {
     try {

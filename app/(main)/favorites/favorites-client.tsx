@@ -250,10 +250,6 @@ export default function FavoritesClient() {
     })
   );
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const [favRes, colRes] = await Promise.all([
@@ -268,6 +264,11 @@ export default function FavoritesClient() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchData();
+  }, []);
 
   const createCollection = async () => {
     if (!newCollectionName.trim()) return;

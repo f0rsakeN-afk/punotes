@@ -1,4 +1,3 @@
-import prisma from "@/lib/prisma";
 import { stackServerApp } from "@/stack/server";
 import { NextRequest, NextResponse } from "next/server";
 import { getCachedUser } from "@/lib/cache";

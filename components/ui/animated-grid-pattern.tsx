@@ -2,6 +2,7 @@
 
 import {
   ComponentPropsWithoutRef,
+  useId,
 } from "react";
 
 import { cn } from "@/lib/utils";
@@ -25,12 +26,10 @@ export function AnimatedGridPattern({
   x = -1,
   y = -1,
   strokeDasharray = 0,
-  numSquares = 20,
   className,
-  maxOpacity = 0.3,
   ...props
 }: AnimatedGridPatternProps) {
-  const id = `grid-pattern-${Math.random().toString(36).substr(2, 9)}`;
+  const id = useId();
 
   return (
     <svg

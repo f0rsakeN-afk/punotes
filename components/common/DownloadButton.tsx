@@ -14,7 +14,7 @@ interface DownloadButtonProps {
 export const DownloadButton = ({ url, className }: DownloadButtonProps) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleDownload = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleDownload = () => {
         // We don't prevent default here because we want the link to open
         // But we set loading state to give feedback
         setIsLoading(true);

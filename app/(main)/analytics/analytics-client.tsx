@@ -146,7 +146,7 @@ function VisitsChart({ data }: { data: AnalyticsData["dailyVisits"] }) {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
+                    return new Date(String(value)).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
@@ -209,8 +209,6 @@ function TopPagesChart({ data }: { data: AnalyticsData["topPages"] }) {
     </Card>
   );
 }
-
-const CONTENT_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)"];
 
 function ContentDistributionChart({ data }: { data: AnalyticsData["content"] }) {
   const pieData = [

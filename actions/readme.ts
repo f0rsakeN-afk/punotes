@@ -35,7 +35,7 @@ export async function uploadReadme(data: ReadmeInput) {
                 },
             });
             sha = resp.data.sha;
-        } catch (e) {
+        } catch {
             // File doesn't exist, which is fine
         }
 
@@ -67,8 +67,9 @@ export async function uploadReadme(data: ReadmeInput) {
         });
 
         return { success: true };
-    } catch (error: any) {
-        console.error("Error uploading to GitHub:", error.response?.data || error.message);
-        throw new Error(error.response?.data?.message || "Failed to upload to GitHub");
+    } catch (error: unknown) {
+        const err = error as { response?: { data?: { message?: string } }; message?: string };
+        console.error("Error uploading to GitHub:", err.response?.data || err.message);
+        throw new Error(err.response?.data?.message || "Failed to upload to GitHub");
     }
 }

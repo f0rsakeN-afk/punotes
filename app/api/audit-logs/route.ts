@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stackServerApp } from "@/stack/server";
-import prisma from "@/lib/prisma";
 import { getAuditLogs } from "@/lib/audit";
 import { getCachedUser } from "@/lib/cache";
 

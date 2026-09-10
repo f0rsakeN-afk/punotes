@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { useQuery, useMutation, queryOptions } from "@tanstack/react-query";
+import { useQuery, queryOptions } from "@tanstack/react-query";
 import axios from "axios";
 
 type FavoriteType = "NOTES" | "SYLLABUS" | "PYQ";

@@ -15,9 +15,10 @@ const quickLinks = [
 const WELCOME_KEY = "punotes_welcome_shown";
 
 export default function HomeHero() {
-  const [mounted, setMounted] = useState(false);
+  const [, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const hasSeenWelcome = localStorage.getItem(WELCOME_KEY);
     if (!hasSeenWelcome) {

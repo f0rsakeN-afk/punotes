@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, FileText, BookOpen, ScrollText, Loader2, X, ArrowRight } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useUser } from "@stackframe/stack";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -58,6 +57,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 50);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setQuery("");
       setResults([]);
       setSelectedIndex(0);
@@ -67,6 +67,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
   // Search when query changes
   useEffect(() => {
     if (!query || query.length < 2 || !user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResults([]);
       return;
     }

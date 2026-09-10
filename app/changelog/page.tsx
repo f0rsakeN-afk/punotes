@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Sparkles, Zap, Smartphone, CheckCircle2 } from "lucide-react";
+import React from "react";
 
 export default function ChangelogPage() {
     return (
@@ -66,7 +67,9 @@ export default function ChangelogPage() {
     );
 }
 
-function ChangelogItem({ version, date, title, description, children, isMajor }: any) {
+function ChangelogItem({ version, date, title, description, children, isMajor }: {
+    version: string; date: string; title: string; description: string; children: React.ReactNode; isMajor?: boolean;
+}) {
     return (
         <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active animate-in fade-in slide-in-from-bottom-4 duration-300">
             {/* Icon Node */}
@@ -97,7 +100,7 @@ function ChangelogItem({ version, date, title, description, children, isMajor }:
     );
 }
 
-function ChangeItem({ icon: Icon, title, description }: any) {
+function ChangeItem({ icon: Icon, title, description }: { icon: React.ComponentType<{ className?: string }>; title: string; description: string; }) {
     return (
         <li className="flex gap-3">
             <Icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />

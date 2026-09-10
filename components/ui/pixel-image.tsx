@@ -62,6 +62,7 @@ export const PixelImage = ({
   }, [customGrid, grid])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsVisible(true)
     const colorTimeout = setTimeout(() => {
       setShowColor(true)
@@ -82,6 +83,7 @@ export const PixelImage = ({
         ${col * (100 / cols)}% ${(row + 1) * (100 / rows)}%
       )`
 
+      // eslint-disable-next-line react-hooks/purity
       const delay = Math.random() * maxAnimationDelay
       return {
         clipPath,
@@ -105,6 +107,7 @@ export const PixelImage = ({
             transitionDuration: `${pixelFadeInDuration}ms`,
           }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={src}
             alt={`Pixel image piece ${index + 1}`}

@@ -27,7 +27,7 @@ interface AuditLog {
   id: string;
   action: string;
   createdAt: string;
-  details: Record<string, any> | null;
+  details: Record<string, unknown> | null;
   admin: {
     id: string;
     email: string;
@@ -76,14 +76,10 @@ export default function AuditLogsClient({
   const [searchUser, setSearchUser] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchLogs();
-  }, [page, action, searchUser]);
-
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      const params: Record<string, any> = {
+      const params: Record<string, string | number> = {
         page,
         limit,
       };
@@ -105,6 +101,11 @@ export default function AuditLogsClient({
       setLoading(false);
     }
   };
+
+  /* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
+  useEffect(() => {
+    fetchLogs();
+  }, [page, action, searchUser]);
 
   const totalPages = Math.ceil(total / limit);
 

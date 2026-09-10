@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -55,6 +56,7 @@ export default function ShareClient({ branches }: ShareClientProps) {
 
   // Clear URL when switching upload methods
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setForm((prev) => ({ ...prev, url: "" }));
   }, [uploadMethod]);
 
@@ -363,9 +365,9 @@ export default function ShareClient({ branches }: ShareClientProps) {
                 {!user && (
                   <p className="text-xs text-muted-foreground text-center">
                     You&apos;re submitting as a guest.{" "}
-                    <a href="/handler/signin" className="text-primary hover:underline">
+                    <Link href="/handler/signin" className="text-primary hover:underline">
                       Sign in
-                    </a>{" "}
+                    </Link>{" "}
                     to track your submissions.
                   </p>
                 )}

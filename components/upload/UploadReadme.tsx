@@ -22,7 +22,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { CheckCircle2, Loader, FileCode } from "lucide-react";
+import { Loader, FileCode } from "lucide-react";
 import { uploadReadme } from "@/actions/readme";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -57,8 +57,9 @@ export default function UploadReadme() {
             await uploadReadme(data);
             toast.success("README uploaded successfully!");
             form.reset();
-        } catch (error: any) {
-            toast.error(error.message || "Something went wrong");
+        } catch (error: unknown) {
+            const err = error as { message?: string };
+            toast.error(err.message || "Something went wrong");
         } finally {
             setIsPending(false);
         }

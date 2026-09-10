@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FileText, FileSearch, Link2, Check, Star, Share2, Filter, X, QrCode } from "lucide-react";
+import { FileText, FileSearch, Link2, Check, Star, Share2, Filter, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@stackframe/stack";

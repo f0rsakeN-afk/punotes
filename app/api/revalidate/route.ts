@@ -26,8 +26,17 @@ export async function POST(request: NextRequest) {
 
     const { secret, path } = await request.json();
 
-    // Simple secret-based validation (in production, use a more secure method)
-    if (secret !== process.env.REVALIDATE_SECRET) {
+    const expectedSecret = process.env.REVALIDATE_SECRET;
+    // Fail closed: never allow revalidation when no secret is configured.
+    // (Otherwise an omitted secret would equal an unset env var and bypass auth.)
+    if (!expectedSecret) {
+      return NextResponse.json(
+        { error: "Revalidation is not configured" },
+        { status: 503 }
+      );
+    }
+
+    if (typeof secret !== "string" || secret !== expectedSecret) {
       return NextResponse.json(
         { error: "Invalid revalidate secret" },
         { status: 401 }

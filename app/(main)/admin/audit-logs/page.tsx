@@ -56,6 +56,7 @@ export default async function AuditLogsPage() {
   ]);
 
   // Cast logs to the correct type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const logs = logsData as any;
 
   return (

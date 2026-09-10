@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { stackServerApp } from "@/stack/server";
-import { cacheDelete, buildCacheKey } from "@/lib/cache";
+
 import { z } from "zod";
 import { rateLimiters } from "@/lib/rateLimit";
 import { validateCsrf } from "@/lib/csrf";

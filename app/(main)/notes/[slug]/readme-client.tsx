@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import axiosInstance from "@/services/axios";
-import { ArrowLeft, Calendar, Github, Loader, User, AlertCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, Calendar, Loader, User, AlertCircle, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

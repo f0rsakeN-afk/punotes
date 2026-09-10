@@ -32,6 +32,7 @@ export function PDFViewerDialog({ url, title, buttonClassName }: PDFViewerDialog
   // Auto-open if URL already has this file's preview param
   useEffect(() => {
     if (fileId && searchParams.get("preview") === fileId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpen(true);
     }
   }, [fileId, searchParams]);
