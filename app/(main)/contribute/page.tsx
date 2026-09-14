@@ -11,7 +11,7 @@ import {
   Upload,
   AlertTriangle,
 } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import UploadSyllabus from "@/components/upload/UploadSyllabus";
 import UploadPYQ from "@/components/upload/UploadPYQ";
 import UploadNotes from "@/components/upload/UploadNotes";
@@ -48,10 +48,10 @@ export default async function Page() {
         />
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-6">
+      <div className="grid lg:grid-cols-5 gap-6 min-w-0 w-full">
         {/* Guidelines */}
-        <div className="lg:col-span-3">
-          <Card className="h-full">
+        <div className="lg:col-span-3 min-w-0">
+          <Card className="h-full min-w-0 overflow-hidden">
             <CardContent className="p-6 sm:p-8 space-y-6">
               <Alert variant="warning">
                 <Shield className="h-5 w-5" />
@@ -121,8 +121,8 @@ export default async function Page() {
         </div>
 
         {/* Upload Options */}
-        <div className="lg:col-span-2">
-          <Card className="h-full">
+        <div className="lg:col-span-2 min-w-0">
+          <Card className="h-full min-w-0 overflow-hidden">
             <CardHeader>
               <CardTitle className="text-lg">Choose Upload Type</CardTitle>
             </CardHeader>
@@ -130,11 +130,12 @@ export default async function Page() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" className="w-full justify-start gap-3 h-auto py-4 cursor-pointer">
-                    <BookOpen className="h-5 w-5 text-primary" />
+                    <BookOpen data-icon="inline-start" className="h-5 w-5 text-primary" />
                     <span className="font-medium">Upload Syllabus</span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
+                  <DialogTitle className="sr-only">Upload Syllabus</DialogTitle>
                   <UploadSyllabus />
                 </DialogContent>
               </Dialog>
@@ -142,11 +143,12 @@ export default async function Page() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" className="w-full justify-start gap-3 h-auto py-4 cursor-pointer">
-                    <FileText className="h-5 w-5 text-primary" />
+                    <FileText data-icon="inline-start" className="h-5 w-5 text-primary" />
                     <span className="font-medium">Upload Notes</span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
+                  <DialogTitle className="sr-only">Upload Notes</DialogTitle>
                   <UploadNotes />
                 </DialogContent>
               </Dialog>
@@ -154,11 +156,12 @@ export default async function Page() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" className="w-full justify-start gap-3 h-auto py-4 cursor-pointer">
-                    <HelpCircle className="h-5 w-5 text-primary" />
+                    <HelpCircle data-icon="inline-start" className="h-5 w-5 text-primary" />
                     <span className="font-medium">Upload Past Questions</span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
+                  <DialogTitle className="sr-only">Upload Past Questions</DialogTitle>
                   <UploadPYQ />
                 </DialogContent>
               </Dialog>

@@ -122,15 +122,15 @@ function DraggableFavorite({
             </Badge>
           </div>
           <div className="flex items-center gap-2 mt-3 ml-11">
-            <Link href={favorite.type === "NOTES" ? "/pdfs" : favorite.type === "SYLLABUS" ? "/syllabus" : "/pyqs"}>
-              <Button size="sm" className="h-7 text-xs">
+            <Button size="sm" className="h-7 text-xs" asChild>
+              <Link href={favorite.type === "NOTES" ? "/pdfs" : favorite.type === "SYLLABUS" ? "/syllabus" : "/pyqs"}>
                 Browse
-              </Button>
-            </Link>
+              </Link>
+            </Button>
             {onAddToCollection && collections && collections.length > 0 && (
               <div className="relative group">
                 <Button size="sm" variant="outline" className="h-7 text-xs">
-                  <Folder className="w-3 h-3 mr-1" />
+                  <Folder data-icon="inline-start" className="w-3 h-3 mr-1" />
                   Add to
                 </Button>
                 <div className="absolute top-full left-0 mt-1 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[140px]">
@@ -179,6 +179,15 @@ function DroppableCollection({
     <div
       ref={setNodeRef}
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      aria-label={`Open collection ${collection.name}`}
       className={cn(
         "transition-all rounded-xl border-2 border-dashed",
         isOver
@@ -491,13 +500,13 @@ export default function FavoritesClient({
               <p className="text-xs text-muted-foreground">
                 {collections.length} collection{collections.length !== 1 ? "s" : ""} · Drag favorites onto collections to add
               </p>
-              <Button
+                <Button
                 size="sm"
                 variant="outline"
                 className="h-8 text-xs gap-1.5"
                 onClick={() => setShowCreateCollection(true)}
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus data-icon="inline-start" className="w-3.5 h-3.5" />
                 New Collection
               </Button>
             </div>
@@ -554,8 +563,9 @@ export default function FavoritesClient({
                   variant="ghost"
                   className="h-8 text-xs text-destructive"
                   onClick={() => deleteCollection(selectedCollection.id)}
+                  aria-label="Delete collection"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 data-icon="inline-start" className="w-3.5 h-3.5" aria-hidden="true" />
                 </Button>
                 <Button
                   size="sm"
@@ -606,7 +616,7 @@ export default function FavoritesClient({
                           className="h-7 text-xs text-muted-foreground hover:text-destructive"
                           onClick={() => removeFromCollection(fav.itemId)}
                         >
-                          <Trash2 className="w-3 h-3 mr-1" />
+                          <Trash2 data-icon="inline-start" className="w-3 h-3 mr-1" />
                           Remove
                         </Button>
                       </div>
@@ -640,7 +650,7 @@ export default function FavoritesClient({
                   className="mt-2"
                   onClick={() => setShowCreateCollection(true)}
                 >
-                  <Plus className="w-4 h-4 mr-1.5" />
+                  <Plus data-icon="inline-start" className="w-4 h-4 mr-1.5" />
                   Create Collection
                 </Button>
               </div>
@@ -681,11 +691,11 @@ export default function FavoritesClient({
                   <p className="text-sm font-medium">No favorites yet</p>
                   <p className="text-xs mt-1">Star notes, syllabus, or PYQs to save them here</p>
                 </div>
-                <Link href="/pdfs">
-                  <Button variant="outline" size="sm" className="mt-2">
+                <Button variant="outline" size="sm" className="mt-2" asChild>
+                  <Link href="/pdfs">
                     Browse Notes
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

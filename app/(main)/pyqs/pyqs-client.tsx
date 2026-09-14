@@ -163,9 +163,10 @@ export function SearchPYQClient({
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 gap-3 text-muted-foreground">
-          <FileSearch className="h-8 w-8" />
+        <div className="flex flex-col items-center justify-center py-24 gap-3 text-muted-foreground" role="status" aria-live="polite">
+          <FileSearch className="h-8 w-8" aria-hidden="true" />
           <p className="text-sm">No past questions match your search.</p>
+          <p className="sr-only" role="status" aria-live="polite">No results for search &quot;{query}&quot;</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -178,7 +179,7 @@ export function SearchPYQClient({
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-3 min-w-0 flex-1">
                   <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
-                    <FileText className="w-4 h-4" strokeWidth={1.75} />
+                    <FileText data-icon="inline-start" className="w-4 h-4" strokeWidth={1.75} />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-foreground leading-snug">

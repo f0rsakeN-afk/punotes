@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import axiosInstance from "@/services/axios";
-import { ArrowLeft, Calendar, Loader, User, AlertCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, Calendar, Loader, User, AlertCircle, RefreshCw, FileText } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -43,15 +43,15 @@ export default function ReadmeClient() {
             <p className="text-lg font-medium text-foreground mb-4">Failed to load note content.</p>
             <div className="flex items-center justify-center gap-3">
               <Button variant="outline" onClick={() => refetch()} className="gap-2">
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw data-icon="inline-start" className="w-4 h-4" />
                 Retry
               </Button>
-              <Link href="/pdfs">
-                <Button variant="ghost" className="gap-2">
-                  <ArrowLeft className="w-4 h-4" />
+              <Button variant="ghost" className="gap-2" asChild>
+                <Link href="/pdfs">
+                  <ArrowLeft data-icon="inline-start" className="w-4 h-4" />
                   Browse Notes
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -63,14 +63,39 @@ export default function ReadmeClient() {
     return (
       <>
         <Card>
-          <CardContent className="py-12 text-center">
-            <p className="text-lg text-muted-foreground mb-4">Note not found.</p>
-            <Link href="/pdfs">
-              <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="w-4 h-4" />
+          <CardContent className="py-12 text-center space-y-3">
+            <FileText className="w-10 h-10 mx-auto text-muted-foreground/40" />
+            <h3 className="text-lg font-medium">No data available</h3>
+            <p className="text-sm text-muted-foreground mb-4">The requested note could not be found or has been removed.</p>
+            <Button variant="outline" className="mt-2" asChild>
+              <Link href="/pdfs">
+                <ArrowLeft data-icon="inline-start" className="w-4 h-4" />
                 Browse Notes
-              </Button>
-            </Link>
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </>
+    );
+  }
+
+  const isEmptyContent = !data.content || data.content.trim().length === 0;
+
+  if (isEmptyContent) {
+    return (
+      <>
+        <Button variant="ghost" className="mb-6 hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors gap-2" asChild>
+          <Link href="/pdfs">
+            <ArrowLeft data-icon="inline-start" className="w-4 h-4" />
+            Back to Notes
+          </Link>
+        </Button>
+        <Card>
+          <CardContent className="py-16 text-center space-y-3">
+            <FileText className="w-10 h-10 mx-auto text-muted-foreground/40" />
+            <h3 className="font-medium">No content available</h3>
+            <p className="text-sm text-muted-foreground max-w-sm mx-auto">This note has no content yet. Please check back later or browse other notes.</p>
+            <Button variant="outline" className="mt-4" asChild><Link href="/pdfs">Browse Notes</Link></Button>
           </CardContent>
         </Card>
       </>
@@ -79,12 +104,12 @@ export default function ReadmeClient() {
 
   return (
     <>
-      <Link href="/pdfs">
-        <Button variant="ghost" className="mb-6 hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors gap-2">
-          <ArrowLeft className="w-4 h-4" />
+      <Button variant="ghost" className="mb-6 hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors gap-2" asChild>
+        <Link href="/pdfs">
+          <ArrowLeft data-icon="inline-start" className="w-4 h-4" />
           Back to Notes
-        </Button>
-      </Link>
+        </Link>
+      </Button>
 
       <div className="space-y-6 mb-12">
         <div className="flex flex-wrap gap-2">

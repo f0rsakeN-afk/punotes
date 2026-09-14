@@ -78,7 +78,7 @@ export function SearchNotesClient({ initialData }: { initialData: NotesData[] })
               {/* Top row */}
               <div className="flex items-start gap-3">
                 <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
-                  <FileText className="w-4 h-4" strokeWidth={1.75} />
+                  <FileText data-icon="inline-start" className="w-4 h-4" strokeWidth={1.75} />
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-foreground leading-snug truncate">
@@ -94,7 +94,7 @@ export function SearchNotesClient({ initialData }: { initialData: NotesData[] })
               </p>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pl-11" onClick={handleGatedAction}>
+              <div className="flex items-center gap-2 pl-11" onClick={handleGatedAction} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleGatedAction(e as unknown as React.MouseEvent); } }} aria-label="View or download note (requires sign-in if gated)">
                 {user ? (
                   <>
                     <PDFViewerDialog url={note.url} title={note.name} buttonClassName="h-8 text-xs gap-1.5" />
@@ -103,11 +103,11 @@ export function SearchNotesClient({ initialData }: { initialData: NotesData[] })
                 ) : (
                   <>
                     <Button size="sm" className="h-8 text-xs gap-1.5">
-                      <Eye className="w-3.5 h-3.5" />
+                      <Eye data-icon="inline-start" className="w-3.5 h-3.5" />
                       View
                     </Button>
                     <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5">
-                      <Download className="w-3.5 h-3.5" />
+                      <Download data-icon="inline-start" className="w-3.5 h-3.5" />
                       Download
                     </Button>
                   </>

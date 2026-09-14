@@ -83,7 +83,7 @@ export default function UploadSyllabus() {
                     onValueChange={field.onChange}
                     value={field.value?.toString()}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger aria-label="Select semester" className="w-full">
                       <SelectValue placeholder="Select a semester" />
                     </SelectTrigger>
                     <SelectContent>
@@ -108,7 +108,7 @@ export default function UploadSyllabus() {
                 <FormLabel>Branch</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-full h-16">
+                    <SelectTrigger aria-label="Select branch" className="w-full h-16">
                       <SelectValue placeholder="Select a branch" />
                     </SelectTrigger>
                     <SelectContent>

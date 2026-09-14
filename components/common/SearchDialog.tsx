@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, FileText, BookOpen, ScrollText, Loader2, X, ArrowRight } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -115,18 +115,20 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div onClick={() => setOpen(true)} className="cursor-pointer">
+      <div onClick={() => setOpen(true)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(true); } }} aria-label="Open search" className="cursor-pointer">
         {children}
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 gap-0 max-w-lg overflow-hidden bg-background dark:bg-black/90 backdrop-blur-xl">
+        <DialogContent aria-describedby={undefined} className="p-0 gap-0 max-w-lg overflow-hidden bg-background dark:bg-black/90 backdrop-blur-xl">
+          <DialogTitle className="sr-only">Search</DialogTitle>
+          <DialogDescription className="sr-only">Search notes, syllabus and past questions</DialogDescription>
           {/* Search input */}
           <div className="flex items-center gap-3 px-4 border-b border-border/60 dark:border-border/40">
             {loading ? (
-              <Loader2 className="w-4 h-4 text-muted-foreground animate-spin shrink-0" />
+              <Loader2 data-icon="inline-start" className="w-4 h-4 text-muted-foreground animate-spin shrink-0" />
             ) : (
-              <Search className="w-4 h-4 text-muted-foreground shrink-0" />
+              <Search data-icon="inline-start" className="w-4 h-4 text-muted-foreground shrink-0" />
             )}
             <Input
               ref={inputRef}
@@ -143,7 +145,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
                 aria-label="Clear search"
                 className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
               >
-                <X className="w-4 h-4" />
+                <X data-icon="inline-start" className="w-4 h-4" />
               </button>
             )}
           </div>

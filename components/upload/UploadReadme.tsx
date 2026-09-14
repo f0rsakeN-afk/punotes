@@ -88,7 +88,7 @@ export default function UploadReadme() {
                                             onValueChange={field.onChange}
                                             value={field.value?.toString()}
                                         >
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger aria-label="Select semester" className="w-full">
                                                 <SelectValue placeholder="Select a semester" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -113,7 +113,7 @@ export default function UploadReadme() {
                                     <FormLabel>Branch</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger aria-label="Select branch" className="w-full">
                                                 <SelectValue placeholder="Select a branch" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -179,7 +179,7 @@ export default function UploadReadme() {
                         ) : (
                             <span className="flex items-center gap-2">
                                 Publish README
-                                <FileCode className="w-4 h-4" />
+                                <FileCode data-icon="inline-start" className="w-4 h-4" />
                             </span>
                         )}
                     </Button>

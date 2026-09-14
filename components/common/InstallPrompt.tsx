@@ -79,7 +79,7 @@ export function InstallPrompt() {
             aria-label="Dismiss install prompt"
             className="text-zinc-500 hover:text-white transition-colors p-1 -mt-1 -mr-1"
           >
-            <X className="w-4 h-4" />
+            <X data-icon="inline-start" className="w-4 h-4" />
           </button>
         </div>
         <div className="flex gap-2 mt-3">

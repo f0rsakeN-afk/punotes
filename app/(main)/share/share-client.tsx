@@ -39,6 +39,7 @@ export default function ShareClient({ branches }: ShareClientProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [stats, setStats] = useState<Stats | null>(null);
   const [uploadMethod, setUploadMethod] = useState<"link" | "upload">("link");
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState({
     url: "",
     branch: "",
@@ -64,13 +65,16 @@ export default function ShareClient({ branches }: ShareClientProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.url || !form.branch || !form.semester || !form.title) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
-    if (uploadMethod === "link" && !form.url.includes("drive.google.com")) {
-      toast.error("Only Google Drive links are accepted");
+    const newErrors: Record<string, string> = {};
+    if (!form.url) newErrors.url = uploadMethod === "link" ? "Google Drive link is required" : "File is required";
+    else if (uploadMethod === "link" && !form.url.includes("drive.google.com")) newErrors.url = "Only Google Drive links are accepted";
+    if (!form.branch) newErrors.branch = "Branch is required";
+    if (!form.semester) newErrors.semester = "Semester is required";
+    if (!form.title.trim()) newErrors.title = "Title is required";
+    if (form.title.trim().length > 0 && form.title.trim().length < 3) newErrors.title = "Title must be at least 3 characters";
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
+      toast.error("Please fix the highlighted fields");
       return;
     }
 
@@ -183,11 +187,11 @@ export default function ShareClient({ branches }: ShareClientProps) {
         </div>
       )}
 
-      <div className="grid lg:grid-cols-5 gap-6">
+      <div className="grid lg:grid-cols-5 gap-6 min-w-0 w-full">
         {/* Form */}
-        <div className="lg:col-span-3">
-          <Card>
-            <CardContent className="p-6 sm:p-8">
+        <div className="lg:col-span-3 min-w-0">
+          <Card className="min-w-0 overflow-hidden">
+            <CardContent className="p-6 sm:p-8 min-w-0">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Upload Method Toggle */}
                 <Tabs value={uploadMethod} onValueChange={(v) => setUploadMethod(v as "link" | "upload")}>
@@ -210,9 +214,13 @@ export default function ShareClient({ branches }: ShareClientProps) {
                       id="url"
                       placeholder="https://drive.google.com/..."
                       value={form.url}
-                      onChange={(e) => setForm({ ...form, url: e.target.value })}
+                      onChange={(e) => { setForm({ ...form, url: e.target.value }); if (errors.url) setErrors((p) => ({ ...p, url: "" })); }}
                       className="h-11"
+                      required
+                      aria-invalid={!!errors.url}
+                      aria-describedby={errors.url ? "url-error" : undefined}
                     />
+                    {errors.url && <p id="url-error" className="text-sm text-destructive" role="alert">{errors.url}</p>}
                     <p className="text-xs text-muted-foreground">
                       Make sure the link is publicly accessible (anyone with the link can view)
                     </p>
@@ -223,8 +231,9 @@ export default function ShareClient({ branches }: ShareClientProps) {
                       File <span className="text-destructive">*</span>
                     </Label>
                     <FileDropZone
-                      onUploadComplete={(url) => setForm({ ...form, url })}
+                      onUploadComplete={(url) => { setForm({ ...form, url }); if (errors.url) setErrors((p) => ({ ...p, url: "" })); }}
                     />
+                    {errors.url && <p className="text-sm text-destructive" role="alert">{errors.url}</p>}
                     <p className="text-xs text-muted-foreground">
                       Max file size: 25MB. Accepted formats: PDF, DOCX
                     </p>
@@ -240,9 +249,13 @@ export default function ShareClient({ branches }: ShareClientProps) {
                     id="title"
                     placeholder="e.g., Data Structures Notes - Semester 3"
                     value={form.title}
-                    onChange={(e) => setForm({ ...form, title: e.target.value })}
+                    onChange={(e) => { setForm({ ...form, title: e.target.value }); if (errors.title) setErrors((p) => ({ ...p, title: "" })); }}
                     className="h-11"
+                    required
+                    aria-invalid={!!errors.title}
+                    aria-describedby={errors.title ? "title-error" : undefined}
                   />
+                  {errors.title && <p id="title-error" className="text-sm text-destructive" role="alert">{errors.title}</p>}
                 </div>
 
                 {/* Type */}
@@ -298,9 +311,9 @@ export default function ShareClient({ branches }: ShareClientProps) {
                     </Label>
                     <Select
                       value={form.branch}
-                      onValueChange={(v) => setForm({ ...form, branch: v })}
+                      onValueChange={(v) => { setForm({ ...form, branch: v }); if (errors.branch) setErrors((p) => ({ ...p, branch: "" })); }}
                     >
-                      <SelectTrigger id="share-branch" className="h-11">
+                      <SelectTrigger id="share-branch" className="h-11" aria-invalid={!!errors.branch} aria-describedby={errors.branch ? "branch-error" : undefined} aria-required="true">
                         <SelectValue placeholder="Select branch" />
                       </SelectTrigger>
                       <SelectContent>
@@ -311,6 +324,8 @@ export default function ShareClient({ branches }: ShareClientProps) {
                         ))}
                       </SelectContent>
                     </Select>
+                    <input type="hidden" name="branch" value={form.branch} required aria-hidden="true" tabIndex={-1} />
+                    {errors.branch && <p id="branch-error" className="text-sm text-destructive" role="alert">{errors.branch}</p>}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="share-semester">
@@ -318,9 +333,9 @@ export default function ShareClient({ branches }: ShareClientProps) {
                     </Label>
                     <Select
                       value={form.semester}
-                      onValueChange={(v) => setForm({ ...form, semester: v })}
+                      onValueChange={(v) => { setForm({ ...form, semester: v }); if (errors.semester) setErrors((p) => ({ ...p, semester: "" })); }}
                     >
-                      <SelectTrigger id="share-semester" className="h-11">
+                      <SelectTrigger id="share-semester" className="h-11" aria-invalid={!!errors.semester} aria-describedby={errors.semester ? "semester-error" : undefined} aria-required="true">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent>
@@ -331,6 +346,8 @@ export default function ShareClient({ branches }: ShareClientProps) {
                         ))}
                       </SelectContent>
                     </Select>
+                    <input type="hidden" name="semester" value={form.semester} required aria-hidden="true" tabIndex={-1} />
+                    {errors.semester && <p id="semester-error" className="text-sm text-destructive" role="alert">{errors.semester}</p>}
                   </div>
                 </div>
 
@@ -379,8 +396,8 @@ export default function ShareClient({ branches }: ShareClientProps) {
         </div>
 
         {/* Guidelines */}
-        <div className="lg:col-span-2">
-          <Card className="h-full">
+        <div className="lg:col-span-2 min-w-0">
+          <Card className="h-full min-w-0 overflow-hidden">
             <CardHeader>
               <CardTitle className="text-lg">Guidelines</CardTitle>
             </CardHeader>

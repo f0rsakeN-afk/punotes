@@ -162,7 +162,7 @@ function ContentDistributionChart({ data }: { data: AnalyticsData["content"] }) 
     <Card>
       <CardHeader>
         <CardTitle className="text-base flex items-center gap-2">
-          <FileText className="w-4 h-4" />
+          <FileText data-icon="inline-start" className="w-4 h-4" />
           Content Distribution
         </CardTitle>
         <CardDescription>Notes, Syllabus, PYQs</CardDescription>
@@ -196,7 +196,7 @@ function SubmissionsStatusChart({ pending, total }: { pending: number; total: nu
     <Card>
       <CardHeader>
         <CardTitle className="text-base flex items-center gap-2">
-          <Link2 className="w-4 h-4" />
+          <Link2 data-icon="inline-start" className="w-4 h-4" />
           Submissions Status
         </CardTitle>
         <CardDescription>Approved vs pending review</CardDescription>

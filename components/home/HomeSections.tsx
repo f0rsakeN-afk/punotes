@@ -63,18 +63,18 @@ function HeroSection() {
 
         {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
-          <Link href="/pdfs">
-            <Button size="lg" className="w-full sm:w-auto gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-px transition-all">
+          <Button size="lg" className="w-full sm:w-auto gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-px transition-all" asChild>
+            <Link href="/pdfs">
               Browse Notes
-              <ArrowUpRight className="w-4 h-4" />
-            </Button>
-          </Link>
-          <Link href="/share">
-            <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 bg-background/80 backdrop-blur hover:-translate-y-px transition-all">
-              <Upload className="w-4 h-4" />
+              <ArrowUpRight data-icon="inline-end" className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button variant="outline" size="lg" className="w-full sm:w-auto gap-2 bg-background/80 backdrop-blur hover:-translate-y-px transition-all" asChild>
+            <Link href="/share">
+              <Upload data-icon="inline-start" className="w-4 h-4" />
               Contribute
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         {/* Quick links */}
@@ -85,12 +85,12 @@ function HeroSection() {
             { label: "Syllabus", href: "/syllabus" },
             { label: "PYQs", href: "/pyqs" },
           ].map((link) => (
-            <Link key={link.href} href={link.href}>
-              <Button variant="link" size="sm" className="h-auto p-0 text-sm gap-1 text-foreground hover:text-primary">
+              <Button variant="link" size="sm" className="h-auto p-0 text-sm gap-1 text-foreground hover:text-primary" asChild key={link.href}>
+                <Link href={link.href}>
                 {link.label}
                 <ArrowUpRight className="w-3 h-3" />
+                </Link>
               </Button>
-            </Link>
           ))}
         </div>
       </div>
@@ -156,6 +156,24 @@ function StatsSection() {
     );
   }
 
+  const isEmpty = !data || (stats.every((s) => s.value === 0));
+  if (isEmpty) {
+    return (
+      <section className="py-8">
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-card">
+            <CardContent className="p-8 text-center space-y-3">
+              <FileText className="w-8 h-8 mx-auto text-muted-foreground/40" />
+              <h3 className="font-medium">No data available</h3>
+              <p className="text-sm text-muted-foreground">Stats will appear once content is added.</p>
+              <Button variant="outline" size="sm" asChild><Link href="/pdfs">Browse Notes</Link></Button>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-8">
       <div className="max-w-4xl mx-auto">
@@ -189,11 +207,11 @@ function ContributeSection() {
                 Help fellow students by contributing study materials
               </p>
             </div>
-            <Link href="/share">
-              <Button size="sm" variant="outline" className="shrink-0">
+            <Button size="sm" variant="outline" className="shrink-0" asChild>
+              <Link href="/share">
                 Get Started
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       </div>

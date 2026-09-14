@@ -13,13 +13,17 @@ export function KeyboardShortcuts() {
     let lastPressed: string | null = null;
     let lastTime = 0;
 
+    const isEditableTarget = (target: EventTarget | null) => {
+      if (target instanceof HTMLInputElement) return true;
+      if (target instanceof HTMLTextAreaElement) return true;
+      if (target instanceof HTMLSelectElement) return true;
+      if (target instanceof HTMLElement && target.isContentEditable) return true;
+      return false;
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if typing in input/textarea
-      if (
-        e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement ||
-        e.target instanceof HTMLSelectElement
-      ) {
+      // Ignore if typing in input/textarea/select/contenteditable
+      if (isEditableTarget(e.target)) {
         return;
       }
 
@@ -42,8 +46,11 @@ export function KeyboardShortcuts() {
         }
       }
 
-      // 'd' - Toggle dark mode
-      if (key === "d") {
+      // 'd' or Cmd/Ctrl+Shift+D - Toggle dark mode (ignores form fields via guard above)
+      const isThemeToggle =
+        (key === "d" && !e.ctrlKey && !e.metaKey && !e.altKey) ||
+        (key.toLowerCase() === "d" && (e.metaKey || e.ctrlKey) && e.shiftKey);
+      if (isThemeToggle) {
         e.preventDefault();
         const newTheme = theme === "dark" ? "light" : "dark";
         setTheme(newTheme);
@@ -65,6 +72,7 @@ export function KeyboardShortcuts() {
       // 'g h' - Go home
       if (key === "g") {
         const handleNext = (e2: KeyboardEvent) => {
+          if (isEditableTarget(e2.target)) return;
           if (e2.key.toLowerCase() === "h") {
             e2.preventDefault();
             router.push("/");

@@ -162,7 +162,7 @@ export default function ReportsPage() {
                 disabled={loading || !report}
                 className="w-full"
               >
-                <Download className="h-4 w-4 mr-2" />
+                <Download data-icon="inline-start" className="h-4 w-4 mr-2" />
                 Export CSV
               </Button>
             </div>
