@@ -49,10 +49,10 @@ export async function GET() {
       prisma.visit.count({ where: { createdAt: { gte: last30Days } } }),
 
       // Unique visitors (by hashed IP) via COUNT DISTINCT - avoids OOM loading all IPs
-      prisma.$queryRaw`SELECT COUNT(DISTINCT ip)::int as count FROM "Visit" WHERE "createdAt" >= ${last7Days}`.then((res: Array<{count:number}>) => res[0]?.count ?? 0),
+      (prisma.$queryRaw`SELECT COUNT(DISTINCT ip)::int as count FROM "Visit" WHERE "createdAt" >= ${last7Days}` as Promise<Array<{ count: number }>>).then((res) => res[0]?.count ?? 0) as Promise<number>,
 
       // Unique visitors in last 30 days
-      prisma.$queryRaw`SELECT COUNT(DISTINCT ip)::int as count FROM "Visit" WHERE "createdAt" >= ${last30Days}`.then((res: Array<{count:number}>) => res[0]?.count ?? 0),
+      (prisma.$queryRaw`SELECT COUNT(DISTINCT ip)::int as count FROM "Visit" WHERE "createdAt" >= ${last30Days}` as Promise<Array<{ count: number }>>).then((res) => res[0]?.count ?? 0) as Promise<number>,
 
       // Top 10 pages by visits (using raw query for proper ordering)
       prisma.$queryRaw`

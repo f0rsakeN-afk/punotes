@@ -7,8 +7,6 @@ import { validateCsrf } from "@/lib/csrf";
 import { validateBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
-const noAngleBrackets = z.string().refine((v) => !/[<>]/.test(v), "Must not contain < or >");
-
 const publicLinkSchema = z.object({
   url: z.string().url("Invalid URL").refine((u) => u.startsWith("https://drive.google.com/") || u.startsWith("https://ik.imagekit.io/"), "Invalid host"),
   branch: z.string().min(1, "Branch is required").max(100).refine((v) => !/[<>]/.test(v), "Invalid branch"),

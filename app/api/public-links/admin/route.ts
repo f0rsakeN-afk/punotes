@@ -4,7 +4,7 @@ import { getStackUser, getCurrentUser } from "@/lib/auth";
 import { z } from "zod";
 import { rateLimiters } from "@/lib/rateLimit";
 import { validateCsrf } from "@/lib/csrf";
-import { validateBodySize } from "@/lib/requestLimits";
+import { validateBodySize, validateParsedBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const reviewSchema = z.object({
