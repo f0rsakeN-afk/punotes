@@ -9,8 +9,10 @@ import { validateBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const addItemSchema = z.object({
-  favoriteId: z.string().min(1),
+  favoriteId: z.string().cuid("Invalid favoriteId"),
 });
+const cuidParamSchema = z.string().cuid();
+const itemIdQuerySchema = z.string().cuid("Invalid itemId");
 
 export async function POST(
   req: NextRequest,
@@ -40,7 +42,11 @@ export async function POST(
     }
 
     const { id } = await params;
+    const idCheck = cuidParamSchema.safeParse(id);
+    if (!idCheck.success) return NextResponse.json({ error: "Invalid collection ID" }, { status: 400 });
     const body = await req.json();
+    const sizeErr = validateParsedBodySize(body);
+    if (sizeErr) return sizeErr;
     const parsed = addItemSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -116,12 +122,16 @@ export async function DELETE(
     }
 
     const { id } = await params;
+    const idCheck2 = cuidParamSchema.safeParse(id);
+    if (!idCheck2.success) return NextResponse.json({ error: "Invalid collection ID" }, { status: 400 });
     const { searchParams } = new URL(req.url);
     const itemId = searchParams.get("itemId");
 
     if (!itemId) {
       return NextResponse.json({ error: "itemId is required" }, { status: 400 });
     }
+    const itemIdCheck = itemIdQuerySchema.safeParse(itemId);
+    if (!itemIdCheck.success) return NextResponse.json({ error: "Invalid itemId" }, { status: 400 });
 
     // Verify collection belongs to user
     const collection = await prisma.collection.findFirst({

@@ -50,10 +50,10 @@ export async function GET(
       headers: { "X-Cache": "MISS", "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600" },
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in /api/pdfs:", error);
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : "Failed to fetch data.",
+        error: "Failed to fetch data.",
       },
       { status: 500 },
     );

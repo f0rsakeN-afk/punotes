@@ -32,8 +32,9 @@ export async function GET(req: NextRequest) {
       },
     );
   } catch (error) {
+    console.error("Error in /api/me:", error instanceof Error ? error.message : error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Internal server error." },
+      { error: ERROR_MESSAGES.SERVER_ERROR },
       { status: 500 },
     );
   }
