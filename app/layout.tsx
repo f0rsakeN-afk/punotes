@@ -145,7 +145,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning className={cn("font-sans", outfit.variable)}>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", outfit.variable)} data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://drive.google.com" />
         <link rel="apple-touch-icon" href="/icons/icon-512x512.png" />
