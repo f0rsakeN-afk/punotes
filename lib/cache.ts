@@ -63,9 +63,9 @@ export async function cacheDeletePattern(pattern: string): Promise<void> {
   }
 }
 
-// Helper to build cache key
+// Helper to build cache key - normalized lowercase for consistency
 export function buildCacheKey(prefix: string, ...parts: string[]): string {
-  return `${prefix}:${parts.join(':')}`;
+  return `${prefix}:${parts.map((p) => p.toLowerCase().trim()).join(':')}`;
 }
 
 // User cache helper

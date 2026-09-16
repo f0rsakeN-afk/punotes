@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -28,6 +28,12 @@ export const favoritesQueryOptions = queryOptions({
 export function useFavorites() {
   const { data: favorites = [], refetch } = useQuery(favoritesQueryOptions);
 
+  // O(1) lookup set for per-card checks - avoids O(N*M) every render
+  const favoritesSet = useMemo(
+    () => new Set(favorites.map((f) => `${f.type}:${f.itemId}`)),
+    [favorites]
+  );
+
   const addFavorite = useCallback(
     async (type: FavoriteType, itemId: string) => {
       await axios.post("/api/favorites", { type, itemId });
@@ -46,22 +52,29 @@ export function useFavorites() {
 
   const toggleFavorite = useCallback(
     async (type: FavoriteType, itemId: string) => {
-      const isFavorited = favorites.some((f) => f.type === type && f.itemId === itemId);
-      if (isFavorited) {
+      const key = `${type}:${itemId}`;
+      const isFav = favoritesSet.has(key);
+      if (isFav) {
         await removeFavorite(type, itemId);
       } else {
         await addFavorite(type, itemId);
       }
     },
-    [favorites, addFavorite, removeFavorite]
+    [favoritesSet, addFavorite, removeFavorite]
   );
 
   const isFavorited = useCallback(
     (type: FavoriteType, itemId: string) => {
-      return favorites.some((f) => f.type === type && f.itemId === itemId);
+      return favoritesSet.has(`${type}:${itemId}`);
     },
-    [favorites]
+    [favoritesSet]
   );
 
-  return { favorites, toggleFavorite, isFavorited, refetch };
+  // Optimized toggle check using Set
+  const isFavoritedFast = useCallback(
+    (type: FavoriteType, itemId: string) => favoritesSet.has(`${type}:${itemId}`),
+    [favoritesSet]
+  );
+
+  return { favorites, favoritesSet, toggleFavorite, isFavorited, isFavoritedFast, refetch };
 }
