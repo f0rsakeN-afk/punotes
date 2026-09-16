@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { cacheGet, cacheSet, buildCacheKey } from "@/lib/cache";
 import { rateLimiters } from "@/lib/rateLimit";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
+import { z } from "zod";
 
 const SEARCH_CACHE_KEY = "search:all";
 const SEARCH_CACHE_TTL = 3600; // 1 hour
@@ -33,7 +34,14 @@ export async function GET(req: NextRequest) {
     // No auth check: every keystroke used to pay a Stack verification roundtrip.
 
     const { searchParams } = new URL(req.url);
-    const query = searchParams.get("q")?.toLowerCase().trim() || "";
+    const rawQ = searchParams.get("q") || "";
+    // Zod validation for search query
+    const querySchema = z.string().min(2).max(100).regex(/^[^<>]*$/, "Invalid query");
+    const queryResult = querySchema.safeParse(rawQ.trim());
+    if (!queryResult.success) {
+      return NextResponse.json({ results: [], message: "Query too short or invalid" });
+    }
+    const query = queryResult.data.toLowerCase().trim();
 
     if (!query || query.length < 2) {
       return NextResponse.json({ results: [], message: "Query too short" });

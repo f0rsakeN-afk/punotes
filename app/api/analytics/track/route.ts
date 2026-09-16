@@ -5,6 +5,8 @@ import { headers } from "next/headers";
 import crypto from "crypto";
 import { rateLimiters } from "@/lib/rateLimit";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
+import { z } from "zod";
+import { validateParsedBodySize } from "@/lib/requestLimits";
 
 export async function POST(req: Request) {
   try {
@@ -17,16 +19,30 @@ export async function POST(req: Request) {
       );
     }
 
-    const { path, referrer } = await req.json();
+    const body = await req.json();
+    const sizeErr = validateParsedBodySize(body);
+    if (sizeErr) return sizeErr;
+
+    const analyticsSchema = z.object({
+      path: z.string().max(500).refine((v) => v.startsWith("/") && !/[<>]/.test(v), "Invalid path"),
+      referrer: z.string().max(500).optional().refine((v) => !v || !/[<>]/.test(v), "Invalid referrer"),
+    });
+    const parsed = analyticsSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
+    }
+    const { path, referrer } = parsed.data;
 
     const stackUser = await stackServerApp.getUser();
     const headerList = await headers();
     const userAgent = headerList.get("user-agent") || "unknown";
     const forwarded = headerList.get("x-forwarded-for");
-    const ip = forwarded ? forwarded.split(",")[0].trim() : "unknown";
+    const realIp = headerList.get("x-real-ip");
+    const ip = (realIp || (forwarded ? forwarded.split(",")[0].trim() : "unknown")).trim();
 
-    // Hash IP for privacy - we only need uniqueness, not identity
-    const hashedIp = crypto.createHash("sha256").update(ip).digest("hex");
+    // HMAC with salt for privacy - prevents rainbow table reversal
+    const salt = process.env.ANALYTICS_SALT || "default-salt-change-in-production";
+    const hashedIp = crypto.createHmac("sha256", salt).update(ip).digest("hex");
 
     let userId = null;
     if (stackUser) {

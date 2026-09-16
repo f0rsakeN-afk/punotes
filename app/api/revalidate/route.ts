@@ -2,8 +2,14 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimiters } from "@/lib/rateLimit";
 import { validateCsrf } from "@/lib/csrf";
-import { validateBodySize } from "@/lib/requestLimits";
+import { validateBodySize, validateParsedBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
+import { z } from "zod";
+
+const revalidateSchema = z.object({
+  secret: z.string().min(1),
+  path: z.string().min(1).max(200).refine((p) => p.startsWith("/") && !p.includes("..") && !p.startsWith("/_next") && p !== "/api", "Invalid path"),
+});
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,7 +30,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { secret, path } = await request.json();
+    const body = await request.json();
+    const sizeErr = validateParsedBodySize(body);
+    if (sizeErr) return sizeErr;
+
+    const parsed = revalidateSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
+    }
+    const { secret, path } = parsed.data;
 
     const expectedSecret = process.env.REVALIDATE_SECRET;
     // Fail closed: never allow revalidation when no secret is configured.
