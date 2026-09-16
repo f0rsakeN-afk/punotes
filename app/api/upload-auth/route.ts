@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUploadAuthParams } from "@imagekit/next/server";
 import { stackServerApp } from "@/stack/server";
 import { rateLimiters } from "@/lib/rateLimit";
-import { validateCsrf } from "@/lib/csrf";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 export async function GET(req: NextRequest) {
