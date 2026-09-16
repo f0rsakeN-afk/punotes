@@ -46,20 +46,25 @@ export const metadata: Metadata = {
 };
 
 const CACHE_KEY = "syllabus:all";
+export const revalidate = 3600;
 
-async function getSyllabus() {
+async function getSyllabus(page = 0, limit = 48) {
+  const cacheKey = `${CACHE_KEY}:${page}:${limit}`;
   // Try cache first
-  const cached = await cacheGet<unknown>(CACHE_KEY);
+  const cached = await cacheGet<unknown>(cacheKey);
   if (cached) {
     return cached;
   }
 
   const data = await prisma.syllabus.findMany({
+    select: { id: true, branch: true, semester: true, url: true, fileSize: true, createdAt: true },
     orderBy: { createdAt: "asc" },
+    take: limit,
+    skip: page * limit,
   });
 
-  // Store in cache for 24 hours
-  await cacheSet(CACHE_KEY, data, { expire: 86400 });
+  // Store in cache for 1 hour (revalidate at page level too)
+  await cacheSet(cacheKey, data, { expire: 3600 });
 
   return data;
 }

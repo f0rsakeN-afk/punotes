@@ -44,6 +44,8 @@ model Syllabus {
   semester  String
 
   @@index([branch])
+  @@index([branch, semester])
+  @@index([createdAt])
 }
 
 model PYQ {
@@ -57,6 +59,8 @@ model PYQ {
 
   @@index([branch])
   @@index([semester])
+  @@index([branch, semester])
+  @@index([createdAt])
 }
 
 model Notes {
@@ -71,6 +75,8 @@ model Notes {
 
   @@index([semester])
   @@index([branch])
+  @@index([branch, semester])
+  @@index([createdAt])
 }
 
 model Feedback {
@@ -155,6 +161,8 @@ model Visit {
   @@index([path])
   @@index([userId])
   @@index([ip])
+  @@index([createdAt, ip])
+  @@index([path, createdAt])
 }
 
 model AuditLog {
@@ -187,6 +195,7 @@ model Readme {
 
   @@index([branch])
   @@index([semester])
+  @@index([branch, semester])
   @@index([slug])
 }
 

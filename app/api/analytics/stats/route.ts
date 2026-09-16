@@ -48,19 +48,11 @@ export async function GET() {
       // Visits in last 30 days
       prisma.visit.count({ where: { createdAt: { gte: last30Days } } }),
 
-      // Unique visitors (by hashed IP) in last 7 days
-      prisma.visit.groupBy({
-        by: ["ip"],
-        where: { createdAt: { gte: last7Days } },
-        _count: true,
-      }).then(res => res.length),
+      // Unique visitors (by hashed IP) via COUNT DISTINCT - avoids OOM loading all IPs
+      prisma.$queryRaw`SELECT COUNT(DISTINCT ip)::int as count FROM "Visit" WHERE "createdAt" >= ${last7Days}`.then((res: Array<{count:number}>) => res[0]?.count ?? 0),
 
       // Unique visitors in last 30 days
-      prisma.visit.groupBy({
-        by: ["ip"],
-        where: { createdAt: { gte: last30Days } },
-        _count: true,
-      }).then(res => res.length),
+      prisma.$queryRaw`SELECT COUNT(DISTINCT ip)::int as count FROM "Visit" WHERE "createdAt" >= ${last30Days}`.then((res: Array<{count:number}>) => res[0]?.count ?? 0),
 
       // Top 10 pages by visits (using raw query for proper ordering)
       prisma.$queryRaw`
@@ -92,19 +84,17 @@ export async function GET() {
       prisma.publicLink.count({ where: { status: "PENDING" } }),
     ]);
 
-    // Calculate growth
+    // Calculate growth in parallel (avoid sequential waterfall)
     const prev7Days = subDays(last7Days, 7);
-    const prev7DaysVisits = await prisma.visit.count({
-      where: { createdAt: { gte: prev7Days, lt: last7Days } },
-    });
+    const prev30Days = subDays(last30Days, 30);
+    const [prev7DaysVisits, prev30DaysVisits] = await Promise.all([
+      prisma.visit.count({ where: { createdAt: { gte: prev7Days, lt: last7Days } } }),
+      prisma.visit.count({ where: { createdAt: { gte: prev30Days, lt: last30Days } } }),
+    ]);
     const growth7Days = prev7DaysVisits > 0
       ? ((last7DaysVisits - prev7DaysVisits) / prev7DaysVisits) * 100
       : 0;
 
-    const prev30Days = subDays(last30Days, 30);
-    const prev30DaysVisits = await prisma.visit.count({
-      where: { createdAt: { gte: prev30Days, lt: last30Days } },
-    });
     const growth30Days = prev30DaysVisits > 0
       ? ((last30DaysVisits - prev30DaysVisits) / prev30DaysVisits) * 100
       : 0;
