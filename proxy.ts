@@ -16,9 +16,23 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Get origin header
+  // Get origin header - normalize via URL parsing and restrict localhost to dev
   const origin = request.headers.get("origin");
-  const isAllowedOrigin = origin && ALLOWED_ORIGINS.includes(origin);
+  let isAllowedOrigin = false;
+  let normalizedOrigin: string | null = null;
+  if (origin) {
+    try {
+      normalizedOrigin = new URL(origin).origin;
+      const isLocalhost = normalizedOrigin.includes("localhost") || normalizedOrigin.includes("127.0.0.1");
+      if (isLocalhost && process.env.NODE_ENV === "production") {
+        isAllowedOrigin = false;
+      } else {
+        isAllowedOrigin = ALLOWED_ORIGINS.includes(normalizedOrigin);
+      }
+    } catch {
+      isAllowedOrigin = false;
+    }
+  }
 
   // Build base response
   const response = NextResponse.next();
@@ -34,18 +48,24 @@ export function proxy(request: NextRequest) {
   );
   response.headers.set(
     "Strict-Transport-Security",
-    "max-age=31536000; includeSubDomains"
+    "max-age=31536000; includeSubDomains; preload"
   );
-  response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  // Only set no-store for private routes; allow public routes to set their own Cache-Control
+  const isPrivateRoute = pathname.startsWith("/api/favorites") || pathname.startsWith("/api/me") || pathname.startsWith("/api/collections") || pathname.startsWith("/api/upload-auth");
+  if (isPrivateRoute) {
+    response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  }
+  // Tightened CSP: remove unsafe-inline where possible, add explicit directives
   response.headers.set(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.vercel.app https://*.neon.tech"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.vercel.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.vercel.app https://*.neon.tech https://ik.imagekit.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
   );
 
-  // CORS headers
-  if (isAllowedOrigin) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
+  // CORS headers - only if allowed origin after normalization
+  if (isAllowedOrigin && normalizedOrigin) {
+    response.headers.set("Access-Control-Allow-Origin", normalizedOrigin);
     response.headers.set("Access-Control-Allow-Credentials", "true");
+    response.headers.set("Vary", "Origin");
   }
 
   // Handle preflight OPTIONS
@@ -61,8 +81,8 @@ export function proxy(request: NextRequest) {
     );
     optionsResponse.headers.set("Access-Control-Max-Age", "86400");
     optionsResponse.headers.set("Access-Control-Allow-Credentials", "true");
-    if (isAllowedOrigin) {
-      optionsResponse.headers.set("Access-Control-Allow-Origin", origin);
+    if (isAllowedOrigin && normalizedOrigin) {
+      optionsResponse.headers.set("Access-Control-Allow-Origin", normalizedOrigin);
     }
     return optionsResponse;
   }

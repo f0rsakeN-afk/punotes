@@ -7,14 +7,17 @@ import { validateCsrf } from "@/lib/csrf";
 import { validateBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
+const noAngleBrackets = z.string().refine((v) => !/[<>]/.test(v), "Must not contain < or >");
+
 const publicLinkSchema = z.object({
-  url: z.string().url("Invalid URL"),
-  branch: z.string().min(1, "Branch is required"),
-  semester: z.string().min(1, "Semester is required"),
+  url: z.string().url("Invalid URL").refine((u) => u.startsWith("https://drive.google.com/") || u.startsWith("https://ik.imagekit.io/"), "Invalid host"),
+  branch: z.string().min(1, "Branch is required").max(100).refine((v) => !/[<>]/.test(v), "Invalid branch"),
+  semester: z.string().min(1, "Semester is required").max(20).refine((v) => !/[<>]/.test(v), "Invalid semester"),
   type: z.enum(["NOTES", "SYLLABUS", "PYQ"]),
-  subject: z.string().optional(),
-  title: z.string().min(1, "Title is required").max(200),
-  description: z.string().max(500).optional(),
+  subject: z.string().max(100).optional().refine((v) => !v || !/[<>]/.test(v), "Invalid subject"),
+  title: z.string().min(1, "Title is required").max(200).refine((v) => !/[<>]/.test(v), "Title must not contain < or >"),
+  description: z.string().max(500).optional().refine((v) => !v || !/[<>]/.test(v), "Description must not contain < or >"),
+  adminNotes: z.string().max(500).optional().refine((v) => !v || !/[<>]/.test(v), "Admin notes must not contain < or >"),
 });
 
 export async function GET(req: NextRequest) {
