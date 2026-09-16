@@ -5,8 +5,17 @@ const globalForRedis = global as unknown as {
 };
 
 function createRedisClient() {
+  // validate env lazily to avoid build-time crash; use process.env directly with fallback
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl && process.env.NODE_ENV === "production") {
+    console.warn("[Redis] REDIS_URL missing in production");
+  }
   const client = createClient({
-    url: process.env.REDIS_URL,
+    url: redisUrl,
+    socket: {
+      connectTimeout: 5000,
+      reconnectStrategy: (retries) => Math.min(retries * 100, 3000),
+    },
   });
 
   client.on('error', (err) => {

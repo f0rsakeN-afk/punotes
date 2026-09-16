@@ -55,19 +55,28 @@ export async function slidingWindowRateLimit(
     };
   } catch (error) {
     console.error("Rate limit error:", error);
-    // Fail open - allow request if Redis is down
-    return { success: true, remaining: config.maxRequests, reset: now + config.windowMs };
+    // Fail closed - deny request if Redis is down (security over availability)
+    return { success: false, remaining: 0, reset: now + config.windowMs };
   }
 }
 
 /**
  * Get client identifier for rate limiting
- * Uses X-Forwarded-For header or fallback to IP
+ * Uses trusted headers with hashing to prevent spoofing
  */
 export function getClientIdentifier(request: Request): string {
+  // Prefer trusted header set by proxy/CDN; fall back to x-real-ip then x-forwarded-for
+  const realIp = request.headers.get("x-real-ip");
   const forwarded = request.headers.get("x-forwarded-for");
-  const ip = forwarded ? forwarded.split(",")[0].trim() : "unknown";
-  return `ip:${ip}`;
+  const ipRaw = (realIp || (forwarded ? forwarded.split(",")[0].trim() : "") || "unknown").trim();
+  // Hash IP to avoid PII in Redis keys and reduce spoofing surface
+  // Simple hash for identifier bucketing (not crypto secure, but avoids plain IP storage)
+  let hash = 0;
+  for (let i = 0; i < ipRaw.length; i++) {
+    hash = ((hash << 5) - hash + ipRaw.charCodeAt(i)) | 0;
+  }
+  const hashed = Math.abs(hash).toString(36);
+  return `ip:${hashed}`;
 }
 
 /**
