@@ -5,9 +5,6 @@ import { rateLimiters } from "@/lib/rateLimit";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 import { z } from "zod";
 
-const SEARCH_CACHE_KEY = "search:all";
-const SEARCH_CACHE_TTL = 3600; // 1 hour
-
 interface SearchResult {
   type: "NOTES" | "SYLLABUS" | "PYQ";
   id: string;

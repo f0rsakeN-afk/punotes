@@ -5,7 +5,7 @@ import { stackServerApp } from "@/stack/server";
 import { z } from "zod";
 import { rateLimiters } from "@/lib/rateLimit";
 import { validateCsrf } from "@/lib/csrf";
-import { validateBodySize } from "@/lib/requestLimits";
+import { validateBodySize, validateParsedBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const addItemSchema = z.object({
