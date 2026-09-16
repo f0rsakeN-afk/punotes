@@ -4,11 +4,15 @@
  */
 export function sanitizeError(error: unknown): string {
   if (error instanceof Error) {
-    // Don't expose internal paths or implementation details
+    // Log full error server-side only; never return raw message to client
+    // Strip sensitive patterns that leak internals
     const message = error.message;
 
-    // Common patterns to strip
-    const patterns = [
+    // Patterns that leak DB internals, paths, etc.
+    const leakPatterns = [
+      /Unique constraint failed on fields:.*$/gi,
+      /Foreign key constraint failed.*$/gi,
+      /Invalid.*prisma.*$/gi,
       /\/[a-zA-Z0-9_\-./]+\/node_modules\//gi,
       /\/home\/[a-zA-Z0-9_]+\//gi,
       /C:\\[a-zA-Z0-9_\\]+\\/gi,
@@ -16,20 +20,28 @@ export function sanitizeError(error: unknown): string {
       /`[a-zA-Z0-9_]+`/g,
     ];
 
-    let sanitized = message;
-    for (const pattern of patterns) {
-      sanitized = sanitized.replace(pattern, "[internal]");
+    let containsLeak = false;
+    for (const pattern of leakPatterns) {
+      if (pattern.test(message)) {
+        containsLeak = true;
+        break;
+      }
     }
-
-    // If the sanitized message is too short or looks like garbage, use generic message
-    if (sanitized.length < 5 || /^[[\]{}"\s]+$/.test(sanitized)) {
+    if (containsLeak) {
       return "An unexpected error occurred. Please try again.";
     }
 
-    return sanitized;
+    // For any other Error, still don't return raw message to client
+    // Only return generic - full message is logged server-side via console.error
+    // If message is short and seems safe, allow it; otherwise generic
+    if (message.length < 5 || /^[[\]{}"\s]+$/.test(message)) {
+      return "An unexpected error occurred. Please try again.";
+    }
+
+    // Default: return generic server error to avoid leakage; callers should use ERROR_MESSAGES.SERVER_ERROR
+    return "An unexpected error occurred. Please try again.";
   }
 
-  // For non-Error objects, use generic message
   return "An unexpected error occurred. Please try again.";
 }
 

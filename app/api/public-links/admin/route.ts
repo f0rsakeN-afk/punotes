@@ -7,10 +7,10 @@ import { validateCsrf } from "@/lib/csrf";
 import { validateBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const reviewSchema = z.object({
+  id: z.string().cuid("Invalid ID"),
   status: z.enum(["APPROVED", "REJECTED"]),
-  adminNotes: z.string().max(500).optional(),
+  adminNotes: z.string().max(500).optional().refine((v) => !v || !/[<>]/.test(v), "Invalid adminNotes"),
 });
 
 export async function GET(req: NextRequest) {
@@ -84,15 +84,14 @@ export async function PATCH(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id, status, adminNotes } = body;
+    const sizeErr = validateParsedBodySize(body);
+    if (sizeErr) return sizeErr;
 
-    if (!id) {
-      return NextResponse.json({ error: "Link ID is required" }, { status: 400 });
+    const parsed = reviewSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
     }
-
-    if (!["APPROVED", "REJECTED"].includes(status)) {
-      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
-    }
+    const { id, status, adminNotes } = parsed.data;
 
     const existing = await prisma.publicLink.findUnique({ where: { id } });
     if (!existing) {
