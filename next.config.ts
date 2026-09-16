@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
       { key: "X-DNS-Prefetch-Control", value: "on" },
       {
         key: "Content-Security-Policy",
-        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.vercel.app https://*.stack-auth.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.vercel.app https://*.neon.tech https://*.stack-auth.com https://api.stack-auth.com https://api1.stack-auth.com https://api2.stack-auth.com https://ik.imagekit.io https://*.imagekit.io; frame-src 'self' https://js.stripe.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.vercel.app https://*.stack-auth.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.vercel.app https://*.neon.tech https://*.stack-auth.com https://api.stack-auth.com https://api1.stack-auth.com https://api2.stack-auth.com https://r.stack-auth.com https://ik.imagekit.io https://*.imagekit.io; frame-src 'self' https://js.stripe.com https://drive.google.com https://docs.google.com https://*.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
       },
     ];
     return [
