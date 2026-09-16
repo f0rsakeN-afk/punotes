@@ -9,8 +9,8 @@ import { validateBodySize } from "@/lib/requestLimits";
 import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 const collectionSchema = z.object({
-  name: z.string().min(1, "Name is required").max(50),
-  description: z.string().max(200).optional(),
+  name: z.string().min(1, "Name is required").max(50).refine((v) => !/[<>]/.test(v), "Name must not contain < or >"),
+  description: z.string().max(200).optional().refine((v) => !v || !/[<>]/.test(v), "Description must not contain < or >"),
 });
 
 const COLLECTION_CACHE_TTL = 3600; // 1 hour
