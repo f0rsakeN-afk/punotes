@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { cacheGet, cacheSet, buildCacheKey } from "@/lib/cache";
+import { rateLimiters } from "@/lib/rateLimit";
 
 const CACHE_TTL = 86400; // 1 day
 
@@ -8,6 +9,11 @@ export async function GET(
   req: Request,
   { params }: { params: Promise<{ semester: string; branch: string }> },
 ) {
+  // Rate limit before any heavy work (fail-closed)
+  const rl = await rateLimiters.lenient(req);
+  if (!rl.success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429, headers: { "Retry-After": "60" } });
+  }
   try {
     const { branch: rawBranch, semester } = await params;
     const branch = decodeURIComponent(rawBranch).replace(/-/g, " ");

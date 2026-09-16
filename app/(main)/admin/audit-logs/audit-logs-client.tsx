@@ -11,6 +11,7 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -119,18 +120,20 @@ export default function AuditLogsClient({
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Action Type</label>
+              <label id="audit-action-label" className="text-sm font-medium">Action Type</label>
               <Select value={action} onValueChange={setAction}>
-                <SelectTrigger>
+                <SelectTrigger aria-labelledby="audit-action-label" aria-label="Filter by action type">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Actions</SelectItem>
-                  <SelectItem value="ROLE_CHANGE">Role Changed</SelectItem>
-                  <SelectItem value="USER_SUSPEND">User Suspended</SelectItem>
-                  <SelectItem value="USER_UNSUSPEND">User Unsuspended</SelectItem>
-                  <SelectItem value="USER_BAN">User Banned</SelectItem>
-                  <SelectItem value="USER_UNBAN">User Unbanned</SelectItem>
+                  <SelectGroup>
+                    <SelectItem value="all">All Actions</SelectItem>
+                    <SelectItem value="ROLE_CHANGE">Role Changed</SelectItem>
+                    <SelectItem value="USER_SUSPEND">User Suspended</SelectItem>
+                    <SelectItem value="USER_UNSUSPEND">User Unsuspended</SelectItem>
+                    <SelectItem value="USER_BAN">User Banned</SelectItem>
+                    <SelectItem value="USER_UNBAN">User Unbanned</SelectItem>
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>

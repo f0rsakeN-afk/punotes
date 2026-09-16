@@ -198,7 +198,7 @@ export default function FileDropZone({ onUploadComplete, className }: FileDropZo
 
           {!mutation.isPending && !mutation.isSuccess && (
             <Button onClick={handleUpload} className="w-full">
-              <Upload className="w-4 h-4 mr-2" />
+              <Upload data-icon="inline-start" className="w-4 h-4 mr-2" />
               Upload File
             </Button>
           )}

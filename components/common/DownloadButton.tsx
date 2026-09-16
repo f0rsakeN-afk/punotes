@@ -26,6 +26,7 @@ export const DownloadButton = ({ url, className }: DownloadButtonProps) => {
     };
 
     return (
+        <>
         <Button
             variant="outline"
             className={cn(
@@ -40,19 +41,22 @@ export const DownloadButton = ({ url, className }: DownloadButtonProps) => {
                 download
                 onClick={handleDownload}
                 className={cn(isLoading && "pointer-events-none")}
+                aria-describedby="download-status"
             >
                 {isLoading ? (
                     <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 data-icon="inline-start" className="w-4 h-4 animate-spin" />
                         Starting...
                     </>
                 ) : (
                     <>
-                        <Download className="w-4 h-4" />
+                        <Download data-icon="inline-start" className="w-4 h-4" />
                         Download
                     </>
                 )}
             </a>
         </Button>
+        <span id="download-status" role="status" aria-live="polite" className="sr-only">{isLoading ? "Starting download" : ""}</span>
+        </>
     );
 };

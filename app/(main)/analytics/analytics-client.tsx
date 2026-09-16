@@ -125,9 +125,38 @@ export default function AnalyticsClient() {
 
   if (error || !data) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-3">
+      <div className="flex flex-col items-center justify-center py-24 gap-3" role="status" aria-live="polite">
         <Eye className="h-8 w-8 text-muted-foreground" />
         <p className="text-sm text-muted-foreground">Failed to load analytics</p>
+        <p className="text-xs text-muted-foreground">No data available yet — analytics will appear once visits are tracked.</p>
+      </div>
+    );
+  }
+
+  const isEmpty =
+    data.overview.totalVisits === 0 &&
+    data.content.totalNotes === 0 &&
+    data.content.totalSyllabus === 0 &&
+    data.content.totalPYQ === 0;
+
+  if (isEmpty) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Eye className="w-5 h-5 text-primary" />
+          </div>
+          <PageHeader title="Analytics" description="Track site performance and engagement" />
+        </div>
+        <Card>
+          <CardContent className="py-16 text-center space-y-3">
+            <Eye className="w-10 h-10 mx-auto text-muted-foreground/40" />
+            <h3 className="font-medium">No analytics data yet</h3>
+            <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+              Once students start visiting and interacting, your engagement metrics will appear here.
+            </p>
+          </CardContent>
+        </Card>
       </div>
     );
   }

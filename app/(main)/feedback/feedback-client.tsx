@@ -9,6 +9,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,7 +24,7 @@ import {
 } from "lucide-react";
 import { useUser } from "@stackframe/stack";
 import { useSendFeedback } from "@/services/feedback";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { PageHeader } from "@/components/shared/PageHeader";
 import FeedbackContent from "@/components/me/FeedbackContent";
 import { useGetMe } from "@/services/me";
@@ -62,7 +63,9 @@ export default function Feedback() {
               <ScrollText />
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent aria-describedby={undefined}>
+            <DialogTitle className="sr-only">View submitted feedback</DialogTitle>
+            <DialogDescription className="sr-only">List of feedback submitted by users</DialogDescription>
             <FeedbackContent />
           </DialogContent>
         </Dialog>
@@ -97,10 +100,12 @@ export default function Feedback() {
                     disabled={!!user?.primaryEmail}
                     className="h-11"
                     placeholder="you@example.com"
+                    autoComplete="email"
                     {...field}
                     type="email"
                   />
                 </FormControl>
+                <FormMessage />
                 <p className="text-sm text-muted-foreground mt-1.5">
                   We won&apos;t share your email. Only used to respond if needed.
                 </p>
@@ -121,10 +126,12 @@ export default function Feedback() {
                     disabled={!!user?.displayName}
                     type="text"
                     className="h-11"
+                    autoComplete="name"
                     {...field}
                     placeholder="Your name"
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -144,6 +151,7 @@ export default function Feedback() {
                     className="min-h-[150px]"
                   />
                 </FormControl>
+                <FormMessage />
                 <p className="text-sm text-muted-foreground mt-1.5">
                   Be as detailed as you like! We appreciate every message.
                 </p>
@@ -155,6 +163,7 @@ export default function Feedback() {
             type="submit"
             className="w-full flex items-center justify-center gap-2 cursor-pointer h-11"
             disabled={sendFeedbackMutation.isPending}
+            aria-describedby="feedback-status"
           >
             {sendFeedbackMutation.isPending ? (
               <span className="flex items-center gap-2">
@@ -168,6 +177,9 @@ export default function Feedback() {
               </span>
             )}
           </Button>
+          <div id="feedback-status" role="status" aria-live="polite" className="sr-only">
+            {sendFeedbackMutation.isPending ? "Submitting feedback" : sendFeedbackMutation.isSuccess ? "Feedback submitted successfully" : sendFeedbackMutation.isError ? "Failed to submit feedback" : ""}
+          </div>
         </form>
       </Form>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { LogIn, Lock } from "lucide-react";
-import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,13 +16,15 @@ export function AuthGateDialog({ open, onOpenChange }: AuthGateDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[380px] border-border/50 bg-background/98 backdrop-blur-xl shadow-2xl p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-[380px] border-border/50 bg-background/98 backdrop-blur-xl shadow-2xl p-0 overflow-hidden" aria-describedby={undefined}>
+        <DialogTitle className="sr-only">Sign in required</DialogTitle>
+        <DialogDescription className="sr-only">You need to sign in to view and download notes</DialogDescription>
         {/* Header */}
         <div className="relative bg-muted/30 border-b border-border/30 px-6 py-5">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-primary/6 to-transparent" />
           <div className="relative flex items-start gap-3">
             <div className="mt-0.5 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-              <Lock className="w-4 h-4 text-primary" />
+              <Lock data-icon="inline-start" className="w-4 h-4 text-primary" />
             </div>
             <div>
               <h2 className="text-base font-bold tracking-tight text-foreground">
@@ -51,7 +53,7 @@ export function AuthGateDialog({ open, onOpenChange }: AuthGateDialogProps) {
             className="rounded-full px-6 bg-foreground text-background hover:bg-foreground/90 gap-1.5"
           >
             <Link href={`/handler/signin?after=${encodeURIComponent(pathname)}`}>
-              <LogIn className="w-3.5 h-3.5" />
+              <LogIn data-icon="inline-start" className="w-3.5 h-3.5" />
               Sign in
             </Link>
           </Button>

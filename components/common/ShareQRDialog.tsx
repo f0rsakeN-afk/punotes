@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download, Link2, Check, MessageCircle, Mail } from "lucide-react";
 import type { ComponentType } from "react";
@@ -91,7 +91,9 @@ export function ShareQRDialog({ url, title, open, onOpenChange }: ShareQRDialogP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 gap-0 max-w-sm overflow-hidden">
+      <DialogContent aria-describedby={undefined} className="p-0 gap-0 max-w-sm overflow-hidden">
+        <DialogTitle className="sr-only">Share {title}</DialogTitle>
+        <DialogDescription className="sr-only">Share this resource via QR code or social links</DialogDescription>
         <div className="p-6 text-center">
           <h3 className="text-sm font-semibold mb-1">Share this {title.includes("Semester") ? "resource" : title.split(" ").pop()}</h3>
           <p className="text-xs text-muted-foreground mb-4 truncate">{title}</p>
@@ -133,7 +135,7 @@ export function ShareQRDialog({ url, title, open, onOpenChange }: ShareQRDialogP
               className="flex-1 h-9"
               onClick={handleCopy}
             >
-              {copied ? <Check className="w-4 h-4 mr-1.5" /> : <Link2 className="w-4 h-4 mr-1.5" />}
+              {copied ? <Check data-icon="inline-start" className="w-4 h-4 mr-1.5" /> : <Link2 data-icon="inline-start" className="w-4 h-4 mr-1.5" />}
               {copied ? "Copied!" : "Copy Link"}
             </Button>
             <Button
@@ -142,7 +144,7 @@ export function ShareQRDialog({ url, title, open, onOpenChange }: ShareQRDialogP
               className="flex-1 h-9"
               onClick={handleDownload}
             >
-              <Download className="w-4 h-4 mr-1.5" />
+              <Download data-icon="inline-start" className="w-4 h-4 mr-1.5" />
               QR Code
             </Button>
           </div>

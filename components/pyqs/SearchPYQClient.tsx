@@ -62,7 +62,7 @@ export function SearchPYQClient({ initialData }: { initialData: PYQData[] }) {
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-3 min-w-0">
                   <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
-                    <FileText className="w-4 h-4" strokeWidth={1.75} />
+                    <FileText data-icon="inline-start" className="w-4 h-4" strokeWidth={1.75} />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-foreground leading-snug">

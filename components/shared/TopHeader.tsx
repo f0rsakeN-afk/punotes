@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import ThemeToggle from "./ThemeToggler";
 import { cn } from "@/lib/utils";
 import { SearchDialog } from "@/components/common/SearchDialog";
@@ -125,7 +125,7 @@ export function TopHeader({
                 className="w-9 h-9 text-muted-foreground hover:text-foreground relative"
                 title="Search (Cmd+K)"
               >
-                <Search className="w-4 h-4" />
+                <Search data-icon="inline-start" className="w-4 h-4" />
                 <kbd className="absolute -bottom-0.5 right-0 text-[10px] font-mono text-muted-foreground hidden sm:inline">
                   ⌘K
                 </kbd>
@@ -135,11 +135,11 @@ export function TopHeader({
             <ThemeToggle />
 
             {/* Feedback shortcut — desktop only */}
-            <Link href="/feedback" className="hidden lg:block" aria-label="Give feedback">
-              <Button variant="ghost" size="icon" aria-label="Give feedback" className="w-9 h-9 text-muted-foreground hover:text-foreground">
-                <MessageSquare className="w-4 h-4" />
-              </Button>
-            </Link>
+            <Button variant="ghost" size="icon" aria-label="Give feedback" className="w-9 h-9 text-muted-foreground hover:text-foreground hidden lg:flex" asChild>
+              <Link href="/feedback" aria-label="Give feedback">
+                <MessageSquare data-icon="inline-start" className="w-4 h-4" />
+              </Link>
+            </Button>
 
             {/* User menu */}
             {displayUser ? (
@@ -166,19 +166,19 @@ export function TopHeader({
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/favorites" className="cursor-pointer">
-                      <Star className="w-4 h-4 mr-2" />
+                      <Star data-icon="inline-start" className="w-4 h-4 mr-2" />
                       My Favorites
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/submissions" className="cursor-pointer">
-                      <FileText className="w-4 h-4 mr-2" />
+                      <FileText data-icon="inline-start" className="w-4 h-4 mr-2" />
                       My Submissions
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/feedback" className="cursor-pointer">
-                      <MessageSquare className="w-4 h-4 mr-2" />
+                      <MessageSquare data-icon="inline-start" className="w-4 h-4 mr-2" />
                       Feedback
                     </Link>
                   </DropdownMenuItem>
@@ -188,13 +188,13 @@ export function TopHeader({
                       <DropdownMenuLabel className="text-xs text-muted-foreground">Admin</DropdownMenuLabel>
                       <DropdownMenuItem asChild>
                         <Link href="/admin/public-links" className="cursor-pointer">
-                          <Shield className="w-4 h-4 mr-2" />
+                          <Shield data-icon="inline-start" className="w-4 h-4 mr-2" />
                           Review Links
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link href="/admin/audit-logs" className="cursor-pointer">
-                          <Shield className="w-4 h-4 mr-2" />
+                          <Shield data-icon="inline-start" className="w-4 h-4 mr-2" />
                           Audit Logs
                         </Link>
                       </DropdownMenuItem>
@@ -205,18 +205,18 @@ export function TopHeader({
                     className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer"
                     onClick={() => user?.signOut()}
                   >
-                    <LogOut className="w-4 h-4 mr-2" />
+                    <LogOut data-icon="inline-start" className="w-4 h-4 mr-2" />
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/handler/signin">
-                <Button size="sm" className="gap-1.5 h-8 px-4 text-xs">
-                  <LogIn className="w-3.5 h-3.5" />
+              <Button size="sm" className="gap-1.5 h-8 px-4 text-xs" asChild>
+                <Link href="/handler/signin">
+                  <LogIn data-icon="inline-start" className="w-3.5 h-3.5" />
                   Sign in
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             )}
 
             {/* Mobile menu */}
@@ -224,10 +224,12 @@ export function TopHeader({
               <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" aria-label="Open menu" className="w-9 h-9">
-                    <Menu className="w-4 h-4" />
+                    <Menu data-icon="inline-start" className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-64 p-0">
+                <SheetContent side="right" className="w-64 p-0" aria-describedby={undefined}>
+                  <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+                  <SheetDescription className="sr-only">Main navigation links</SheetDescription>
                   <div className="flex flex-col h-full">
                     {/* Sheet header */}
                     <div className="flex items-center gap-2.5 px-5 py-4 border-b border-border/50">
@@ -286,20 +288,20 @@ export function TopHeader({
                             onClick={() => { user?.signOut(); setOpen(false); }}
                             className="mt-3 flex w-full items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
                           >
-                            <LogOut className="w-4 h-4" />
+                            <LogOut data-icon="inline-start" className="w-4 h-4" />
                             Log out
                           </button>
                         </>
                       ) : (
-                        <Link
-                          href="/handler/signin"
-                          onClick={() => setOpen(false)}
-                        >
-                          <Button className="w-full gap-2">
-                            <LogIn className="w-4 h-4" />
-                            Sign in
+                          <Button className="w-full gap-2" asChild>
+                            <Link
+                              href="/handler/signin"
+                              onClick={() => setOpen(false)}
+                            >
+                              <LogIn data-icon="inline-start" className="w-4 h-4" />
+                              Sign in
+                            </Link>
                           </Button>
-                        </Link>
                       )}
                     </div>
                   </div>

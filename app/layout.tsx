@@ -5,6 +5,8 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { cn } from "@/lib/utils";
+import { Toaster } from "react-hot-toast";
+import { CommandMenu } from "@/components/shared/CommandMenu";
 
 const outfit = Outfit({subsets:['latin'],variable:'--font-sans'});
 
@@ -170,6 +172,8 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Toaster position="bottom-right" />
+              <CommandMenu />
             </ThemeProvider>
           </StackTheme>
         </StackProvider>

@@ -143,7 +143,7 @@ export default function PublicLinksClient({
                           onClick={() => handleReview(link.id, "APPROVED")}
                           disabled={processing === link.id}
                         >
-                          <CheckCircle className="w-4 h-4 mr-1" />
+                          <CheckCircle data-icon="inline-start" className="w-4 h-4 mr-1" />
                           Approve
                         </Button>
                         <Button
@@ -153,7 +153,7 @@ export default function PublicLinksClient({
                           onClick={() => handleReview(link.id, "REJECTED")}
                           disabled={processing === link.id}
                         >
-                          <XCircle className="w-4 h-4 mr-1" />
+                          <XCircle data-icon="inline-start" className="w-4 h-4 mr-1" />
                           Reject
                         </Button>
                       </div>

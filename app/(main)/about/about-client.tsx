@@ -160,19 +160,22 @@ export default function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-10 border rounded-xl border-border/50 bg-muted/30">
+      <section className="py-10 border rounded-xl border-border/50 bg-muted/30" aria-live="polite" aria-atomic="true">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6" role="status" aria-live="polite">
             {isLoading
               ? Array.from({ length: 4 }).map((_, i) => <StatSkeleton key={i} />)
               : statItems.map((stat, i) => (
                   <div key={stat.label} className="text-center animate-in fade-in slide-in-from-bottom-4 duration-300" style={{ animationDelay: `${i * 75}ms` }}>
-                    <stat.icon className="w-5 h-5 mx-auto mb-3 text-primary" />
+                    <stat.icon className="w-5 h-5 mx-auto mb-3 text-primary" aria-hidden="true" />
                     <div className="text-2xl sm:text-3xl font-bold text-foreground mb-1">{stat.value}</div>
                     <div className="text-sm text-muted-foreground">{stat.label}</div>
                   </div>
                 ))}
           </div>
+          <span className="sr-only" role="status" aria-live="polite">
+            {isLoading ? "Loading statistics" : `Loaded ${statItems.length} statistics`}
+          </span>
         </div>
       </section>
 
@@ -194,7 +197,7 @@ export default function AboutPage() {
               </p>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Globe className="w-4 h-4 text-primary" />
+                  <Globe data-icon="inline-start" className="w-4 h-4 text-primary" />
                   <span>Open to all PU students</span>
                 </div>
               </div>
@@ -205,7 +208,7 @@ export default function AboutPage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
-                    <GraduationCap className="w-4 h-4 text-primary" />
+                    <GraduationCap data-icon="inline-start" className="w-4 h-4 text-primary" />
                   </div>
                   <div>
                     <p className="font-medium text-foreground text-sm">Academic Excellence</p>
@@ -214,7 +217,7 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
-                    <Users className="w-4 h-4 text-primary" />
+                    <Users data-icon="inline-start" className="w-4 h-4 text-primary" />
                   </div>
                   <div>
                     <p className="font-medium text-foreground text-sm">Community Driven</p>
@@ -223,7 +226,7 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
-                    <Heart className="w-4 h-4 text-primary" />
+                    <Heart data-icon="inline-start" className="w-4 h-4 text-primary" />
                   </div>
                   <div>
                     <p className="font-medium text-foreground text-sm">Always Free</p>
@@ -272,7 +275,7 @@ export default function AboutPage() {
                     rel="author noopener"
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
                   >
-                    <Globe className="w-4 h-4" />
+                    <Globe data-icon="inline-start" className="w-4 h-4" />
                     Portfolio
                   </a>
                   <a

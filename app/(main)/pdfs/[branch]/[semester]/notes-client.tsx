@@ -274,12 +274,12 @@ export function SearchNotesClient({
 
       {/* Active filter indicator */}
       {activeSubject && (
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-4" role="status" aria-live="polite">
           <span className="text-xs text-muted-foreground">Filtered by:</span>
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
             {activeSubject}
-            <button onClick={() => setActiveSubject(null)} className="hover:text-primary/70">
-              <X className="w-3 h-3" />
+            <button onClick={() => setActiveSubject(null)} aria-label="Clear subject filter" className="hover:text-primary/70">
+              <X className="w-3 h-3" aria-hidden="true" />
             </button>
           </span>
           <span className="text-xs text-muted-foreground">
@@ -309,7 +309,7 @@ export function SearchNotesClient({
               {/* Top row */}
               <div className="flex items-start gap-3">
                 <div className="mt-0.5 shrink-0 w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center text-primary">
-                  <FileText className="w-4 h-4" strokeWidth={1.75} />
+                  <FileText data-icon="inline-start" className="w-4 h-4" strokeWidth={1.75} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold text-foreground leading-snug truncate">
@@ -326,7 +326,7 @@ export function SearchNotesClient({
               </p>
 
               {/* Actions */}
-              <div className="flex items-center gap-1.5 pl-11" onClick={handleGatedAction}>
+              <div className="flex items-center gap-1.5 pl-11" onClick={handleGatedAction} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleGatedAction(e as unknown as React.MouseEvent); } }} aria-label="View or download note (requires sign-in if gated)">
                 {user ? (
                   <>
                     <PDFViewerDialog url={note.url} title={note.name} buttonClassName="h-8 text-xs gap-1.5" />

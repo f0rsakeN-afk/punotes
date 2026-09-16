@@ -60,7 +60,7 @@ export function PDFViewerDialog({ url, title, buttonClassName }: PDFViewerDialog
   return (
     <>
       <Button size="sm" className={buttonClassName} onClick={handleOpen}>
-        <Eye className="w-3.5 h-3.5" />
+        <Eye data-icon="inline-start" className="w-3.5 h-3.5" />
         View
       </Button>
 
@@ -91,6 +91,7 @@ export function PDFViewerDialog({ url, title, buttonClassName }: PDFViewerDialog
             )}
             <iframe
               src={previewUrl}
+              title={`${title} preview`}
               className="w-full h-full border-0"
               onLoad={() => setLoaded(true)}
               allow="autoplay"
