@@ -47,8 +47,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ results: [], message: "Query too short" });
     }
 
-    // Cache key per query for instant lookup
-    const queryCacheKey = buildCacheKey("search:query", query);
+    // Normalized cache key (lowercase)
+    const normalizedQuery = query.toLowerCase();
+    const queryCacheKey = buildCacheKey("search:query", normalizedQuery);
 
     // Try query-specific cache first
     const queryCached = await cacheGet<SearchResult[]>(queryCacheKey);
@@ -59,36 +60,48 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Try full data cache
-    const cached = await cacheGet<SearchResult[]>(SEARCH_CACHE_KEY);
-    let allData: SearchResult[] = cached || [];
+    // Push filter to DB with index-aware contains (insensitive) and limit 20
+    const [notes, syllabus, pyqs] = await Promise.all([
+      prisma.notes.findMany({
+        where: {
+          OR: [
+            { name: { contains: normalizedQuery, mode: "insensitive" } },
+            { subject: { contains: normalizedQuery, mode: "insensitive" } },
+            { branch: { contains: normalizedQuery, mode: "insensitive" } },
+          ],
+        },
+        select: { id: true, name: true, subject: true, branch: true, semester: true, url: true, createdAt: true },
+        take: 20,
+      }),
+      prisma.syllabus.findMany({
+        where: {
+          OR: [
+            { branch: { contains: normalizedQuery, mode: "insensitive" } },
+            { semester: { contains: normalizedQuery, mode: "insensitive" } },
+          ],
+        },
+        select: { id: true, branch: true, semester: true, url: true, createdAt: true, fileSize: true },
+        take: 20,
+      }),
+      prisma.pYQ.findMany({
+        where: {
+          OR: [
+            { branch: { contains: normalizedQuery, mode: "insensitive" } },
+            { year: { contains: normalizedQuery, mode: "insensitive" } },
+            { semester: { contains: normalizedQuery, mode: "insensitive" } },
+          ],
+        },
+        select: { id: true, branch: true, semester: true, url: true, createdAt: true, year: true },
+        take: 20,
+      }),
+    ]);
 
-    // Fetch fresh if no cache
-    if (!cached) {
-      const [notes, syllabus, pyqs] = await Promise.all([
-        prisma.notes.findMany({ select: { id: true, name: true, subject: true, branch: true, semester: true, url: true, createdAt: true } }),
-        prisma.syllabus.findMany({ select: { id: true, branch: true, semester: true, url: true, createdAt: true, fileSize: true } }),
-        prisma.pYQ.findMany({ select: { id: true, branch: true, semester: true, url: true, createdAt: true, year: true } }),
-      ]);
-
-      allData = [
-        ...notes.map((n) => ({ type: "NOTES" as const, id: n.id, title: n.name, subject: n.subject, branch: n.branch, semester: n.semester, url: n.url, createdAt: n.createdAt.toISOString() })),
-        ...syllabus.map((s) => ({ type: "SYLLABUS" as const, id: s.id, title: `Syllabus - ${s.branch} - Sem ${s.semester}`, branch: s.branch, semester: s.semester, url: s.url, createdAt: s.createdAt.toISOString() })),
-        ...pyqs.map((p) => ({ type: "PYQ" as const, id: p.id, title: `PYQ - ${p.branch} - ${p.year}`, branch: p.branch, semester: p.semester, url: p.url, createdAt: p.createdAt.toISOString() })),
-      ];
-
-      await cacheSet(SEARCH_CACHE_KEY, allData, { expire: SEARCH_CACHE_TTL });
-    }
-
-    // Filter results
-    const results = allData.filter(
-      (item) =>
-        item.title.toLowerCase().includes(query) ||
-        (item.subject && item.subject.toLowerCase().includes(query)) ||
-        item.branch.toLowerCase().includes(query)
-    );
-
-    const limitedResults = results.slice(0, 20);
+    const results: SearchResult[] = [
+      ...notes.map((n) => ({ type: "NOTES" as const, id: n.id, title: n.name, subject: n.subject, branch: n.branch, semester: n.semester, url: n.url, createdAt: n.createdAt.toISOString() })),
+      ...syllabus.map((s) => ({ type: "SYLLABUS" as const, id: s.id, title: `Syllabus - ${s.branch} - Sem ${s.semester}`, branch: s.branch, semester: s.semester, url: s.url, createdAt: s.createdAt.toISOString() })),
+      ...pyqs.map((p) => ({ type: "PYQ" as const, id: p.id, title: `PYQ - ${p.branch} - ${p.year}`, branch: p.branch, semester: p.semester, url: p.url, createdAt: p.createdAt.toISOString() })),
+    ].slice(0, 20);
+    const limitedResults = results;
 
     // Cache this specific query result for 10 minutes
     await cacheSet(queryCacheKey, limitedResults, { expire: 600 });
