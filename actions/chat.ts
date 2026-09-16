@@ -72,6 +72,17 @@ export async function getMessages(cursor?: string) {
 
 export async function sendMessage(content: string) {
     try {
+        // Validate input - length and charset, reject angle brackets for XSS
+        if (!content || typeof content !== "string" || content.trim().length === 0) {
+            return { success: false, error: "Message cannot be empty" };
+        }
+        if (content.length > 500) {
+            return { success: false, error: "Message too long (max 500)" };
+        }
+        if (/[<>]/.test(content)) {
+            return { success: false, error: "Message must not contain < or >" };
+        }
+
         const user = await getStackUser();
         if (!user) {
             return { success: false, error: "Unauthorized" };
@@ -177,6 +188,14 @@ export async function sendMessage(content: string) {
 
 export async function toggleReaction(messageId: string, emoji: string) {
     try {
+        // Validate emoji - allow only single emoji, no brackets
+        if (!emoji || typeof emoji !== "string" || emoji.length > 10 || /[<>]/.test(emoji)) {
+            return { success: false, error: "Invalid emoji" };
+        }
+        if (!messageId || typeof messageId !== "string" || !/^[a-z0-9]+$/.test(messageId.replace(/[-_]/g, ""))) {
+            return { success: false, error: "Invalid message ID" };
+        }
+
         const user = await getStackUser();
         if (!user) {
             return { success: false, error: "Unauthorized" };

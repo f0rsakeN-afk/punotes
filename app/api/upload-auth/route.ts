@@ -7,9 +7,8 @@ import { sanitizeError, ERROR_MESSAGES } from "@/lib/sanitizeError";
 
 export async function GET(req: NextRequest) {
   try {
-    // CSRF validation
-    const csrfError = validateCsrf(req);
-    if (csrfError) return csrfError;
+    // GET is safe method - CSRF not required (validateCsrf skips SAFE_METHODS anyway)
+    // Removed dead validateCsrf call for GET to avoid confusion
 
     // Rate limit: 30 requests per minute
     const rateLimit = await rateLimiters.standard(req);
