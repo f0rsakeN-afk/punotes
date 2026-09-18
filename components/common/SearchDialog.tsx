@@ -70,31 +70,43 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    const controller = new AbortController();
     const debounce = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal: controller.signal });
         const data = await res.json();
         setResults(data.results || []);
         setSelectedIndex(0);
-      } catch {
-        setResults([]);
+      } catch (e) {
+        if ((e as Error).name !== "AbortError") setResults([]);
       } finally {
         setLoading(false);
       }
     }, 300);
 
-    return () => clearTimeout(debounce);
+    return () => {
+      clearTimeout(debounce);
+      controller.abort();
+    };
   }, [query]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setSelectedIndex((i) => Math.min(i + 1, results.length - 1));
+        setSelectedIndex((i) => {
+          const next = Math.min(i + 1, results.length - 1);
+          document.getElementById(`search-option-${next}`)?.scrollIntoView({ block: "nearest" });
+          return next;
+        });
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        setSelectedIndex((i) => Math.max(i - 1, 0));
+        setSelectedIndex((i) => {
+          const next = Math.max(i - 1, 0);
+          document.getElementById(`search-option-${next}`)?.scrollIntoView({ block: "nearest" });
+          return next;
+        });
       } else if (e.key === "Enter" && results[selectedIndex]) {
         e.preventDefault();
         const result = results[selectedIndex];
@@ -115,12 +127,12 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div onClick={() => setOpen(true)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(true); } }} aria-label="Open search" className="cursor-pointer">
+      <div onClick={() => setOpen(true)} className="cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded-md" role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(true); } }} aria-label="Open search">
         {children}
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent aria-describedby={undefined} className="p-0 gap-0 max-w-lg overflow-hidden bg-background dark:bg-black/90 backdrop-blur-xl">
+        <DialogContent className="p-0 gap-0 max-w-lg overflow-hidden bg-popover backdrop-blur-xl">
           <DialogTitle className="sr-only">Search</DialogTitle>
           <DialogDescription className="sr-only">Search notes, syllabus and past questions</DialogDescription>
           {/* Search input */}
@@ -151,7 +163,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Results */}
-          <div className="max-h-80 overflow-y-auto p-2">
+          <div role="listbox" aria-label="Search results" className="max-h-80 overflow-y-auto p-2">
             {query.length < 2 ? (
               <div className="py-8 text-center text-sm text-muted-foreground">
                 Type at least 2 characters to search
@@ -167,6 +179,9 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
                   return (
                     <button
                       key={result.id}
+                      id={`search-option-${i}`}
+                      role="option"
+                      aria-selected={i === selectedIndex}
                       onClick={() => {
                         if (result.type === "NOTES") {
                           router.push(`/pdfs/${encodeURIComponent(result.branch)}/${result.semester}`);
@@ -178,7 +193,7 @@ export function SearchDialog({ children }: { children: React.ReactNode }) {
                         setOpen(false);
                       }}
                       className={cn(
-                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors",
+                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors focus-visible:ring-2 focus-visible:ring-ring",
                         i === selectedIndex ? "bg-primary/15 dark:bg-primary/20" : "hover:bg-muted/60 dark:hover:bg-muted/40"
                       )}
                     >

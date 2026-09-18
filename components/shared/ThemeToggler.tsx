@@ -42,29 +42,15 @@ export default function ThemeToggle() {
     localStorage.setItem(STORAGE_KEY, mode);
 
     if (mode === "auto") {
-      const hours = new Date().getHours();
-      const isNight = hours < 7 || hours >= 19; // 7am - 7pm is light
-      setTheme(isNight ? "dark" : "light");
+      const mql = window.matchMedia("(prefers-color-scheme: dark)");
+      setTheme(mql.matches ? "dark" : "light");
+      const handler = (e: MediaQueryListEvent) => setTheme(e.matches ? "dark" : "light");
+      mql.addEventListener("change", handler);
+      return () => mql.removeEventListener("change", handler);
     } else {
       setTheme(mode);
     }
   }, [mode, mounted, setTheme]);
-
-  // Check time every minute if on auto
-  React.useEffect(() => {
-    if (mode !== "auto") return;
-
-    const interval = setInterval(() => {
-      const hours = new Date().getHours();
-      const isNight = hours < 7 || hours >= 19;
-      const currentAuto = isNight ? "dark" : "light";
-      if (theme !== currentAuto) {
-        setTheme(currentAuto);
-      }
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [mode, theme, setTheme]);
 
   if (!mounted) {
     return (
