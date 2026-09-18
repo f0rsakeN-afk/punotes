@@ -62,22 +62,22 @@ export function InstallPrompt() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-4 pointer-events-none">
-      <div className="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-2xl pointer-events-auto animate-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-0 right-0 z-50 p-3 sm:p-4 pointer-events-none">
+      <div className="max-w-lg mx-auto bg-popover border border-border rounded-2xl p-4 shadow-2xl pointer-events-auto animate-in slide-in-from-bottom-4 duration-300">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
             <Download className="w-5 h-5 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-semibold text-white mb-1">Install PuNotes</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <h3 className="text-sm font-semibold text-popover-foreground mb-1">Install PuNotes</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Add to your home screen for quick access and offline reading.
             </p>
           </div>
           <button
             onClick={handleDismiss}
             aria-label="Dismiss install prompt"
-            className="text-zinc-500 hover:text-white transition-colors p-1 -mt-1 -mr-1"
+            className="text-muted-foreground hover:text-foreground transition-colors p-1 -mt-1 -mr-1"
           >
             <X data-icon="inline-start" className="w-4 h-4" />
           </button>
@@ -86,7 +86,7 @@ export function InstallPrompt() {
           <Button
             onClick={handleInstall}
             size="sm"
-            className="flex-1 h-9 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+            className="flex-1 h-9 text-xs font-medium"
           >
             Install
           </Button>
@@ -94,7 +94,7 @@ export function InstallPrompt() {
             onClick={handleDismiss}
             variant="ghost"
             size="sm"
-            className="h-9 text-xs text-zinc-400 hover:text-white"
+            className="h-9 text-xs"
           >
             Not now
           </Button>

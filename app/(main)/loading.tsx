@@ -2,7 +2,7 @@
 // (main) layout/page server components (auth + data) resolve.
 export default function MainLoading() {
   return (
-    <div className="animate-pulse" aria-hidden>
+    <div className="animate-pulse" aria-busy="true" aria-label="Loading content">
       <div className="h-8 w-48 bg-muted rounded-lg mb-2" />
       <div className="h-4 w-72 max-w-full bg-muted rounded mb-8" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

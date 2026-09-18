@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="relative w-full min-h-dvh flex items-center justify-center">
+    <div role="status" aria-live="polite" aria-label="Loading content" className="relative w-full min-h-dvh flex items-center justify-center">
       {/* Floating Z animations */}
       <style>{`
         @keyframes swayUpToRight {

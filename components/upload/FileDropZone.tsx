@@ -125,9 +125,11 @@ export default function FileDropZone({ onUploadComplete, className }: FileDropZo
             uploadError && "border-destructive",
           )}
         >
+          <p id="file-hint" className="sr-only">PDF or DOCX, max 25MB. Drag and drop or click to browse.</p>
           <input
             type="file"
             aria-label="Choose a PDF or DOCX file to upload"
+            aria-describedby="file-hint"
             accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             onChange={handleInputChange}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"

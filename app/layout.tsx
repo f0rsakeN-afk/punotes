@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
 import { CommandMenu } from "@/components/shared/CommandMenu";
 
-const outfit = Outfit({subsets:['latin'],variable:'--font-sans'});
+const outfit = Outfit({subsets:['latin'],variable:'--font-sans', display:'swap', weight:['400','500','600','700'], preload:true});
 
 export const viewport: Viewport = {
   themeColor: "#DEDBC8",

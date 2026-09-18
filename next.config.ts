@@ -4,8 +4,8 @@ import withPWAInit from "@ducanh2912/next-pwa";
 const withPWA = withPWAInit({
   dest: "public",
 
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
+  cacheOnFrontEndNav: false,
+  aggressiveFrontEndNavCaching: false,
 
   reloadOnOnline: true,
 
@@ -13,6 +13,17 @@ const withPWA = withPWAInit({
 
   workboxOptions: {
     disableDevLogs: true,
+    runtimeCaching: [
+      {
+        urlPattern: /^\/api\/.*/,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "api-cache",
+          networkTimeoutSeconds: 10,
+          expiration: { maxEntries: 50, maxAgeSeconds: 60 * 5 },
+        },
+      },
+    ],
   },
 });
 
@@ -68,7 +79,9 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  turbopack: {},
+  experimental: {
+    optimizePackageImports: ["lucide-react", "recharts", "date-fns"],
+  },
 
   images: {
     remotePatterns: [

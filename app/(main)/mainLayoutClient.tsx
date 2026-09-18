@@ -7,13 +7,12 @@ import { MaintenanceBanner } from "@/components/shared/MaintenanceBanner";
 import { KeyboardShortcuts } from "@/components/shared/KeyboardShortcuts";
 import { InstallPrompt } from "@/components/common/InstallPrompt";
 
-import { persistQueryClient } from "@tanstack/react-query-persist-client";
-import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
-import { Toaster } from "react-hot-toast";
 import axios from "axios";
+
+const ReactQueryDevtools = dynamic(() => import("@tanstack/react-query-devtools").then(m => m.ReactQueryDevtools), { ssr: false });
 
 function TrackPageView() {
   useEffect(() => {
@@ -40,32 +39,35 @@ export default function MainLayoutClient({
     profileImageUrl: string | null;
   } | null;
 }) {
-  const [queryClient] = useState(() => {
-    const qc = new QueryClient({
+  const [queryClient] = useState(() => new QueryClient({
       defaultOptions: {
         queries: {
           staleTime: 1000 * 60 * 60,
-          gcTime: 1000 * 60 * 60,
+          gcTime: 1000 * 60 * 10,
           retry: 1,
         },
       },
-    });
+    }));
 
-    if (typeof window !== "undefined") {
-      const persister = createAsyncStoragePersister({
-        storage: window.localStorage,
-      });
-
-      persistQueryClient({
-        queryClient: qc,
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { createAsyncStoragePersister } = await import("@tanstack/query-async-storage-persister");
+      const { persistQueryClient: persist } = await import("@tanstack/react-query-persist-client");
+      if (cancelled) return;
+      const persister = createAsyncStoragePersister({ storage: window.localStorage });
+      persist({
+        queryClient,
         persister,
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60 * 1,
         buster: "v1",
+        dehydrateOptions: {
+          shouldDehydrateQuery: (q) => q.queryKey[0] !== "favorites",
+        },
       });
-    }
-
-    return qc;
-  });
+    })();
+    return () => { cancelled = true; };
+  }, [queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -85,7 +87,6 @@ export default function MainLayoutClient({
         <MaintenanceBanner />
         <TopHeader isAdmin={isAdmin} initialUser={initialUser} />
         <main id="main-content" className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Toaster position="top-right" />
           {children}
         </main>
         <Footer />
