@@ -324,7 +324,6 @@ export default function ShareClient({ branches }: ShareClientProps) {
                         ))}
                       </SelectContent>
                     </Select>
-                    <input type="hidden" name="branch" value={form.branch} required aria-hidden="true" tabIndex={-1} />
                     {errors.branch && <p id="branch-error" className="text-sm text-destructive" role="alert">{errors.branch}</p>}
                   </div>
                   <div className="space-y-2">
@@ -346,7 +345,6 @@ export default function ShareClient({ branches }: ShareClientProps) {
                         ))}
                       </SelectContent>
                     </Select>
-                    <input type="hidden" name="semester" value={form.semester} required aria-hidden="true" tabIndex={-1} />
                     {errors.semester && <p id="semester-error" className="text-sm text-destructive" role="alert">{errors.semester}</p>}
                   </div>
                 </div>

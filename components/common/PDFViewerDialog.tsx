@@ -68,7 +68,6 @@ export function PDFViewerDialog({ url, title, buttonClassName }: PDFViewerDialog
         <DialogContent
           className="p-0 gap-0 flex flex-col overflow-hidden"
           style={{ width: "95vw", height: "92vh", maxWidth: "none" }}
-          onInteractOutside={(e) => e.preventDefault()}
         >
           <DialogHeader className="px-5 py-3 border-b shrink-0 flex-row items-center justify-between">
             <DialogTitle className="text-sm font-medium truncate">{title}</DialogTitle>
@@ -92,6 +91,7 @@ export function PDFViewerDialog({ url, title, buttonClassName }: PDFViewerDialog
             <iframe
               src={previewUrl}
               title={`${title} preview`}
+              aria-label={`PDF preview: ${title}`}
               className="w-full h-full border-0"
               onLoad={() => setLoaded(true)}
               allow="autoplay"

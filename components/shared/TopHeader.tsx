@@ -54,7 +54,16 @@ export function TopHeader({
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 8);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -83,6 +92,7 @@ export function TopHeader({
               height={28}
               alt="PuNotes"
               priority
+              sizes="28px"
               className="dark:invert transition-transform duration-200 group-hover:scale-105"
             />
             <span className="font-semibold text-base tracking-tight text-foreground hidden sm:inline">

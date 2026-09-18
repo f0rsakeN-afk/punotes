@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { useQuery, queryOptions } from "@tanstack/react-query";
+import { useQuery, queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 type FavoriteType = "NOTES" | "SYLLABUS" | "PYQ";
@@ -26,6 +26,7 @@ export const favoritesQueryOptions = queryOptions({
 });
 
 export function useFavorites() {
+  const queryClient = useQueryClient();
   const { data: favorites = [], refetch } = useQuery(favoritesQueryOptions);
 
   // O(1) lookup set for per-card checks - avoids O(N*M) every render
@@ -34,47 +35,41 @@ export function useFavorites() {
     [favorites]
   );
 
-  const addFavorite = useCallback(
-    async (type: FavoriteType, itemId: string) => {
-      await axios.post("/api/favorites", { type, itemId });
-      await refetch();
+  const mutation = useMutation({
+    mutationFn: async ({ type, itemId, action }: { type: FavoriteType; itemId: string; action: "add" | "remove" }) => {
+      if (action === "add") await axios.post("/api/favorites", { type, itemId });
+      else await axios.delete(`/api/favorites?type=${type}&itemId=${itemId}`);
     },
-    [refetch]
-  );
-
-  const removeFavorite = useCallback(
-    async (type: FavoriteType, itemId: string) => {
-      await axios.delete(`/api/favorites?type=${type}&itemId=${itemId}`);
-      await refetch();
+    onMutate: async ({ type, itemId, action }) => {
+      await queryClient.cancelQueries({ queryKey: ["favorites"] });
+      const previous = queryClient.getQueryData<Favorite[]>(["favorites"]);
+      const key = `${type}:${itemId}`;
+      queryClient.setQueryData<Favorite[]>(["favorites"], (old = []) => {
+        if (action === "add" && !old.some(f => `${f.type}:${f.itemId}` === key)) {
+          return [...old, { id: `optimistic-${key}`, userId: "me", type, itemId, createdAt: new Date().toISOString() }];
+        }
+        if (action === "remove") return old.filter(f => `${f.type}:${f.itemId}` !== key);
+        return old;
+      });
+      return { previous };
     },
-    [refetch]
-  );
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous) queryClient.setQueryData(["favorites"], ctx.previous);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["favorites"] }),
+  });
 
   const toggleFavorite = useCallback(
     async (type: FavoriteType, itemId: string) => {
       const key = `${type}:${itemId}`;
       const isFav = favoritesSet.has(key);
-      if (isFav) {
-        await removeFavorite(type, itemId);
-      } else {
-        await addFavorite(type, itemId);
-      }
+      await mutation.mutateAsync({ type, itemId, action: isFav ? "remove" : "add" });
     },
-    [favoritesSet, addFavorite, removeFavorite]
+    [favoritesSet, mutation]
   );
 
-  const isFavorited = useCallback(
-    (type: FavoriteType, itemId: string) => {
-      return favoritesSet.has(`${type}:${itemId}`);
-    },
-    [favoritesSet]
-  );
+  const isFavorited = useCallback((type: FavoriteType, itemId: string) => favoritesSet.has(`${type}:${itemId}`), [favoritesSet]);
+  const isFavoritedFast = useCallback((type: FavoriteType, itemId: string) => favoritesSet.has(`${type}:${itemId}`), [favoritesSet]);
 
-  // Optimized toggle check using Set
-  const isFavoritedFast = useCallback(
-    (type: FavoriteType, itemId: string) => favoritesSet.has(`${type}:${itemId}`),
-    [favoritesSet]
-  );
-
-  return { favorites, favoritesSet, toggleFavorite, isFavorited, isFavoritedFast, refetch };
+  return { favorites, favoritesSet, toggleFavorite, isFavorited, isFavoritedFast, refetch, isMutating: mutation.isPending };
 }
